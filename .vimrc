@@ -176,8 +176,11 @@ set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
 
 
 " Emmet  (Zen Coding)
-let g:user_emmet_mode='a'    "only enable normal mode functions.
-let g:user_emmet_expandabbr_key = '<c-y>' 
+let g:user_emmet_mode='i'    "only enable normal mode functions.
+let g:BASH_Ctrl_j = 'off'
+let g:user_emmet_expandabbr_key = '<c-j>'
+let g:user_emmet_next_key = '<c-k>'
+let g:user_emmet_leader_key = '\a'
 let g:use_emment_complete_tag = 1
 source ~/projects/.vimrc_work
 
@@ -185,7 +188,7 @@ let g:user_emmet_settings = {
   \  'lang' : 'en',
   \  'html' : {
   \    'filters' : 'html',
-  \    'indentation' : '  ',
+  \    'indentation' : '    ',
   \    'snippets' : {
   \      'ap' : "data-dojo-attach-point=\"${cursor}\"",
   \      'html' : '<html lang="en">\n<head>\n\t<title></title>\n</head>\n<body>\n</body>\n</html>'
@@ -193,7 +196,7 @@ let g:user_emmet_settings = {
   \  },
   \  'css' : {
   \    'filters' : 'fc',
-  \    'indentation' : '  ',
+  \    'indentation' : '    ',
   \    'snippets' : {
   \      'border-radius' : "-moz-border-radius: 10px; \n-o-border-radius: 10px; \nborder-radius: 10px;"
   \    },
@@ -201,6 +204,10 @@ let g:user_emmet_settings = {
   \  'javascript' : {
   \    'indentation' : '    ',
   \    'snippets' : {
+  \      'i' : "if (${cursor}) {\n\t${cursor}\n}",
+  \      'e' : "else {\n\t${cursor}\n}",
+  \      'ie' : "if (${cursor}) {\n\t${cursor}\n} else {\n\t${cursor}\n}",
+  \      'ief' : "if (${cursor}) {\n\t${cursor}\n} else if (${cursor}) {\n\t${cursor}\n}${child}",
   \      'ap' : "data-dojo-attach-point=\"${cursor}\"",
   \      'require' : "/*global require */\nrequire([${cursor}],function(${child}) {\n\n});",
   \      'define' : "/*global define */\ndefine([\"dojo/_base/declare\"],\nfunction(declare) {\n\treturn declare(\"\",[],{\n\t\t${cursor}${child}\n\t});\n});",
