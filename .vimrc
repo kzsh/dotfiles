@@ -207,31 +207,33 @@ let g:user_emmet_settings = {
   \      'i' : "if (${cursor}) {\n\t${cursor}\n}",
   \      'e' : "else {\n\t${cursor}\n}",
   \      'ie' : "if (${cursor}) {\n\t${cursor}\n} else {\n\t${cursor}\n}",
-  \      'ief' : "if (${cursor}) {\n\t${cursor}\n} else if (${cursor}) {\n\t${cursor}\n}${child}",
+  \      'sw' : "switch(${cursor}) {\n\tcase ${cursor}:\n\t\t${cursor};\n\t\tbreak;\n\tcase ${cursor}:\n\t\t${cursor};\n\t\tbreak;\n\tcase ${cursor}:\n\t\t${cursor};\n\t\tbreak;\n\tdefault:\n\t\t${cursor};\n\t\tbreak;\n}",
+  \      'g' : "get('${cursor}');${cursor}",
+  \      's' : "set('${cursor}',${cursor});${cursor}",
   \      'ap' : "data-dojo-attach-point=\"${cursor}\"",
   \      'require' : "/*global require */\nrequire([${cursor}],function(${child}) {\n\n});",
   \      'define' : "/*global define */\ndefine([\"dojo/_base/declare\"],\nfunction(declare) {\n\treturn declare(\"\",[],{\n\t\t${cursor}${child}\n\t});\n});",
   \      'dijit' : "/*global define */\ndefine([\"dojo/_base/declare\",\n\"dijit/_WidgetBase\",\n\"dijit/_TemplatedMixin\"],\nfunction(declare, _WidgetBase, _TemplatedMixin) {\n\treturn declare([_WidgetBase, _TemplatedMixin],{\n\t\ttemplateString:\n\t\t\t'<div>' +\n\t\t\t'</div>',\n\t\tpostCreate: function() {\n\t\t\tthis.inherited(arguments);\n\t\t\t${cursor}\n\t\t},\n\t\tdestroy: function() {\n\t\t\tthis.destroyRecursive();\n\t\t\tthis.inherited(arguments);\n\t\t}\n\t});\n});",
   \
-  \      'udijit' : license+"\n/*global define */\ndefine([\n\t\"dojo/_base/declare\",\n\t\"app/widgets/UReleaseWidget\",\n\t\"dojo/text!app/widgets/templates/MYWIDGITNAMEHERE.html\"\n], function(\n\tdeclare,\n\t_URWidget\n\ttemplate\n) {\n\treturn declare([_URWidget],{\n\t\ttemplateString:template,\n\t\tpostCreate: function() {\n\t\t\tthis.inherited(arguments);\n\t\t\t${cursor}\n\t\t}\n\t});\n});",
-  \
-  \      'foreach' : "array.forEach(${cursor},function(${child}){\n\n});",
-  \      'f' : "function () {\n\t\t\t${cursor}\n\t\t}",
-  \      'f,' : "function () {\n\t\t\t${cursor}\n\t\t},",
-  \      'on' : "on(${cursor},\"click\", function(){${child}\n\n});",
-  \      'then' : "then(function() {\n\t${cursor}\n});",
-  \      'c' : "console.log(${cursor});"
-  \    },
-  \  },
-  \ 'java' : {
-  \  'indentation' : '    ',
-  \  'snippets' : {
-  \   'main': "public static void main(String[] args) {\n\t|\n}",
-  \   'println': "System.out.println(\"|\");",
-  \   'class': "public class | {\n}\n",
-  \  },
-  \ },
-  \}
+\      'udijit' : license."\n/*global define */\ndefine([\n\t\"dojo/_base/declare\",\n\t\"app/widgets/UReleaseWidget\",\n\t\"dojo/text!app/widgets/templates/MYWIDGITNAMEHERE.html\"\n], function(\n\tdeclare,\n\t_URWidget\n\ttemplate\n) {\n\treturn declare([_URWidget],{\n\t\ttemplateString:template,\n\t\tpostCreate: function() {\n\t\t\tthis.inherited(arguments);\n\t\t\t${cursor}\n\t\t}\n\t});\n});",
+\
+\      'foreach' : "array.forEach(${cursor},function(${child}){\n\n});",
+\      'f' : "function () {\n\t\t\t${cursor}\n\t\t}",
+\      'f,' : "function () {\n\t\t\t${cursor}\n\t\t},",
+\      'on' : "on(${cursor},\"click\", function(){${child}\n\n});",
+\      'then' : "then(function() {\n\t${cursor}\n});",
+\      'c' : "console.log(${cursor});"
+\    },
+\  },
+\ 'java' : {
+\  'indentation' : '    ',
+\  'snippets' : {
+\   'main': "public static void main(String[] args) {\n\t|\n}",
+\   'println': "System.out.println(\"|\");",
+\   'class': "public class | {\n}\n",
+\  },
+\ },
+\}
 
 
 
