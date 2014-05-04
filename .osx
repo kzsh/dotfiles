@@ -299,6 +299,12 @@ defaults write com.apple.finder FXInfoPanesExpanded -dict \
 	General -bool true \
 	OpenWith -bool true \
 	Privileges -bool true
+	
+###############################################################################
+# Security settings                                                           #
+###############################################################################
+#Allow apps downloaded from "anywhere", not just mac app store and idenitifed developers
+sudo spctl --master-disable
 
 ###############################################################################
 # Dock, Dashboard, and hot corners                                            #
