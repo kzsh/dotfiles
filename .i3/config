@@ -150,10 +150,11 @@ bindcode 121 exec toggle_mute
 bindcode 122 exec amixer set Master 5%-
 bindcode 123 exec amixer set Master 5%+
 
-# take a screenshot
-bindsym $mod+Shift+Up exec gnome-screenshot -a
-#bindcode $mod+Shift+119 exec
+# take a screenshot (run shutter, capture selection, exit
+bindsym $mod+shift+p exec shutter -s -e
 
+# take a screenshot (run shutter, capture active window, exit
+bindsym $mod+shift+o exec shutter -a -e
 
 # set the screen resolution
 exec /home/andrew/scripts/bash/res.sh DP-2 2592
