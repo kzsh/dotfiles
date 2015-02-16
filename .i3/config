@@ -57,8 +57,6 @@ bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
 # split in horizontal orientation
-# note that I am reversing this from normal to conform
-# to vim's layout
 bindsym $mod+v split h
 
 # split in vertical orientation
@@ -186,14 +184,24 @@ mode "$mode_system" {
 }
 bindcode 124 mode "$mode_system"
 
+# bind a shortcut to copy password from store into clipboard
+bindcode $mod+47 exec i3-input -F 'exec /usr/bin/pass -c "%s"' -P 'pass --> '
+#
+# insert new passwords
+bindcode $mod+shift+47 exec i3-input -F 'exec /home/andrew/bin/set-password %s' -P "insert [location] [pass] --> "
+
+bindcode $mod+shift+48 exec i3-input -F 'exec /home/andrew/bin/generate-password %s' -P 'generate password --> '
+
 # allow vim bindings to act as up down left right arrow keys when in "vim" mode
-mode "vim" {
-    bindsym --release j exec --no-startup-id xdotool key --clearmodifiers Down
-    bindsym --release k exec --no-startup-id xdotool key --clearmodifiers Up
-    bindsym --release h exec --no-startup-id xdotool key --clearmodifiers Left
-    bindsym --release l exec --no-startup-id xdotool key --clearmodifiers Right
-    bindsym Escape mode "default"
-    bindcode 134 mode "default"
-}
-# 134 is Right "Command/Win" key.
-bindcode 134 mode "vim"
+# DEPRECATED by switch to vi-mode with bindings.  Would be nice to find a bette way
+# to do this, so that I could just map Ctrl-j to Down directly in shell, and have more
+# wide compatabilty.
+#mode "vim" {
+    #bindsym --release j exec --no-startup-id xdotool key --clearmodifiers Down
+    #bindsym --release k exec --no-startup-id xdotool key --clearmodifiers Up
+    #bindsym --release h exec --no-startup-id xdotool key --clearmodifiers Left
+    #bindsym --release l exec --no-startup-id xdotool key --clearmodifiers Right
+    #bindsym Escape mode "default"
+    #bindcode 134 mode "default"
+#}
+#bindcode 134 mode "vim"

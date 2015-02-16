@@ -31,30 +31,38 @@ if [ -d $HOME/.cabal/bin ]; then
 	PATH="$HOME/.cabal/bin:$PATH"
 fi
 
-#BEING ANTIGEN
+#==================================================
+# key unbindings
+#==================================================
+#allow tmux to shine by removing zsh bindings
+bindkey -r "^H"
+bindkey -r "^J"
+bindkey -r "^K"
+bindkey -r "^L"
+bindkey -r "^w"
+bindkey -r "^A"
+
+#==================================================
+# ANTIGEN
+#==================================================
 source $HOME/source/github/antigen/antigen.zsh
-
-#aliases
-alias area="gnome-screenshot -a"
-
-alias logout="i3lock -e -c 000000"
-alias stx="startx &> ~/.xlog 2>~/.xlog_err"
-alias ll="ls -al"
-alias l="ls -l"
-alias google-chrome="google-chrome --force-device-scale-factor=2"
 
 # Load the oh-my-zsh's library.
 antigen use oh-my-zsh
+
+# oh-my-zsh settings (Possible zsh?)
+CASE_SENSITIVE="true"
 
 # Bundles from the default repo (robbyrussell's oh-my-zsh).
 antigen bundle git
 #antigen bundle heroku
 antigen bundle history-substring-search
 
-antigen bundle npm
-antigen bundle node
-antigen bundle vagrant
-#antigen bundle command-not-found
+#antigen bundle npm
+antigen bundle vi-mode
+#antigen bundle node
+#antigen bundle vagrant
+antigen bundle command-not-found
 
 # Syntax highlighting bundle.
 antigen bundle zsh-users/zsh-syntax-highlighting
@@ -64,11 +72,46 @@ antigen theme agnoster
 
 # Tell antigen that you're done.
 antigen apply
-#END ANTIGEN
 
-#autojump
+# bind j and k keys for vi-mode
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
+#
+# bind UP and DOWN arrow keys
+zmodload zsh/terminfo
+bindkey "$terminfo[kcuu1]" history-substring-search-up
+bindkey "$terminfo[kcud1]" history-substring-search-down
+bindkey "$terminfo[cuu1]" history-substring-search-up
+bindkey "$terminfo[cud1]" history-substring-search-down
+
+#==================================================
+# key bindings
+#==================================================
+
+#bindkey "^j" $terminfo[kcuu1]history-substring-search-down
+#bindkey "^k" history-substring-search-up
+#bindkey "^j" $terminfo[kcuu1]history-substring-search-down
+#bindkey "^k" history-substring-search-up
+#==================================================
+# aliases
+#==================================================
+alias area="gnome-screenshot -a"
+
+alias logout="i3lock -e -c 000000"
+alias ll="ls -al"
+alias l="ls -l"
+alias google-chrome="google-chrome --force-device-scale-factor=2"
+
+
+#==================================================
+# autojump
+#==================================================
 . /usr/share/autojump/autojump.zsh
 
+#==================================================
+# NVM
+#==================================================
 export NVM_DIR="/home/andrew/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
+#setfont /usr/share/consolefonts/Uni3-Terminus28x14.psf.gz

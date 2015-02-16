@@ -38,9 +38,10 @@
 	keepBackup = true
 [http]
 	sslVerify = true
-[user]
-	name = Andrew Hunt
-	email = andrew@hunt.li
 [color "diff"]
 	;frag = cyan
 	;new = green
+; sources my email address and
+; other [user] config
+[include]
+    path = ~/.gitemail
