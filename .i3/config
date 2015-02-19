@@ -193,10 +193,11 @@ bindsym --release mod3+l exec $( xdotool key Right )
 bindcode $mod+47 exec i3-input -F 'exec /usr/bin/pass -c "%s"' -P 'pass --> '
 #
 # insert new passwords
-bindcode $mod+shift+47 exec i3-input -F 'exec /home/andrew/bin/set-password %s' -P "insert [location] [pass] --> "
+bindcode $mod+shift+47 exec i3-input -F 'exec ~/bin/set-password %s' -P "insert [location] [pass] --> "
 
-bindcode $mod+shift+48 exec i3-input -F 'exec /home/andrew/bin/generate-password %s' -P 'generate password --> '
+bindcode $mod+shift+48 exec i3-input -F 'exec ~/bin/generate-password %s' -P 'generate password --> '
 
+#bindkey $mod+control+/ exec ~/source/scripts/bash/save_current_url_to_reading 2>&1> ~/temp.out
 # allow vim bindings to act as up down left right arrow keys when in "vim" mode
 # DEPRECATED by switch to vi-mode with bindings.  Would be nice to find a bette way
 # to do this, so that I could just map Ctrl-j to Down directly in shell, and have more

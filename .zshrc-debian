@@ -42,6 +42,11 @@ bindkey -r "^L"
 bindkey -r "^w"
 bindkey -r "^A"
 
+# backspace and ^h working even after
+# returning from command mode
+bindkey '^?' backward-delete-char
+bindkey '^h' backward-delete-char
+
 #==================================================
 # ANTIGEN
 #==================================================
