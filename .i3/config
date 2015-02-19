@@ -11,7 +11,7 @@
 
 
 # Command/Win key on a Macbook Pro, with my mapping.
-set $mod Mod4
+set $mod mod4
 
 # Font for window titles. Will also be used by the bar unless a different font # is used in the bar {} block below.
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
@@ -155,7 +155,7 @@ bindsym $mod+shift+p exec shutter -s -e
 bindsym $mod+shift+o exec shutter -a -e
 
 # set the screen resolution
-exec /home/andrew/scripts/bash/res.sh DP-2 2592
+exec /home/andrew/source/scripts/bash/res.sh DP-2 2592
 
 #until I fix this, hack the brightness to be whatever level it was last set to.
 exec sudo keyboard-backlight up
@@ -183,6 +183,11 @@ mode "$mode_system" {
     bindsym Escape mode "default"
 }
 bindcode 124 mode "$mode_system"
+
+bindsym --release mod3+j exec $( xdotool key Down )
+bindsym --release mod3+k exec $( xdotool key Up )
+bindsym --release mod3+h exec $( xdotool key Left )
+bindsym --release mod3+l exec $( xdotool key Right )
 
 # bind a shortcut to copy password from store into clipboard
 bindcode $mod+47 exec i3-input -F 'exec /usr/bin/pass -c "%s"' -P 'pass --> '

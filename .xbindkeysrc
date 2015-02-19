@@ -47,7 +47,7 @@
 
 # Vim Bindings
 "xdotool key Up"
-  Alt + k
+  mod3 + k
   #m:0x20 + c:45
 
 "xdotool key Down"
