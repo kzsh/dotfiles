@@ -154,6 +154,9 @@ bindsym $mod+shift+p exec shutter -s -e
 # take a screenshot (run shutter, capture active window, exit
 bindsym $mod+shift+o exec shutter -a -e
 
+# blank screen after 10 minutes inactivity
+exec --no-startup-id xset dpms 600
+
 # set the screen resolution
 exec /home/andrew/source/scripts/bash/res.sh DP-2 2592
 
@@ -197,9 +200,11 @@ bindcode $mod+shift+47 exec i3-input -F 'exec ~/bin/set-password %s' -P "insert 
 
 bindcode $mod+shift+48 exec i3-input -F 'exec ~/bin/generate-password %s' -P 'generate password --> '
 
+bindsym $mod+mod3+control+w exec ~/source/scripts/bash/save_current_url_to_reading
+
 #bindkey $mod+control+/ exec ~/source/scripts/bash/save_current_url_to_reading 2>&1> ~/temp.out
 # allow vim bindings to act as up down left right arrow keys when in "vim" mode
-# DEPRECATED by switch to vi-mode with bindings.  Would be nice to find a bette way
+# DEPRECATED by switch to vi-mode with bindings.  Would be nice to find a better way
 # to do this, so that I could just map Ctrl-j to Down directly in shell, and have more
 # wide compatabilty.
 #mode "vim" {
@@ -211,3 +216,15 @@ bindcode $mod+shift+48 exec i3-input -F 'exec ~/bin/generate-password %s' -P 'ge
     #bindcode 134 mode "default"
 #}
 #bindcode 134 mode "vim"
+#
+# allow vim bindings to act as up down left right arrow keys when in "vim" mode
+mode "vim" {
+    bindsym --release j exec --no-startup-id xdotool key --clearmodifiers Down
+    bindsym --release k exec --no-startup-id xdotool key --clearmodifiers Up
+    bindsym --release h exec --no-startup-id xdotool key --clearmodifiers Left
+    bindsym --release l exec --no-startup-id xdotool key --clearmodifiers Right
+    bindsym i mode "default"
+    bindcode 134 mode "default"
+}
+# 134 is Right "Command/Win" key.
+bindcode 134 mode "vim"

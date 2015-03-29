@@ -13,6 +13,11 @@ fi
 
 exec i3
 
+
+xss-lock -- i3exit lock &
+
+autolock -time 10 -locker "i3exit lock" &
+
 #exec xterm
 #exec wmii
 #exec xmonad
