@@ -18,6 +18,12 @@ xss-lock -- i3exit lock &
 
 autolock -time 10 -locker "i3exit lock" &
 
+# be fast with the keyboard.  Not slow.
+xset r rate 150 18
+
+# Keep the trackpad from messing me up.
+syndaemon -dt
+
 #exec xterm
 #exec wmii
 #exec xmonad

@@ -39,13 +39,14 @@ fi
 #==================================================
 # key unbindings
 #==================================================
-#allow tmux to shine by removing zsh bindings
+# allow tmux to shine by removing zsh bindings
 bindkey -r "^H"
 bindkey -r "^J"
 bindkey -r "^K"
 bindkey -r "^L"
 bindkey -r "^w"
 bindkey -r "^A"
+bindkey -r "^F"
 
 # backspace and ^h working even after
 # returning from command mode
