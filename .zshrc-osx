@@ -32,7 +32,8 @@ DISABLE_AUTO_UPDATE="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=( git brew autojump gem node npm rake rails rbenv rsync bower history-substring-search zsh-syntax-highlighting vi-mode custom/ember )
+#plugins=( git brew autojump gem node npm rake rails rbenv rsync bower history-substring-search zsh-syntax-highlighting vi-mode custom/ember )
+plugins=( git brew autojump gem node npm rake rails rbenv rsync bower per-directory-history history-substring-search zsh-syntax-highlighting vi-mode custom/ember )
 
 source $ZSH/oh-my-zsh.sh
 source $HOME/.aws-ddesk
@@ -42,6 +43,7 @@ unsetopt correct_all
 unsetopt correct
 
 setopt NO_NOMATCH
+setopt histignorespace
 
 # Customize aliases...
 
@@ -71,20 +73,17 @@ alias ll="ls -al"
 
 alias pserv="python -m SimpleHTTPServer"
 
-# Custom Functions
-
-function gfind {
-    grep -r "$1" .
-}
-
-
 # bind j and k keys for vi-mode
 bindkey -M vicmd 'k' history-substring-search-up
 bindkey -M vicmd 'j' history-substring-search-down
-
+bindkey -v
+bindkey '^R' history-incremental-search-backward
 alias rake='noglob rake'
 HOME_BIN="$HOME/bin"
 PATH=$PATH:$HOME_BIN
+
+export NVM_DIR=~/.nvm
+source $(brew --prefix nvm)/nvm.sh
 
 export PATH
 
