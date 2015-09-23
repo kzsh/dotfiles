@@ -16,6 +16,9 @@ CASE_SENSITIVE="true"
 
 # Comment this out to disable bi-weekly auto-update checks
 DISABLE_AUTO_UPDATE="true"
+#
+# 10ms for key sequences
+KEYTIMEOUT=1
 
 # Uncomment to change how many often would you like to wait before auto-updates occur? (in days)
 # export UPDATE_ZSH_DAYS=13
@@ -33,11 +36,35 @@ DISABLE_AUTO_UPDATE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 #plugins=( git brew autojump gem node npm rake rails rbenv rsync bower history-substring-search zsh-syntax-highlighting vi-mode custom/ember )
-plugins=( git brew autojump gem node npm rake rails rbenv rsync bower per-directory-history history-substring-search zsh-syntax-highlighting vi-mode custom/ember )
+plugins=(
+  git
+  brew
+  autojump
+  gem
+  node
+  npm
+  rake
+  rbenv
+  rsync
+  bower
+  history-substring-search
+  zsh-syntax-highlighting
+  vi-mode
+  custom/ember
+)
 
-source $ZSH/oh-my-zsh.sh
-source $HOME/.aws-ddesk
-source $HOME/.trello-api
+sourceable=(
+  "$ZSH/oh-my-zsh.sh"
+  "$HOME/.aws-ddesk"
+  "$HOME/.github-ddesk"
+  "$HOME/.trello-api"
+)
+
+for i in "${sourceable[@]}"; do
+  if [[ -f $i ]]; then
+    source $i
+  fi
+done
 
 unsetopt correct_all
 unsetopt correct
@@ -49,18 +76,18 @@ setopt histignorespace
 
 #open current dir in Finder
 alias oo='open -a Finder ./'
+
 alias aa='open -a'
-#alias ctags='/usr/local/bin/ctags'
 
 #cd to top level of the current git repo
 alias cdg='cd $(git rev-parse --show-toplevel)'
 
-#shortcuts for custom git-submit and work commands
+alias be="bundle exec"
 
 alias ghc="gh compare"
 alias ghb="gh browse"
 
-alias be="bundle exec"
+alias rc="bundle exec rubocop -aD --cache true"
 
 alias es="ember s"
 alias et="ember t -s"
@@ -71,7 +98,9 @@ alias vi="/usr/local/bin/vim"
 
 alias ll="ls -al"
 
-alias pserv="python -m SimpleHTTPServer"
+function f () {
+  mdfind $1 -onlyin .
+}
 
 # bind j and k keys for vi-mode
 bindkey -M vicmd 'k' history-substring-search-up
