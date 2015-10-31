@@ -46,6 +46,3 @@
 ; other [user] config
 [include]
     path = ~/.gituser
-[user]
-	name = Andrew
-	email = andrew@hunt.li
