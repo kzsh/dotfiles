@@ -875,21 +875,36 @@
 	<array/>
 	<key>NSTableView Sort Ordering KeyBingingTable</key>
 	<array/>
+	<key>NSToolbar Configuration Terminal Toolbar</key>
+	<dict>
+		<key>TB Display Mode</key>
+		<integer>1</integer>
+		<key>TB Icon Size Mode</key>
+		<integer>1</integer>
+		<key>TB Is Shown</key>
+		<integer>0</integer>
+		<key>TB Size Mode</key>
+		<integer>1</integer>
+	</dict>
 	<key>NSToolbar Configuration com.apple.NSColorPanel</key>
 	<dict>
 		<key>TB Is Shown</key>
 		<integer>1</integer>
 	</dict>
+	<key>NSWindow Frame NSFontPanel</key>
+	<string>929 33 445 103 0 0 1440 877 </string>
 	<key>NSWindow Frame Preferences</key>
-	<string>121 657 924 485 0 0 2560 1417 </string>
+	<string>121 117 924 485 0 0 1440 877 </string>
+	<key>NSWindow Frame SUStatusFrame</key>
+	<string>1090 966 384 129 0 0 2560 1417 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>163 568 1277 842 0 0 2560 1417 </string>
+	<string>5 22 1914 1035 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>5 29 1277 1380 0 0 2560 1417 </string>
+	<string>7 60 1431 810 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>7 449 570 426 0 0 1440 877 </string>
+	<string>7 1 1431 874 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
-	<string>7 983 570 426 0 0 2560 1417 </string>
+	<string>7 28 1431 842 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 4</key>
 	<string>5 22 717 855 0 0 1440 877 </string>
 	<key>NeverWarnAboutShortLivedSessions_D21B9473-1348-448E-B402-0B3B950B48F1</key>
@@ -2181,7 +2196,7 @@
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>SauceCodePowerline-Regular 12</string>
+			<string>SauceCodePowerline-Regular 14</string>
 			<key>Option Key Sends</key>
 			<integer>0</integer>
 			<key>Prompt Before Closing 2</key>
@@ -2193,7 +2208,7 @@
 			<key>Screen</key>
 			<integer>-1</integer>
 			<key>Scrollback Lines</key>
-			<integer>1000</integer>
+			<integer>0</integer>
 			<key>Scrollback With Status Bar</key>
 			<false/>
 			<key>Scrollback in Alternate Screen</key>
@@ -2365,10 +2380,12 @@
 			<string>/Users/andrewhunt</string>
 		</dict>
 	</array>
+	<key>NoSyncNeverRemindPrefsChangesCopy</key>
+	<true/>
 	<key>NoSyncTimeOfLastPromo</key>
 	<real>453689882.59726101</real>
 	<key>NoSyncTimeOfLastPromoDownload</key>
-	<real>463521405.2579</real>
+	<real>467224636.40136701</real>
 	<key>OnlyWhenMoreTabs</key>
 	<true/>
 	<key>OpenArrangementAtStartup</key>
@@ -2427,12 +2444,14 @@
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>SUFeedURL</key>
-	<string>http://iterm2.com/appcasts/testing.xml</string>
+	<string>https://iterm2.com/appcasts/testing.xml</string>
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2015-09-10T13:49:10Z</date>
+	<date>2015-10-22T16:37:16Z</date>
 	<key>SavePasteHistory</key>
+	<false/>
+	<key>Show Toolbelt</key>
 	<false/>
 	<key>ShowBookmarkName</key>
 	<false/>
@@ -2477,6 +2496,6 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>2.1.1</string>
+	<string>2.1.4</string>
 </dict>
 </plist>

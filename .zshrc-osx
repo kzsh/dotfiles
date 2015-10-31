@@ -55,9 +55,7 @@ plugins=(
 
 sourceable=(
   "$ZSH/oh-my-zsh.sh"
-  "$HOME/.aws-ddesk"
-  "$HOME/.github-ddesk"
-  "$HOME/.trello-api"
+  "$HOME/.ddesk"
 )
 
 for i in "${sourceable[@]}"; do
@@ -96,11 +94,18 @@ alias et="ember t -s"
 alias vim="/usr/local/bin/vim"
 alias vi="/usr/local/bin/vim"
 
+alias md5sum="md5 -r"
+
 alias ll="ls -al"
 
 function f () {
   mdfind $1 -onlyin .
 }
+
+bindkey -r "^H"
+bindkey -r "^J"
+bindkey -r "^K"
+bindkey -r "^L"
 
 # bind j and k keys for vi-mode
 bindkey -M vicmd 'k' history-substring-search-up
@@ -115,5 +120,6 @@ export NVM_DIR=~/.nvm
 source $(brew --prefix nvm)/nvm.sh
 
 export PATH
+export GOPATH=$HOME/src/local/GO
 
 export EDITOR=vim
