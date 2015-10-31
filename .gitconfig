@@ -14,6 +14,7 @@
 [core]
 	autocrlf = false
 	editor = /usr/local/bin/vim
+	excludesfile = /Users/andrew/.gitignore_global
 [push]
 	default = tracking
 #
@@ -44,4 +45,7 @@
 ; sources my email address and
 ; other [user] config
 [include]
-    path = ~/.gitemail
+    path = ~/.gituser
+[user]
+	name = Andrew
+	email = andrew@hunt.li
