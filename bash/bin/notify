@@ -1,0 +1,4 @@
+#!/bin/bash
+CONTENT=$1
+TITLE=$2
+osascript -e "display notification \"$1\" with title \"$2\""
