@@ -1,0 +1,22 @@
+#!/bin/bash
+SCRATCH_PATH="$HOME/.scratch_pad"
+
+if [[ "$1" == "mvim" ]]; then
+  MVIM=1
+  shift
+else
+  MVIM=0
+fi
+if [[ "$1" == "list" ]]; then
+  ls $SCRATCH_PATH
+  exit
+fi
+
+raw_string=$(printf '"%s "' "$@")
+name=$(echo $raw_string | tr '[:upper:]' '[:lower:]'| tr ' ' '-' | tr -cd '[[:alnum:]]._-')
+mkdir -p $SCRATCH_PATH
+if [[ $MVIM == 1 ]]; then
+  mvim "$SCRATCH_PATH/scratch_$name"
+else
+  vim "$SCRATCH_PATH/scratch_$name"
+fi
