@@ -49,7 +49,6 @@ plugins=(
   history-substring-search
   zsh-syntax-highlighting
   vi-mode
-  custom/ember
 )
 
 sourceable=(
@@ -92,13 +91,18 @@ alias cdg='cd $(git rev-parse --show-toplevel)'
 
 alias be="bundle exec"
 
+alias dm="docker-machine"
+# note dc shadows "dc - an arbitrary precision calculator"
+alias dc="docker-compose"
+
 alias ghc="gh compare"
 alias ghb="gh browse"
 
-alias rc="bundle exec rubocop -aD --cache true"
+alias rc="bundle exec rubocop -aD --cache true --force-exclusion db/schema.rb"
+alias rcg="bundle exec rubocop -aD --cache true --force-exclusion db/schema.rb $(git diff --name-only --staged)"
 
 alias es="ember s"
-alias et="ember t -s"
+alias et="ember test --server --test-page=\"index.html?nocontainer&notifications&hidepassed\""
 
 #ensure that vim is pointing at the right bin
 #alias vim="/usr/local/bin/vim"
@@ -147,3 +151,6 @@ source $(brew --prefix nvm)/nvm.sh
 [[ -s /etc/profile.d/autojump.sh ]] && . /etc/profile.d/autojump.sh
 
 eval "$(direnv hook zsh)"
+
+# added by travis gem
+[ -f /Users/andrewhunt/.travis/travis.sh ] && source /Users/andrewhunt/.travis/travis.sh
