@@ -13,10 +13,10 @@
 	autosetuprebase = always
 [core]
 	autocrlf = false
-	editor = /usr/local/bin/vim
+	editor = /usr/local/bin/nvim
 	excludesfile = /Users/andrew/.gitignore_global
 [push]
-	default = tracking
+	default = simple
 #
 # Colorize command outputs
 [color]

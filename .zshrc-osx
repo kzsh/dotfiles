@@ -53,7 +53,6 @@ plugins=(
 
 sourceable=(
   "$ZSH/oh-my-zsh.sh"
-  "$HOME/.ddesk"
 )
 
 for i in "${sourceable[@]}"; do
@@ -99,15 +98,17 @@ alias ghc="gh compare"
 alias ghb="gh browse"
 
 alias rc="bundle exec rubocop -aD --cache true --force-exclusion db/schema.rb"
-alias rcg="bundle exec rubocop -aD --cache true --force-exclusion db/schema.rb $(git diff --name-only --staged)"
+alias rcg='bundle exec rubocop -aD --cache true --force-exclusion db/schema.rb $(git diff --name-only --staged)'
+
+alias dm="docker-machine"
+# this masks the dc calculator
+alias dc="docker-compose"
 
 alias es="ember s"
 alias et="ember test --server --test-page=\"index.html?nocontainer&notifications&hidepassed\""
 
-#ensure that vim is pointing at the right bin
-#alias vim="/usr/local/bin/vim"
-#alias vi="/usr/local/bin/vim"
-alias vi="vim"
+alias vi="nvim"
+alias vim="nvim"
 
 alias md5sum="md5 -r"
 
