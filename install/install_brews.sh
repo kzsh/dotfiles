@@ -6,6 +6,10 @@ brew install tmux
 brew install tig
 brew install autojump
 brew install direnv
+brew install shellcheck
+
+# tmux
+brew install reattach-to-user-namespace
 
 cat >> ~/.bashrc << EOF
 # direnv
