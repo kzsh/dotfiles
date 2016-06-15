@@ -2774,3 +2774,10 @@ __git_complete gitk __gitk_main
 if [ Cygwin = "$(uname -o 2>/dev/null)" ]; then
 __git_complete git.exe __git_main
 fi
+
+#Completion
+__git_complete gco _git_checkout
+__git_complete gcm _git_checkout_master
+
+__git_complete gb _git_branch
+__git_complete gl _git_pull
