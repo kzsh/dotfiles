@@ -1,0 +1,17 @@
+#!/bin/bash
+echo "script incomplete"
+exit 1
+
+which -s fswatch
+fs_watch_exists=$(test "$(which -s fswatch; echo $?)" == "0")
+if [ "0" == "$?"]; then
+  fswatch -o ~/path/to/watch | xargs -n1 ~/script/to/run/when/files/change.sh
+elif []
+fi
+if [ "0" == "$?"]; then
+
+
+notifywait -q -m -e close_write "$1"
+while read -r filename event; do
+  "$@"
+done
