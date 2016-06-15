@@ -1,11 +1,14 @@
 [include]
     ;path = projects/.git-config-work
 [alias]
-    st  = status
-
+  st  = status
+  l  = !git pull
+  b  = !git branch
+  co = !git checkout
+  cm = !git checkout master
 	# make `gitk` usable like other commands `git k`
 	k = !gitk
-    hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+  hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
 [branch]
     # new branches track parent branch regardless of being local or on server
     #autosetupmerge = always
