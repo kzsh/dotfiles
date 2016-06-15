@@ -1,4 +1,15 @@
 #!/bin/bash
-CONTENT=$1
-TITLE=$2
-osascript -e "display notification \"$1\" with title \"$2\""
+if [[ 0 -eq $# ]]; then
+  while read line
+  do
+    args=("${args[@]}" $line)
+  done
+else
+  args=( "$@" )
+fi
+
+TITLE=${args[0]}
+
+CONTENT=("${args[@]:1}")
+
+osascript -e "display notification \"${CONTENT[@]}\" with title \"$TITLE\""
