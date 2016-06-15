@@ -20,7 +20,9 @@
 	excludesfile = /Users/andrew/.gitignore_global
 [push]
 	default = simple
-#
+[merge]
+  ff = no
+
 # Colorize command outputs
 [color]
 	ui = auto
