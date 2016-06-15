@@ -13,6 +13,8 @@ git submodule update --recursive
 cd $CURR_DIR
 
 mkdir -p $NVIM_DIR
+
+# TODO: check for existence before trying to create
 ln -s $GITHUB_DIR/vim/.vimrc ~/.vimrc
 ln -s $GITHUB_DIR/vim $NVIM_DIR
 
