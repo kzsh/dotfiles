@@ -1,8 +1,11 @@
+#!/bin/bash
+
 # Solarized colors
 # https://github.com/altercation/solarized/tree/master/iterm2-colors-solarized
 BOLD=$(tput bold)
 RESET=$(tput sgr0)
 SOLAR_YELLOW=$(tput setaf 136)
+PURPLE=$(tput setaf 260)
 SOLAR_ORANGE=$(tput setaf 166)
 SOLAR_BLUE=$(tput setaf 33)
 SOLAR_CYAN=$(tput setaf 37)
@@ -18,12 +21,13 @@ style_important="\[${RESET}${BOLD}${SOLAR_BLUE}\]"
 style_branch="${SOLAR_CYAN}"
 style_virtualenv="${BOLD}${SOLAR_ORANGE}"
 style_has_jobs="${SOLAR_ORANGE}"
+style_job_count="${PURPLE}"
 
 # Show the commit status of the current git repo
 function git_repo_state() {
   local status
   status="$(git status 2>/dev/null | tail -n1)"
-  [[ $status != *"nothing to commit"* ]] && echo "[!]";
+  [[ $status != *"nothing to commit"* ]] && echo " [!]";
 }
 
 function has_jobs() {
@@ -31,7 +35,8 @@ function has_jobs() {
   if [[ "$hasjobs" -eq "1" ]]; then
     show_has_jobs=''
   else
-    show_has_jobs='[⚙ ] '
+    job_count=$hasjobs
+    show_has_jobs="[${style_job_count}$job_count${style_has_jobs}] "
   fi
   echo -ne "${style_has_jobs}${show_has_jobs}"
 }
