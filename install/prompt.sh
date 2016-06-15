@@ -68,7 +68,7 @@ function prompt_git() {
 # Show the name of the current virtualenv
 function prompt_virtualenv() {
   local env_name
-  env_name=`basename "$VIRTUAL_ENV"`
+  env_name=$(basename "$VIRTUAL_ENV")
 
   if [[ -n "$env_name" ]]; then
     echo -ne " ${style_virtualenv}[env/${env_name}]"
