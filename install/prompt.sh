@@ -52,10 +52,10 @@ function prompt_git() {
   [[ "$output" ]] || output="$(git branch | perl -ne '/^\* (.*)/ && print $1')"
 
   flags="$(
-  echo "$status" | awk 'BEGIN {r=""} \
-    /^# Changes to be committed:$/        {r=r "+"}\
-    /^# Changes not staged for commit:$/  {r=r "!"}\
-    /^# Untracked files:$/                {r=r "?"}\
+  echo "$status" | awk 'BEGIN {r=""}
+    /^# Changes to be committed:$/        {r=r " +"}
+    /^# Changes not staged for commit:$/  {r=r " !"}
+    /^# Untracked files:$/                {r=r " ?"}
     END {print r}'
   )"
 
