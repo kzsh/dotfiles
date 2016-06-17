@@ -6,30 +6,27 @@
   b  = !git branch
   co = !git checkout
   cm = !git checkout master
-	# make `gitk` usable like other commands `git k`
-	k = !gitk
+  # make `gitk` usable like other commands `git k`
+  k = !gitk
   hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
 [branch]
-    # new branches track parent branch regardless of being local or on server
-    #autosetupmerge = always
-	#autosetuprebase = tracking
-	autosetuprebase = always
+  autosetuprebase = always
 [core]
-	autocrlf = false
-	editor = /usr/local/bin/nvim
-	excludesfile = /Users/andrew/.gitignore_global
+  autocrlf = false
+  editor = /usr/local/bin/nvim
+  excludesfile = /Users/andrew/.gitignore_global
 [push]
-	default = simple
+  default = simple
 [merge]
   ff = no
 
 # Colorize command outputs
 [color]
-	ui = auto
-	diff = auto
-	status = auto
-	branch = auto
-	ui = auto
+  ui = auto
+  diff = auto
+  status = auto
+  branch = auto
+  ui = auto
 [color "branch"]
     current = yellow reverse
     local = yellow
@@ -39,15 +36,15 @@
     changed = green
     untracked = cyan
 [diff]
-	renames = true
+  renames = true
 [mergetool]
-	keepBackup = true
+  keepBackup = true
 [http]
-	sslVerify = true
+  sslVerify = true
 [color "diff"]
-	;frag = cyan
-	;new = green
-; sources my email address and
-; other [user] config
+  ;frag = cyan
+  ;new = green
+  ; sources my email address and
+  ; other [user] config
 [include]
     path = ~/.gituser
