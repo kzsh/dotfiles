@@ -2,4 +2,4 @@
 
 # Allow fixing to specific versions
 brew tap homebrew/versions
-
+brew tap caskroom/versions
