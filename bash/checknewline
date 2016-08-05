@@ -1,0 +1,46 @@
+#!/bin/bash
+ERRORS=()
+
+function add_error() {
+  ERRORS+=("$1")
+}
+
+function print_errors() {
+  for error in "${ERRORS[@]}"; do
+    echo "$error"
+  done
+}
+
+file_path="$1"
+
+if [ -z "$file_path" ]; then
+  echo "please specify a file to check"
+  exit 1
+fi
+
+#BEGINNING LINE
+beginning_err_line_no=$(head -1 "$file_path" | grep -in "^$" | tr -d ':')
+if [ -n "$beginning_err_line_no" ]; then
+  add_error "${file_path}:${beginning_err_line_no}: extra newline at beginning of file"
+fi
+
+#END LINE
+end_err_line=$(tail -n 1 "$file_path" | grep -in "^$" | tr -d ':')
+if [ -n "$end_err_line" ]; then
+  end_err_line_no=$(wc -l "$file_path" | awk '{print $1}')
+  add_error "${file_path}:${end_err_line_no}: extra newline at end of file"
+fi
+
+newline_errors=$(pcregrep -nM "(^$\n){2,}" "$file_path" | tr -d ':' | grep -v '^$')
+
+if [ -n "$newline_errors" ]; then
+
+  for err_line in read -r -a $newline_errors; do
+    add_error "${file_path}:${err_line}: multiple consecutive newlines"
+  done
+fi
+
+if [ -n "${#ERRORS[@]}" ]; then
+  print_errors
+  exit 1
+fi
