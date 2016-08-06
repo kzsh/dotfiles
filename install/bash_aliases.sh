@@ -27,6 +27,6 @@ alias ghb='hub browse'
 alias be="bundle exec"
 
 # use neovim
-alias vi="nvim"
-alias vim="nvim"
+alias vi="/usr/local/bin/nvim"
+alias vim="/usr/local/bin/nvim"
 
