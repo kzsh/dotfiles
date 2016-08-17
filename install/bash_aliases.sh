@@ -21,7 +21,6 @@ alias aa='open -a'
 #cd to top level of the current git repo
 alias cdg='cd $(git rev-parse --show-toplevel)'
 
-alias ghc='hub compare'
 alias ghb='hub browse'
 
 alias be="bundle exec"
