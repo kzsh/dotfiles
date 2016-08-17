@@ -35,12 +35,12 @@ newline_errors=$(pcregrep -nM "(^$\n){2,}" "$file_path" | tr -d ':' | grep -v '^
 
 if [ -n "$newline_errors" ]; then
 
-  for err_line in read -r -a $newline_errors; do
+  for err_line in $newline_errors; do
     add_error "${file_path}:${err_line}: multiple consecutive newlines"
   done
 fi
 
-if [ -n "${#ERRORS[@]}" ]; then
+if [ "${#ERRORS[@]}" != "0" ]; then
   print_errors
   exit 1
 fi
