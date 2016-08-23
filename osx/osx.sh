@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-defaults write -g ApplePressAndHoldEnabled -bool false
-
-
 # Taken and modified very little from "http://mths.be/osx"
 #!/usr/bin/env bash
 
