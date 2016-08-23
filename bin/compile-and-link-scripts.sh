@@ -11,20 +11,16 @@ SCRIPT_DIST_DIR="$BASE_DIR/applescripts/dist"
 
 
 function main() {
-  beginSection "Compile scripts"
-    goToPath "$BASE_DIR/applescripts"
-    ./compileScripts.sh
-  endSection
+  goToPath "$BASE_DIR/applescripts"
+  ./compileScripts.sh
 
 
-  beginSection "Link scripts"
-    goToPath "$BASE_DIR/automator"
+  goToPath "$BASE_DIR/automator"
 
-    script_file_names=$(ls "$SCRIPT_DIST_DIR/"*.service.js.scpt)
-    for file_name in $script_file_names; do
-      buildWorkflowWrapper "$file_name"
-    done
-  endSection
+  script_file_names=$(ls "$SCRIPT_DIST_DIR/"*.service.js.scpt)
+  for file_name in $script_file_names; do
+    buildWorkflowWrapper "$file_name"
+  done
 
   goToPath "$CWD"
 }
@@ -40,4 +36,3 @@ function buildWorkflowWrapper() {
 }
 
 main "$@"
-

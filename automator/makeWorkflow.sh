@@ -1,24 +1,34 @@
 #!/bin/bash
 
+source "$HOME/bin/util.sh"
+
 SCRIPT_TARGET_FILE_PATH="$1"
 SCRIPT_SCOPE="$2"
 
 SCRIPT_TARGET_NAME=$(basename "$SCRIPT_TARGET_FILE_PATH" | cut -d'.' -f1)
 WORKFLOW_FILENAME="${SCRIPT_TARGET_NAME}.workflow"
 
-SCRIPTS_DIR="$HOME/src/scripts/applescripts/dist"
 DIST_DIR="dist"
 TEMPLATES_DIR="templates"
 
 function main() {
-  echo "building wrapper for $SCRIPT_TARGET_FILE_PATH scoped to $SCRIPT_SCOPE"
+  beginSection "Prep workflow dist"
+    echo "remove $DIST_DIR"
+    rm -r "$DIST_DIR"
+    echo "create $DIST_DIR"
+    mkdir -p "$DIST_DIR"
+  endSection
 
-  local path_to_new_workflow="${DIST_DIR}/${WORKFLOW_FILENAME}"
-  mkdir -p "$path_to_new_workflow/Contents"
-  cp -r "$TEMPLATES_DIR/Template.workflow.template/Contents"/* "$path_to_new_workflow/Contents"
+  beginSection "Link scripts"
+    echo "building wrapper for $SCRIPT_TARGET_FILE_PATH scoped to $SCRIPT_SCOPE"
 
-  getInfoPlistTemplate "$SCRIPT_TARGET_NAME" "$SCRIPT_SCOPE" > "${path_to_new_workflow}/Contents/Info.plist"
-  getDocumentWorkflowTemplate "$SCRIPT_TARGET_FILE_PATH" "$SCRIPT_SCOPE" > "${path_to_new_workflow}/Contents/document.wflow"
+    local path_to_new_workflow="${DIST_DIR}/${WORKFLOW_FILENAME}"
+    mkdir -p "$path_to_new_workflow/Contents"
+    cp -r "$TEMPLATES_DIR/Template.workflow.template/Contents"/* "$path_to_new_workflow/Contents"
+
+    getInfoPlistTemplate "$SCRIPT_TARGET_NAME" "$SCRIPT_SCOPE" > "${path_to_new_workflow}/Contents/Info.plist"
+    getDocumentWorkflowTemplate "$SCRIPT_TARGET_FILE_PATH" "$SCRIPT_SCOPE" > "${path_to_new_workflow}/Contents/document.wflow"
+  endSection
 }
 
 function getInfoPlistTemplate() {
