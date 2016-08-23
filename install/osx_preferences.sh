@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Ask for the administrator password upfront
+sudo -v
+
 # Disable warning for files downloaded from the internet
 defaults write com.apple.LaunchServices LSQuarantine -bool NO
 
@@ -30,6 +33,12 @@ killall Dock
 # Window animation
 defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool NO
 # reset with: defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool YES
+
+# =====================================================================
+# Scroll Bar
+# =====================================================================
+defaults write NSGlobalDomain AppleShowScrollBars -string "Always"
+## Possible values: `WhenScrolling`, `Automatic` and `Always`
 
 # =====================================================================
 # Finder
