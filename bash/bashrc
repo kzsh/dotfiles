@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# direnv
+eval "$(direnv hook bash)"
