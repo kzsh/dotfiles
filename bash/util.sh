@@ -41,7 +41,7 @@ function beginSection() {
 }
 
 function endSection() {
- echoInfo "\n"
+ echoInfo ""
 }
 
 
