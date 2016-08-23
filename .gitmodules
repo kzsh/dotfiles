@@ -1,0 +1,3 @@
+[submodule "install/dotfiles"]
+	path = install/dotfiles
+	url = git@github.com:kzsh/dotfiles.git
