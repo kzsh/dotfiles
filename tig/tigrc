@@ -72,7 +72,7 @@ bind generic ce !?@git commit --amend --no-edit
 bind generic ca !git commit --amend
 bind generic cf !git commit --fixup=%(commit)
 
-bind generic K view-help
+bind generic <F1> view-help
 bind generic <C-w><C-w> view-next
 
 bind generic Y !@bash -c "echo -n %(commit) | pbcopy"
