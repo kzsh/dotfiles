@@ -1,7 +1,15 @@
-dotfiles
-=======
+# Configurations
+A Collection of configurations usually stored in $HOME or .config/
 
-This is a collection of configuration files that I want to preserve between OS
-installations, that I update occasionally.
+##Configurations for:
+- git
+- i3
+- iterm
+- karabiner
+- tig
+- tmux
+- xwindows
+- zsh
 
-note that .vimrc is now maintained in [.vim](https://github.com/kzsh/.vim.git)
+##Deprecations
+- I am no longer using zsh, having switched back to bash.  My bash configuration files can be found in [scripts/install](https://github.com/kzsh/scripts/tree/master/install).
