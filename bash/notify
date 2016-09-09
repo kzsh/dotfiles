@@ -5,7 +5,9 @@ if [[ 0 -eq $# ]]; then
     args=("${args[@]}" $line)
   done
 else
-  args=( "$@" )
+  for x in "$@"; do
+    args=("${args[@]}" $x)
+  done
 fi
 
 TITLE=${args[0]}
