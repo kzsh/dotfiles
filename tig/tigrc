@@ -7,6 +7,8 @@
 #	$ cp contrib/vim.tigrc ~/.tigrc.vim
 #	$ echo "source ~/.tigrc.vim" >> ~/.tigrc
 
+set main-view	= line-number:no,interval=5 id:yes date:default author:full commit-title:yes,graph,refs,overflow=no
+
 bind generic h scroll-left
 bind generic j move-down
 bind generic k move-up
