@@ -73,6 +73,7 @@ bind generic cc !git commit
 bind generic ce !?@git commit --amend --no-edit
 bind generic ca !git commit --amend
 bind generic cf !git commit --fixup=%(commit)
+bind generic cr !git rebase -i --autosquash %(commit)
 
 bind generic <F1> view-help
 bind generic <C-w><C-w> view-next
