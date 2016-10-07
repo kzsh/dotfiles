@@ -1,5 +1,7 @@
 #!/bin/bash
 
-TODO_PATH="$HOME/TODO/TODO.md"
-cd $TODO_PATH
-$EDITOR $TODO_PATH
+TODO_PATH="$HOME/TODO"
+TODO_FILE="TODO.md"
+cd "$TODO_PATH" || exit
+echo `pwd`
+"$EDITOR" "$TODO_FILE"
