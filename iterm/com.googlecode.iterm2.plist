@@ -380,9 +380,9 @@
 	<key>LoadPrefsFromCustomFolder</key>
 	<true/>
 	<key>NSNavLastRootDirectory</key>
-	<string>~/Downloads</string>
+	<string>~/src/scripts/install/dotfiles/iterm</string>
 	<key>NSNavPanelExpandedSizeForOpenMode</key>
-	<string>{712, 459}</string>
+	<string>{712, 448}</string>
 	<key>NSQuotedKeystrokeBinding</key>
 	<string></string>
 	<key>NSRepeatCountBinding</key>
@@ -414,23 +414,23 @@
 		<integer>1</integer>
 	</dict>
 	<key>NSWindow Frame Preferences</key>
-	<string>269 313 606 456 0 0 1280 777 </string>
+	<string>270 400 606 456 0 0 1440 877 </string>
 	<key>NSWindow Frame SUStatusFrame</key>
-	<string>762 696 400 129 0 0 1920 1057 </string>
+	<string>522 561 400 129 0 0 1440 877 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
-	<string>332 288 620 392 0 0 1280 777 </string>
+	<string>372 191 700 622 0 0 1440 877 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>269 694 918 381 0 0 1920 1177 </string>
+	<string>269 234 918 381 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>7 4 1270 768 0 0 1280 777 </string>
+	<string>7 1 1431 875 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>4 0 1276 777 0 0 1280 777 </string>
+	<string>4 2 1431 875 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>4 14 1270 763 0 0 1280 777 </string>
+	<string>4 33 1431 843 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
-	<string>5 3 1914 1051 0 0 1920 1057 </string>
+	<string>7 1 1431 875 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 4</key>
-	<string>215 325 570 452 0 0 1280 777 </string>
+	<string>5 19 1434 856 0 0 1440 877 </string>
 	<key>NeverWarnAboutShortLivedSessions_53E17D7A-7076-4183-99B4-B0DF5781DD04</key>
 	<true/>
 	<key>NeverWarnAboutShortLivedSessions_53E17D7A-7076-4183-99B4-B0DF5781DD04_selection</key>
@@ -1104,24 +1104,30 @@
 	</array>
 	<key>NoSyncConfirmBeta</key>
 	<true/>
-	<key>NoSyncDoNotWarnBeforePastingOneLineEndingInNewlineAtShellPrompt</key>
+	<key>NoSyncDoNotWarnBeforeMultilinePaste</key>
 	<true/>
-	<key>NoSyncDoNotWarnBeforePastingOneLineEndingInNewlineAtShellPrompt_selection</key>
-	<integer>1</integer>
-	<key>NoSyncHaveWarnedAboutIncompatibleSoftware</key>
+	<key>NoSyncDoNotWarnBeforeMultilinePaste_selection</key>
+	<integer>0</integer>
+	<key>NoSyncHaveShownPromoWithId_4</key>
 	<true/>
 	<key>NoSyncInstallationId</key>
-	<string>5B5BAF23-714F-4B8E-A013-19C8E224A1F7</string>
+	<string>3B7E07F3-DF00-42E0-9330-2B8EF9C81581</string>
 	<key>NoSyncLastTipTime</key>
-	<real>490716897.90268701</real>
+	<real>485999103.33100098</real>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
 	<integer>0</integer>
 	<key>NoSyncPermissionToShowTip</key>
 	<true/>
+	<key>NoSyncSilenceAnnoyingBellAutomatically</key>
+	<true/>
 	<key>NoSyncTimeOfFirstLaunchOfVersionWithTip</key>
-	<real>481577849.24111497</real>
+	<real>477583948.665389</real>
+	<key>NoSyncTimeOfLastPromo</key>
+	<real>477583890.57055998</real>
+	<key>NoSyncTimeOfLastPromoDownload</key>
+	<real>477542179.23957002</real>
 	<key>NoSyncTipsToNotShow</key>
 	<array>
 		<string>000</string>
@@ -1232,23 +1238,21 @@
 		</dict>
 	</dict>
 	<key>PrefsCustomFolder</key>
-	<string>~/src/github/dotfiles/iterm</string>
+	<string>/Users/andrew/src/scripts/install/dotfiles/iterm</string>
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>SUFeedAlternateAppNameKey</key>
 	<string>iTerm</string>
 	<key>SUFeedURL</key>
-	<string>https://iterm2.com/appcasts/final.xml?shard=64</string>
+	<string>https://iterm2.com/appcasts/final.xml?shard=80</string>
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2016-09-08T19:35:52Z</date>
-	<key>SUSendProfileInfo</key>
-	<false/>
+	<date>2016-10-10T14:46:09Z</date>
 	<key>Secure Input</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
-	<false/>
+	<true/>
 	<key>SplitPaneDimmingAmount</key>
 	<real>0.3892753405448719</real>
 	<key>TabViewType</key>
@@ -1266,7 +1270,7 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>3.0.8</string>
+	<string>3.0.10</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>0</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
