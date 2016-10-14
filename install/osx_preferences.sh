@@ -99,3 +99,7 @@ chflags nohidden ~/Library
 
 # Enable AirDrop over Ethernet and on unsupported Macs
 defaults write com.apple.NetworkBrowser BrowseAllInterfaces -bool true
+
+
+# turn off gamed
+launchctl unload -w /System/Library/LaunchAgents/com.apple.gamed.plist
