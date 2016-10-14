@@ -15,7 +15,6 @@ alias l='ls -l'
 
 #open current dir in Finder
 alias oo='open -a Finder ./'
-
 alias aa='open -a'
 
 #cd to top level of the current git repo
@@ -29,3 +28,6 @@ alias be="bundle exec"
 alias vi="nvim"
 alias vim="nvim"
 
+# Docker
+alias dm='docker-machine'
+alias dc='docker-compose'
