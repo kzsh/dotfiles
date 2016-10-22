@@ -61,7 +61,13 @@ bind : command-prompt
 # vi-style controls for copy mode
 setw -g mode-keys vi
 
-set-window-option -g mode-mouse on
+# Turn the mouse on, but without copy mode dragging
+set -g mouse on
+set -g mode-mouse on
+
+unbind -n MouseDrag1Pane
+unbind -temacs-copy MouseDrag1Pane
+
 set-option -g mouse-select-pane on
 set-option -g mouse-select-window on
 
