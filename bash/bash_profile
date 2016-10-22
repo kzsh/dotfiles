@@ -15,7 +15,7 @@ sources=(
   "$HOME/src/scripts/install/bash_functions.sh"
   "$HOME/src/scripts/install/git-completion.sh"
   "$HOME/src/scripts/install/hub.bash_completion.sh"
-  "$HOME/src/github/dotfiles/bash/.bashrc"
+  "$HOME/src/scripts/install/dotfiles/bash/.bashrc"
 )
 
 for src in "${sources[@]}"; do
