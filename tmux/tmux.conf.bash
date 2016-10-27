@@ -1,13 +1,5 @@
-# $Id: vim-keys.conf,v 1.2 2010/09/18 09:36:15 nicm Exp $
-#
-# vim-keys.conf, v1.2 2010/09/12
-#
-# By Daniel Thau.  Public domain.
-#
-# This configuration file binds many vi- and vim-like bindings to the
-# appropriate tmux key bindings.  Note that for many key bindings there is no
-# tmux analogue.  This is intended for tmux 1.3, which handles pane selection
-# differently from the previous versions
+# Configuration for version 2.4 or later
+# adapted from public domain work by By Daniel Thau.j
 
 #set prefix key (be vimlike)
 unbind C-b
@@ -62,14 +54,13 @@ bind : command-prompt
 setw -g mode-keys vi
 
 # Turn the mouse on, but without copy mode dragging
-set -g mouse on
-set -g mode-mouse on
+set-option -g mouse on
 
-unbind -n MouseDrag1Pane
-unbind -temacs-copy MouseDrag1Pane
+#unbind -n MouseDrag1Pane
+#unbind -temacs-copy MouseDrag1Pane
 
-set-option -g mouse-select-pane on
-set-option -g mouse-select-window on
+set-option -g mouse-select-pane off
+set-option -g mouse-select-window off
 
 set -g default-terminal "xterm-256color"
 set -ga terminal-overrides 'xterm*:smcup@:rmcup@'
@@ -127,7 +118,6 @@ bind + delete-buffer
 # Copy-paste integration
 # must have `brew install reattach-to-user-namespace`
 set-option -g default-command "reattach-to-user-namespace -l bash"
-#set-option -g default-command "reattach-to-user-namespace -l zsh"
 
 ## Setup 'v' to begin selection as in Vim
 bind-key -t vi-copy v begin-selection
