@@ -382,7 +382,7 @@
 	<key>NSNavLastRootDirectory</key>
 	<string>~/src/scripts/install/dotfiles/iterm</string>
 	<key>NSNavPanelExpandedSizeForOpenMode</key>
-	<string>{712, 448}</string>
+	<string>{712, 459}</string>
 	<key>NSQuotedKeystrokeBinding</key>
 	<string></string>
 	<key>NSRepeatCountBinding</key>
@@ -414,23 +414,25 @@
 		<integer>1</integer>
 	</dict>
 	<key>NSWindow Frame Preferences</key>
-	<string>270 400 606 456 0 0 1440 877 </string>
+	<string>269 313 606 456 0 0 1280 777 </string>
 	<key>NSWindow Frame SUStatusFrame</key>
-	<string>522 561 400 129 0 0 1440 877 </string>
+	<string>762 696 400 129 0 0 1920 1057 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
-	<string>372 191 700 622 0 0 1440 877 </string>
+	<string>652 588 620 392 0 0 1920 1177 </string>
+	<key>NSWindow Frame SessionsPreferences</key>
+	<string>269 139 606 456 0 0 1280 777 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>269 234 918 381 0 0 1440 877 </string>
+	<string>557 526 937 512 0 0 1920 1177 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>7 1 1431 875 0 0 1440 877 </string>
+	<string>5 297 1480 875 0 0 1920 1177 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>4 2 1431 875 0 0 1440 877 </string>
+	<string>645 407 633 763 0 0 1920 1177 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>4 33 1431 843 0 0 1440 877 </string>
+	<string>4 0 1276 777 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
-	<string>7 1 1431 875 0 0 1440 877 </string>
+	<string>5 51 1253 721 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 4</key>
-	<string>5 19 1434 856 0 0 1440 877 </string>
+	<string>215 325 570 452 0 0 1280 777 </string>
 	<key>NeverWarnAboutShortLivedSessions_53E17D7A-7076-4183-99B4-B0DF5781DD04</key>
 	<true/>
 	<key>NeverWarnAboutShortLivedSessions_53E17D7A-7076-4183-99B4-B0DF5781DD04_selection</key>
@@ -1104,30 +1106,24 @@
 	</array>
 	<key>NoSyncConfirmBeta</key>
 	<true/>
-	<key>NoSyncDoNotWarnBeforeMultilinePaste</key>
+	<key>NoSyncDoNotWarnBeforePastingOneLineEndingInNewlineAtShellPrompt</key>
 	<true/>
-	<key>NoSyncDoNotWarnBeforeMultilinePaste_selection</key>
-	<integer>0</integer>
-	<key>NoSyncHaveShownPromoWithId_4</key>
+	<key>NoSyncDoNotWarnBeforePastingOneLineEndingInNewlineAtShellPrompt_selection</key>
+	<integer>1</integer>
+	<key>NoSyncHaveWarnedAboutIncompatibleSoftware</key>
 	<true/>
 	<key>NoSyncInstallationId</key>
-	<string>3B7E07F3-DF00-42E0-9330-2B8EF9C81581</string>
+	<string>5B5BAF23-714F-4B8E-A013-19C8E224A1F7</string>
 	<key>NoSyncLastTipTime</key>
-	<real>485999103.33100098</real>
+	<real>490716897.90268701</real>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
 	<integer>0</integer>
 	<key>NoSyncPermissionToShowTip</key>
 	<true/>
-	<key>NoSyncSilenceAnnoyingBellAutomatically</key>
-	<true/>
 	<key>NoSyncTimeOfFirstLaunchOfVersionWithTip</key>
-	<real>477583948.665389</real>
-	<key>NoSyncTimeOfLastPromo</key>
-	<real>477583890.57055998</real>
-	<key>NoSyncTimeOfLastPromoDownload</key>
-	<real>477542179.23957002</real>
+	<real>481577849.24111497</real>
 	<key>NoSyncTipsToNotShow</key>
 	<array>
 		<string>000</string>
@@ -1244,15 +1240,17 @@
 	<key>SUFeedAlternateAppNameKey</key>
 	<string>iTerm</string>
 	<key>SUFeedURL</key>
-	<string>https://iterm2.com/appcasts/final.xml?shard=80</string>
+	<string>https://iterm2.com/appcasts/final.xml?shard=64</string>
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2016-10-10T14:46:09Z</date>
+	<date>2016-10-28T20:26:12Z</date>
+	<key>SUSendProfileInfo</key>
+	<false/>
 	<key>Secure Input</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
-	<true/>
+	<false/>
 	<key>SplitPaneDimmingAmount</key>
 	<real>0.3892753405448719</real>
 	<key>TabViewType</key>
