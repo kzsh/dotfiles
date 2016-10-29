@@ -11,8 +11,8 @@ set utf8 on
 
 # split windows like vim
 # vim's definition of a horizontal/vertical split is reversed from tmux's
-bind s split-window -v
-bind v split-window -h
+bind s split-window -v -c '#{pane_current_path}'  # Split panes vertically
+bind v split-window -h -c '#{pane_current_path}'  # Split panes horizontal
 
 bind C-h select-window -t :-
 bind C-l select-window -t :+
