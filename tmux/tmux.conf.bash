@@ -1,6 +1,3 @@
-# Configuration for version 2.4 or later
-# adapted from public domain work by By Daniel Thau.j
-
 #set prefix key (be vimlike)
 unbind C-b
 set -g prefix C-f
@@ -62,8 +59,7 @@ set-option -g mouse on
 set-option -g mouse-select-pane off
 set-option -g mouse-select-window off
 
-set -g default-terminal "xterm-256color"
-set -ga terminal-overrides 'xterm*:smcup@:rmcup@'
+set -g default-terminal "screen-256color"
 
 set-option -g history-limit 100000
 
