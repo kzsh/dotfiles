@@ -424,7 +424,7 @@
 	<key>NSWindow Frame SharedPreferences</key>
 	<string>557 526 937 512 0 0 1920 1177 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>5 297 1480 875 0 0 1920 1177 </string>
+	<string>5 21 1914 1035 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>645 407 633 763 0 0 1920 1177 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -1244,13 +1244,13 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2016-10-28T20:26:12Z</date>
+	<date>2016-11-02T13:50:44Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>Secure Input</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
-	<false/>
+	<true/>
 	<key>SplitPaneDimmingAmount</key>
 	<real>0.3892753405448719</real>
 	<key>TabViewType</key>
