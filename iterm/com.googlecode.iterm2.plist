@@ -312,7 +312,7 @@
 		<key>0xd-0x100000</key>
 		<dict>
 			<key>Action</key>
-			<integer>13</integer>
+			<integer>23</integer>
 			<key>Text</key>
 			<string></string>
 		</dict>
@@ -402,7 +402,7 @@
 		BAtzdHJlYW10eXBlZIHoA4QBQISEhAhOU1N0cmluZwGEhAhOU09iamVjdACF
 		hAErATGG
 		</data>
-		<string>322</string>
+		<string>307</string>
 	</array>
 	<key>NSTableView Hidden Columns KeyBingingTable</key>
 	<array/>
@@ -416,17 +416,17 @@
 	<key>NSWindow Frame Preferences</key>
 	<string>269 313 606 456 0 0 1280 777 </string>
 	<key>NSWindow Frame SUStatusFrame</key>
-	<string>762 696 400 129 0 0 1920 1057 </string>
+	<string>442 486 400 129 0 0 1280 777 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
-	<string>652 588 620 392 0 0 1920 1177 </string>
+	<string>331 288 620 392 0 0 1280 777 </string>
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>269 139 606 456 0 0 1280 777 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>557 526 937 512 0 0 1920 1177 </string>
+	<string>557 429 1018 447 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>5 21 1914 1035 0 0 1920 1057 </string>
+	<string>4 280 1276 777 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>645 407 633 763 0 0 1920 1177 </string>
+	<string>7 25 1271 747 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
 	<string>4 0 1276 777 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
@@ -1112,6 +1112,8 @@
 	<integer>1</integer>
 	<key>NoSyncHaveWarnedAboutIncompatibleSoftware</key>
 	<true/>
+	<key>NoSyncHaveWarnedAboutPasteConfirmationChange</key>
+	<true/>
 	<key>NoSyncInstallationId</key>
 	<string>5B5BAF23-714F-4B8E-A013-19C8E224A1F7</string>
 	<key>NoSyncLastTipTime</key>
@@ -1235,6 +1237,8 @@
 	</dict>
 	<key>PrefsCustomFolder</key>
 	<string>/Users/andrew/src/scripts/install/dotfiles/iterm</string>
+	<key>PromptForPasteWhenNotAtPrompt</key>
+	<true/>
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>SUFeedAlternateAppNameKey</key>
@@ -1244,13 +1248,13 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2016-11-02T13:50:44Z</date>
+	<date>2016-11-29T16:42:24Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>Secure Input</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
-	<true/>
+	<false/>
 	<key>SplitPaneDimmingAmount</key>
 	<real>0.3892753405448719</real>
 	<key>TabViewType</key>
@@ -1268,7 +1272,7 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>3.0.10</string>
+	<string>3.0.12</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>0</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
