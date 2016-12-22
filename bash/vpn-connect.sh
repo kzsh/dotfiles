@@ -20,7 +20,7 @@ tell application "System Events"
 
     do shell script "scutil --nc start " & vpn_name & " --user " & user_name
 
-    delay 2
+    delay 5
     keystroke passwd
     keystroke return
 
