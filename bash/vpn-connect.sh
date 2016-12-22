@@ -14,6 +14,7 @@ tell application "System Events"
     do shell script "scutil --nc stop " & vpn_name
 
     display notification with title "Disconnected from " & vpn_name
+    do shell script "echo Disonnected from " & vpn_name
   else
     set PWScript to "security find-generic-password -l \"$KEYSTORE_PASSWORD_LABEL\" -w"
     set passwd to do shell script PWScript
@@ -25,6 +26,7 @@ tell application "System Events"
     keystroke return
 
     display notification with title "Connected to " & vpn_name
+    do shell script "echo Connected to " & vpn_name
   end if
 end tell
 EOF
