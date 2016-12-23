@@ -9,4 +9,4 @@ dofile("lib/window-positioning.lua")
 
 -- Vendor additions
 dofile("vendor/anycomplete/anycomplete.lua")
-dofile("vendor/anycomplete/anycomplete.lua")
+
