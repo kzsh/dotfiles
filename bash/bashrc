@@ -1,11 +1,14 @@
 #!/bin/bash
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
+# NVM
+lazy_load 'nvm' "$LAZY_LOAD_DIR/nvm.sh"
+debug_log "Lazy loaded: nvm"
 
 # direnv
 eval "$(direnv hook bash)"
+debug_log "Lazy loaded: direnv"
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 export FZF_DEFAULT_COMMAND='ag -g "" | cut -d " " -f 2- | sort | uniq'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+debug_log "Lazy loaded: fzf"

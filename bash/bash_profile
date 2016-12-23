@@ -1,6 +1,8 @@
 #!/bin/bash
 # https://github.com/koalman/shellcheck/wiki/SC1090
 
+export IS_DEBUG=
+
 export EDITOR=/usr/local/bin/nvim
 
 set -o vi
@@ -8,14 +10,21 @@ shopt -s globstar
 
 PATH="$PATH:$HOME/bin"
 
+INSTALL_DIR="$HOME/src/scripts/install"
+COMPLETIONS_DIR="$HOME/src/scripts/bash/completions"
+
+source "$INSTALL_DIR/bash_debug_functions.sh"
+
 sources=(
-  "$HOME/src/scripts/install/prompt.sh"
-  "$HOME/src/scripts/install/config_bash_history.sh"
-  "$HOME/src/scripts/install/bash_aliases.sh"
-  "$HOME/src/scripts/install/bash_functions.sh"
-  "$HOME/src/scripts/install/git-completion.sh"
-  "$HOME/src/scripts/install/hub.bash_completion.sh"
-  "$HOME/src/scripts/install/dotfiles/bash/.bashrc"
+  "$INSTALL_DIR/prompt.sh"
+  "$INSTALL_DIR/config_bash.sh"
+  "$INSTALL_DIR/config_bash_history.sh"
+  "$INSTALL_DIR/bash_aliases.sh"
+  "$INSTALL_DIR/bash_functions.sh"
+  "$INSTALL_DIR/git-completion.sh"
+  "$INSTALL_DIR/hub.bash_completion.sh"
+  "$COMPLETIONS_DIR/pass/pass.bash-completions.sh"
+  "$INSTALL_DIR/dotfiles/bash/.bashrc"
 )
 
 for src in "${sources[@]}"; do
@@ -23,5 +32,6 @@ for src in "${sources[@]}"; do
   if [[ -s $src ]]; then
     #shellcheck disable=1090
     source "$src"
+    debug_log "Loaded: $src"
   fi
 done
