@@ -1,5 +1,3 @@
-[[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] && . $(brew --prefix)/etc/profile.d/autojump.sh
-
 # git aliases (completion is handled in git-completion)
 alias gcm='git checkout master'
 alias gco='git checkout'
