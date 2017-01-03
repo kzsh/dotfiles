@@ -416,15 +416,15 @@
 	<key>NSWindow Frame Preferences</key>
 	<string>269 313 606 456 0 0 1280 777 </string>
 	<key>NSWindow Frame SUStatusFrame</key>
-	<string>442 486 400 129 0 0 1280 777 </string>
+	<string>762 696 400 129 0 0 1920 1057 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
-	<string>331 288 620 392 0 0 1280 777 </string>
+	<string>652 588 620 392 0 0 1920 1177 </string>
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>269 139 606 456 0 0 1280 777 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>557 429 1018 447 0 0 1920 1057 </string>
+	<string>240 209 918 495 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>4 280 1276 777 0 0 1920 1057 </string>
+	<string>4 30 1915 1147 0 0 1920 1177 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>7 25 1271 747 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -1200,6 +1200,8 @@
 	<false/>
 	<key>OpenTmuxWindowsIn</key>
 	<integer>0</integer>
+	<key>PMPrintingExpandedStateForPrint2</key>
+	<false/>
 	<key>PasteTabToStringTabStopSize</key>
 	<integer>4</integer>
 	<key>PointerActions</key>
@@ -1237,6 +1239,8 @@
 	</dict>
 	<key>PrefsCustomFolder</key>
 	<string>/Users/andrew/src/scripts/install/dotfiles/iterm</string>
+	<key>Print In Black And White</key>
+	<true/>
 	<key>PromptForPasteWhenNotAtPrompt</key>
 	<true/>
 	<key>SUEnableAutomaticChecks</key>
@@ -1248,7 +1252,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2016-11-29T16:42:24Z</date>
+	<date>2016-12-29T14:02:02Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>Secure Input</key>
