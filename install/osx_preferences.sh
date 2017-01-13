@@ -14,6 +14,12 @@ defaults write com.apple.LaunchServices LSQuarantine -bool NO
 defaults write -g ApplePressAndHoldEnabled -bool false
 
 # =====================================================================
+# Trackpad
+# =====================================================================
+# defaults read -g com.apple.trackpad.scaling #=> 3
+defaults write -g com.apple.trackpad.scaling -float 8.0
+
+# =====================================================================
 # Dock
 # =====================================================================
 
