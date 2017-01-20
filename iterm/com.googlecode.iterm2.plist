@@ -422,11 +422,11 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>269 139 606 456 0 0 1280 777 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>240 209 918 495 0 0 1280 777 </string>
+	<string>557 416 1018 447 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>4 30 1915 1147 0 0 1920 1177 </string>
+	<string>4 6 1915 1051 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>425 292 1495 875 0 0 1920 1177 </string>
+	<string>425 176 1495 875 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
 	<string>4 0 1276 777 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
@@ -1243,6 +1243,8 @@
 	<true/>
 	<key>PromptForPasteWhenNotAtPrompt</key>
 	<true/>
+	<key>RestoreWindowContents</key>
+	<false/>
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>SUFeedAlternateAppNameKey</key>
@@ -1252,7 +1254,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-01-06T21:27:01Z</date>
+	<date>2017-01-18T18:11:50Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>Secure Input</key>
