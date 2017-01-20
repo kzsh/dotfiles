@@ -6,7 +6,7 @@ debug_log "Lazy loaded: nvm"
 
 # direnv
 eval "$(direnv hook bash)"
-debug_log "Lazy loaded: direnv"
+debug_log "Loaded: direnv"
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 export FZF_DEFAULT_COMMAND='ag -g "" | cut -d " " -f 2- | sort | uniq'
