@@ -1,6 +1,6 @@
 # VIM
 
-source "$HOME/src/scripts/install/bash_debug_functions.sh"
+. "$HOME/src/scripts/install/bash_debug_functions.sh"
 
 export VIM_DIR="$HOME/.config/nvim"
 export PYENV_ROOT=$HOME/.pyenv
