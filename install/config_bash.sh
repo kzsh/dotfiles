@@ -3,7 +3,10 @@
 . "$HOME/src/scripts/install/bash_debug_functions.sh"
 
 export VIM_DIR="$HOME/.config/nvim"
+
+
 export PYENV_ROOT=$HOME/.pyenv
+export PATH="$PYENV_ROOT/bin:$PATH"
 
 eval "$(pyenv init -)"
 debug_log "Loaded: pyenv"
