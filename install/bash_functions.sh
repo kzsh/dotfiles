@@ -5,7 +5,7 @@ function f () {
     return
   fi
 
-  find . -iname "*$1*"
+  find . -iname "$1"
   #mdfind "*$1*" -onlyin -name .
 }
 
