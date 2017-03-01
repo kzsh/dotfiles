@@ -79,3 +79,7 @@ bind generic <F1> view-help
 bind generic <C-w><C-w> view-next
 
 bind generic Y !@bash -c "echo -n %(commit) | pbcopy"
+
+bind generic aa !@bash -c "echo \"%(commit)\" >> /tmp/tig-quick-list"
+bind generic ac !@bash -c "echo "" > /tmp/tig-quick-list"
+bind generic ay !@bash -c "cat /tmp/tig-quick-list | pbcopy"
