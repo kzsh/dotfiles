@@ -35,7 +35,7 @@ function has_jobs() {
   if [[ "$hasjobs" -eq "1" ]]; then
     show_has_jobs=''
   else
-    job_count="$((hasjobs))"
+    job_count="$((hasjobs - 1))"
     show_has_jobs="[${style_job_count}$job_count${style_has_jobs}] "
   fi
   echo -ne "${style_has_jobs}${show_has_jobs}"
