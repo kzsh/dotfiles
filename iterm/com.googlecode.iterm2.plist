@@ -416,23 +416,31 @@
 	<key>NSWindow Frame Preferences</key>
 	<string>269 313 606 456 0 0 1280 777 </string>
 	<key>NSWindow Frame SUStatusFrame</key>
-	<string>762 696 400 129 0 0 1920 1057 </string>
+	<string>442 486 400 129 0 0 1280 777 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>652 588 620 392 0 0 1920 1177 </string>
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>269 139 606 456 0 0 1280 777 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>557 416 1018 447 0 0 1920 1057 </string>
+	<string>557 487 796 473 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>4 6 1915 1051 0 0 1920 1057 </string>
+	<string>4 30 1271 747 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>425 176 1495 875 0 0 1920 1057 </string>
+	<string>4 14 1271 763 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>4 0 1276 777 0 0 1280 777 </string>
+	<string>4 14 1271 763 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
-	<string>5 51 1253 721 0 0 1280 777 </string>
+	<string>4 0 1276 777 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 4</key>
-	<string>215 325 570 452 0 0 1280 777 </string>
+	<string>4 0 1276 777 0 0 1280 777 </string>
+	<key>NSWindow Frame iTerm Window 5</key>
+	<string>4 0 1276 777 0 0 1280 777 </string>
+	<key>NSWindow Frame iTerm Window 6</key>
+	<string>4 14 1271 763 0 0 1280 777 </string>
+	<key>NSWindow Frame iTerm Window 7</key>
+	<string>4 14 1271 763 0 0 1280 777 </string>
+	<key>NSWindow Frame iTerm Window 8</key>
+	<string>4 14 1271 763 0 0 1280 777 </string>
 	<key>NeverWarnAboutShortLivedSessions_53E17D7A-7076-4183-99B4-B0DF5781DD04</key>
 	<true/>
 	<key>NeverWarnAboutShortLivedSessions_53E17D7A-7076-4183-99B4-B0DF5781DD04_selection</key>
@@ -1072,6 +1080,108 @@
 			<true/>
 			<key>Smart Cursor Color</key>
 			<false/>
+			<key>Smart Selection Rules</key>
+			<array>
+				<dict>
+					<key>notes</key>
+					<string>Word bounded by whitespace</string>
+					<key>precision</key>
+					<string>low</string>
+					<key>regex</key>
+					<string>\S+</string>
+				</dict>
+				<dict>
+					<key>notes</key>
+					<string>C++ namespace::identifier</string>
+					<key>precision</key>
+					<string>normal</string>
+					<key>regex</key>
+					<string>([a-zA-Z0-9_]+::)+[a-zA-Z0-9_]+</string>
+				</dict>
+				<dict>
+					<key>actions</key>
+					<array>
+						<dict>
+							<key>action</key>
+							<integer>4</integer>
+							<key>parameter</key>
+							<string>\0</string>
+							<key>title</key>
+							<string>paste to command line</string>
+						</dict>
+					</array>
+					<key>notes</key>
+					<string>Paths</string>
+					<key>precision</key>
+					<string>normal</string>
+					<key>regex</key>
+					<string>\~?/?([[:letter:][:number:]._-]+/+)+[[:letter:][:number:]._-]+/?</string>
+				</dict>
+				<dict>
+					<key>notes</key>
+					<string>Quoted string</string>
+					<key>precision</key>
+					<string>normal</string>
+					<key>regex</key>
+					<string>@?"(?:[^"\\]|\\.)*"</string>
+				</dict>
+				<dict>
+					<key>notes</key>
+					<string>Java/Python include paths</string>
+					<key>precision</key>
+					<string>normal</string>
+					<key>regex</key>
+					<string>([[:letter:][:number:]._]+\.)+[[:letter:][:number:]._]+</string>
+				</dict>
+				<dict>
+					<key>notes</key>
+					<string>mailto URL</string>
+					<key>precision</key>
+					<string>normal</string>
+					<key>regex</key>
+					<string>\bmailto:([a-z0-9A-Z_]+@)?([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\b</string>
+				</dict>
+				<dict>
+					<key>notes</key>
+					<string>Obj-C selector</string>
+					<key>precision</key>
+					<string>high</string>
+					<key>regex</key>
+					<string>@selector\([^)]+\)</string>
+				</dict>
+				<dict>
+					<key>notes</key>
+					<string>email address</string>
+					<key>precision</key>
+					<string>high</string>
+					<key>regex</key>
+					<string>\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}\b</string>
+				</dict>
+				<dict>
+					<key>notes</key>
+					<string>HTTP URL</string>
+					<key>precision</key>
+					<string>very_high</string>
+					<key>regex</key>
+					<string>https?://([a-z0-9A-Z]+(:[a-zA-Z0-9]+)?@)?[-a-z0-9A-Z\-]+(\.[-a-z0-9A-Z\-]+)*((:[0-9]+)?)(/[a-zA-Z0-9;:/\.\-_+%~?&amp;@=#\(\)]*)?</string>
+				</dict>
+				<dict>
+					<key>notes</key>
+					<string>SSH URL</string>
+					<key>precision</key>
+					<string>very_high</string>
+					<key>regex</key>
+					<string>\bssh:([a-z0-9A-Z_]+@)?([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\b</string>
+				</dict>
+				<dict>
+					<key>notes</key>
+					<string>Telnet URL</string>
+					<key>precision</key>
+					<string>very_high</string>
+					<key>regex</key>
+					<string>\btelnet:([a-z0-9A-Z_]+@)?([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\b</string>
+				</dict>
+			</array>
 			<key>Sync Title</key>
 			<false/>
 			<key>Tags</key>
@@ -1225,6 +1335,13 @@
 			<key>Action</key>
 			<string>kPasteFromSelectionPointerAction</string>
 		</dict>
+		<key>Button,2,1,c,</key>
+		<dict>
+			<key>Action</key>
+			<string>kSendTextPointerAction</string>
+			<key>Argument</key>
+			<string>\0</string>
+		</dict>
 		<key>Gesture,ThreeFingerSwipeDown,,</key>
 		<dict>
 			<key>Action</key>
@@ -1263,7 +1380,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-01-18T18:11:50Z</date>
+	<date>2017-05-08T12:28:07Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>Secure Input</key>
@@ -1287,7 +1404,7 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>3.0.13</string>
+	<string>3.0.15</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>0</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
