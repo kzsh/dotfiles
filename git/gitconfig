@@ -7,7 +7,8 @@
 	co = !git checkout
 	cm = !git checkout master
 	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
-	ln = log --graph --pretty=format:'%Cgreen%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	ln = log --graph --pretty=format:'%Cgreen%h%Creset%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	lc = log-compact
 [branch]
 	autosetuprebase = always
 [core]
@@ -47,3 +48,5 @@
 	; other [user] config
 [include]
 	path = ~/.gituser
+[log-compact]
+	defaults = --two-initials --abbrev=8
