@@ -26,6 +26,7 @@ COMPLETIONS_DIR="$HOME/src/scripts/bash/completions"
 . "$INSTALL_DIR/bash_debug_functions.sh"
 
 sources=(
+  "$INSTALL_DIR/bash_debug_functions.sh"
   "$INSTALL_DIR/prompt.sh"
   "$INSTALL_DIR/config_bash.sh"
   "$INSTALL_DIR/config_bash_history.sh"
