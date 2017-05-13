@@ -15,6 +15,7 @@ fi
 export EDITOR=$VIM
 
 set -o vi
+set editing-mode vi
 shopt -s globstar
 
 PATH="$PATH:$HOME/bin"
