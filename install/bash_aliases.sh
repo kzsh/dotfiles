@@ -26,6 +26,15 @@ alias be="bundle exec"
 alias vi="nvim"
 alias vim="nvim"
 
+# Brightness control
+if [ -f /usr/local/bin/screen-backlight ]; then
+  alias sb="sudo /usr/local/bin/screen-backlight"
+fi
+
+if [ -f /usr/local/bin/keyboard-backlight ]; then
+  alias kb="sudo /usr/local/bin/keyboard-backlight"
+fi
+
 # Docker
 alias dm='docker-machine'
 alias dc='docker-compose'
