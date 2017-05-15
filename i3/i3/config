@@ -114,8 +114,6 @@ focus_follows_mouse no
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
-# exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -183,6 +181,7 @@ bindsym control+space exec synapse
 #set up shutdown behavior
 
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
+
 mode "$mode_system" {
     bindsym l exec --no-startup-id i3exit lock, mode "default"
     bindsym e exec --no-startup-id i3exit logout, mode "default"
@@ -195,7 +194,9 @@ mode "$mode_system" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-bindcode 124 mode "$mode_system"
+bindsym $mod+Shift+x mode "$mode_system"
+
+#bindcode 124 mode "$mode_system"
 
 bindsym --release mod3+j exec $( xdotool key Down )
 bindsym --release mod3+k exec $( xdotool key Up )
