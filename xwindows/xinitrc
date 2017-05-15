@@ -4,6 +4,9 @@
 #
 # Executed by startx (run your window manager from here)
 
+# Show i3 info at a reasonable font size
+xrandr --dpi 150x150
+
 if [ -d /etc/X11/xinit/xinitrc.d ]; then
   for f in /etc/X11/xinit/xinitrc.d/*; do
     [ -x "$f" ] && . "$f"
@@ -13,22 +16,13 @@ fi
 
 exec i3
 
+# Cause screen to lock after 10 minutes
+xautolock -time 10 -locker "i3exit lock" &
 
-xss-lock -- i3exit lock &
-
-autolock -time 10 -locker "i3exit lock" &
-
-# be fast with the keyboard.  Not slow.
+# Increase key repeat times
 xset r rate 150 18
 
-# Keep the trackpad from messing me up.
+# Ignore trackpad input when typing
 syndaemon -dt
 
-#exec xterm
-#exec wmii
-#exec xmonad
-# exec gnome-session
-# exec startkde
-# exec startxfce4
-# ...or the Window Manager of your choice
 [[ -f ~/.Xresources ]] && xrdb -load ~/.Xresources
