@@ -1,5 +1,9 @@
 #!/bin/bash
 . $HOME/.bash_profile
+case $- in
+  *i*) ;;
+  *) return;;
+esac
 
 # NVM
 lazy_load 'nvm' "$LAZY_LOAD_DIR/nvm.sh"
