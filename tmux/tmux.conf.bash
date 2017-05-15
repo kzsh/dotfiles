@@ -15,10 +15,10 @@ bind l select-window -t :+
 
 set -sg escape-time 0
 
-#unbind-key C-h
-#unbind-key C-j
-#unbind-key C-k
-#unbind-key C-l
+unbind-key C-h
+unbind-key C-j
+unbind-key C-k
+unbind-key C-l
 
 
 # Smart pane switching with awareness of Vim splits.
@@ -65,7 +65,7 @@ bind-key R respawn-window
 set -g base-index 1
 set -g pane-base-index 1
 
-# # move x clipboard into tmux paste buffer
+# move x clipboard into tmux paste buffer
 bind C-p run "tmux set-buffer \"$(xclip -o)\"; tmux paste-buffer"
 
 set-window-option -g status-bg colour237
@@ -78,11 +78,11 @@ bind p paste-buffer # `prefix + p` pastes the latest buffer
 
 bind + delete-buffer
 
-## move tmux copy buffer into x clipboard
+# move tmux copy buffer into x clipboard
 #bind C-y run "tmux save-buffer - | xclip -i"
 
 # Copy-paste integration
 # must have `brew install reattach-to-user-namespace`
-set-option -g default-command "reattach-to-user-namespace -l bash"
+# set-option -g default-command "reattach-to-user-namespace -l bash"
 
 set-option -g default-shell /bin/bash
