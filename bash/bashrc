@@ -1,4 +1,5 @@
 #!/bin/bash
+. $HOME/.bash_profile
 
 # NVM
 lazy_load 'nvm' "$LAZY_LOAD_DIR/nvm.sh"

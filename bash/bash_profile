@@ -24,7 +24,6 @@ sources=(
   "$INSTALL_DIR/git-completion.sh"
   "$INSTALL_DIR/hub.bash_completion.sh"
   "$COMPLETIONS_DIR/pass/pass.bash-completions.sh"
-  "$INSTALL_DIR/dotfiles/bash/.bashrc"
 )
 
 for src in "${sources[@]}"; do
