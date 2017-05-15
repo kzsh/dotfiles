@@ -13,7 +13,6 @@
 	autosetuprebase = always
 [core]
 	autocrlf = false
-	editor = /usr/local/bin/nvim
 	excludesfile = /Users/andrew/.gitignore_global
 [push]
 	default = simple

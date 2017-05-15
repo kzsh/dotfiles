@@ -3,7 +3,16 @@
 
 export DEBUG_STARTUP=
 
-export EDITOR=/usr/local/bin/nvim
+VIM=$(which nvim)
+if [ -z $VIM ]; then
+  VIM=$(which vim)
+fi
+
+if [ -z $VIM ]; then
+  VIM=$(which vi)
+fi
+
+export EDITOR=$VIM
 
 set -o vi
 shopt -s globstar
