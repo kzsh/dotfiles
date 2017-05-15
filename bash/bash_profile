@@ -1,7 +1,7 @@
 #!/bin/bash
 # https://github.com/koalman/shellcheck/wiki/SC1090
 
-export IS_DEBUG=
+export DEBUG_STARTUP=
 
 export EDITOR=/usr/local/bin/nvim
 
