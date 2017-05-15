@@ -8,7 +8,8 @@ if [[ -z "$LOADED_DEBUG_FUNCTIONS" ]]; then
   LAST_TIME=$(get_time)
 
   function debug_log() {
-    if [[ $IS_DEBUG ]]; then
+
+    if [ -z ${DEBUG_STARTUP+x} ]; then
       CURRENT_TIME=$(get_time)
       DIFF=$(echo "$CURRENT_TIME - $LAST_TIME" | bc)
       echo -n "$@"
