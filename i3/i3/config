@@ -141,8 +141,14 @@ bar {
 }
 
 # setup keyboard and screen brightness controls.  See https://blog.jessfraz.com/posts/linux-on-mac.html
-bindcode 233 exec sudo screen-backlight up
-bindcode 232 exec sudo screen-backlight down
+#bindcode 233 exec sudo screen-backlight up
+#bindcode 232 exec sudo screen-backlight down
+
+#bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
+#bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
+
+bindsym XF86MonBrightnessUp exec sudo screen-backlight up
+bindsym XF86MonBrightnessDown exec sudo screen-backlight down
 
 bindcode 238 exec sudo keyboard-backlight up
 bindcode 237 exec sudo keyboard-backlight down
