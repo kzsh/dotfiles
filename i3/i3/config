@@ -165,9 +165,6 @@ bindsym $mod+shift+o exec shutter -a -e
 # blank screen after 10 minutes inactivity
 exec --no-startup-id xset dpms 600
 
-# set the screen resolution
-exec /home/andrew/source/scripts/bash/res.sh DP-2 2592
-
 #until I fix this, hack the brightness to be whatever level it was last set to.
 exec sudo keyboard-backlight up
 exec sudo keyboard-backlight down
