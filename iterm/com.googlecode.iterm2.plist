@@ -309,13 +309,6 @@
 			<key>Text</key>
 			<string></string>
 		</dict>
-		<key>0xd-0x100000</key>
-		<dict>
-			<key>Action</key>
-			<integer>23</integer>
-			<key>Text</key>
-			<string></string>
-		</dict>
 		<key>0xf700-0x300000</key>
 		<dict>
 			<key>Action</key>
@@ -422,13 +415,13 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>269 139 606 456 0 0 1280 777 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>557 487 796 473 0 0 1920 1057 </string>
+	<string>557 503 937 465 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>4 30 1271 747 0 0 1280 777 </string>
+	<string>5 21 1915 1035 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>4 14 1271 763 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>4 14 1271 763 0 0 1280 777 </string>
+	<string>5 3 1915 1051 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
 	<string>4 0 1276 777 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 4</key>
@@ -1225,6 +1218,10 @@
 	</array>
 	<key>NoSyncConfirmBeta</key>
 	<true/>
+	<key>NoSyncDoNotWarnBeforeMultilinePaste</key>
+	<true/>
+	<key>NoSyncDoNotWarnBeforeMultilinePaste_selection</key>
+	<integer>0</integer>
 	<key>NoSyncDoNotWarnBeforePastingOneLineEndingInNewlineAtShellPrompt</key>
 	<true/>
 	<key>NoSyncDoNotWarnBeforePastingOneLineEndingInNewlineAtShellPrompt_selection</key>
@@ -1380,13 +1377,13 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-05-08T12:28:07Z</date>
+	<date>2017-05-11T15:57:02Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>Secure Input</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
-	<true/>
+	<false/>
 	<key>SplitPaneDimmingAmount</key>
 	<real>0.3892753405448719</real>
 	<key>TabViewType</key>
