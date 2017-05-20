@@ -5,6 +5,9 @@ case $- in
   *) return;;
 esac
 
+INSTALL_DIR="$HOME/src/scripts/install"
+
+. "$INSTALL_DIR/lazy_sources/lazy_loader.sh"
 # NVM
 lazy_load 'nvm' "$LAZY_LOAD_DIR/nvm.sh"
 debug_log "Lazy loaded: nvm"
