@@ -48,8 +48,8 @@
     </item>
     j
     <item>
-      <name>Map right-hand H/L to Control Tab / Control Shift Tab</name>
-      <identifier>private.map_right-hand_h_l_to_control_tab___control_shift_tab</identifier>
+      <name>Map right Command + H/L to Control Tab / Control Shift Tab</name>
+      <identifier>private.map_right_Command___h_l_to_control_tab___control_shift_tab</identifier>
       <autogen>__KeyToKey__ KeyCode::L, ModifierFlag::COMMAND_R, KeyCode::TAB, ModifierFlag::CONTROL_L</autogen>
       <autogen>__KeyToKey__ KeyCode::H, ModifierFlag::COMMAND_R, KeyCode::TAB, ModifierFlag::CONTROL_L, ModifierFlag::SHIFT_L</autogen>
     </item>
@@ -59,6 +59,13 @@
       <identifier>private.remap_right_command_semi_quote_to_command_tabs</identifier>
       <autogen>__KeyToKey__ KeyCode::QUOTE, ModifierFlag::COMMAND_R, KeyCode::TAB, ModifierFlag::COMMAND_L</autogen>
       <autogen>__KeyToKey__ KeyCode::SEMICOLON, ModifierFlag::COMMAND_R, KeyCode::TAB, ModifierFlag::COMMAND_L, ModifierFlag::SHIFT_L,</autogen>
+    </item>
+
+    <item>
+      <name>Map right Command + J/K to Control Tilde / Control Shift Tilde</name>
+      <identifier>private.map_right_command___j_k_to_control_tilde___control_shift_tilde</identifier>
+      <autogen>__KeyToKey__ KeyCode::K, ModifierFlag::COMMAND_R, KeyCode::BACKQUOTE, ModifierFlag::COMMAND_L</autogen>
+      <autogen>__KeyToKey__ KeyCode::J, ModifierFlag::COMMAND_R, KeyCode::BACKQUOTE, ModifierFlag::COMMAND_L, ModifierFlag::SHIFT_L,</autogen>
     </item>
   </item>
 </root>
