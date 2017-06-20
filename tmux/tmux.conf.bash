@@ -58,7 +58,8 @@ bind : command-prompt
 setw -g mode-keys vi
 
 # Turn the mouse on, but without copy mode dragging
-set-option -g mouse on
+if-shell "[[ `tmux -V` == *1.9 ]]" \
+"set-option -g mouse on"
 
 #unbind -n MouseDrag1Pane
 #unbind -temacs-copy MouseDrag1Pane
