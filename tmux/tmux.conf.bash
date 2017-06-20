@@ -4,8 +4,16 @@ bind C-f send-prefix
 
 # split windows like vim
 # vim's definition of a horizontal/vertical split is reversed from tmux's
-bind s split-window -v -c '#{pane_current_path}'  # Split panes vertically
-bind v split-window -h -c '#{pane_current_path}'  # Split panes horizontal
+
+if-shell "[[ `tmux -V` == *1.6 ]]" \
+  "bind s split-window -v" # Split panes vertically
+if-shell "[[ `tmux -V` == *1.6 ]]" \
+  "bind v split-window -h"  # Split panes horizontal
+
+if-shell "[[ `tmux -V` == *1.9 ]]" \
+  "bind s split-window -v -c '#{pane_current_path}'"  # Split panes vertically
+if-shell "[[ `tmux -V` == *1.9 ]]" \
+  "bind v split-window -h -c '#{pane_current_path}'"  # Split panes horizontal
 
 bind C-h select-window -t :-
 bind C-l select-window -t :+
@@ -71,6 +79,8 @@ bind C-p run "tmux set-buffer \"$(xclip -o)\"; tmux paste-buffer"
 set-window-option -g status-bg colour237
 set-window-option -g status-fg colour255
 set-window-option -g window-status-current-bg colour166
+
+set-window-option -g automatic-rename on
 
 # in normal tmux mode
 bind Escape copy-mode # `tmux prefix + Escape` starts copy mode.
