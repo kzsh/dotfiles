@@ -75,8 +75,17 @@ function prompt_virtualenv() {
   fi
 }
 
+function tmux_rename_window() {
+  case "$TERM" in
+    screen*)
+      tmux rename-window "$(last_command)"
+      ;;
+  esac
+}
+
 # Build the prompt
-PS1="\n"
+PS1="\$(tmux_rename_window)"
+PS1+="\n"
 if [[ "$SSH_TTY" ]]; then
   PS1+="${style_important}[SSH] " # [SSH]
 fi
