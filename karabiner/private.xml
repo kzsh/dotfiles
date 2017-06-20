@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<root>
+  <appdef>
+    <appname>ITERM</appname>
+    <equal>com.googlecode.iterm2</equal>
+  </appdef>
+  <item>
+    <name>KZSH Custom</name>
+    <item>
+      <name>Meta JK for Bracket([])</name>
+      <identifier>private.remap_brackets</identifier>
+      <autogen>__KeyToKey__ KeyCode::J, ModifierFlag::CONTROL_L,
+        KeyCode::9, ModifierFlag::SHIFT_L
+      </autogen>
+      <autogen>__KeyToKey__ KeyCode::K, ModifierFlag::CONTROL_L,
+        KeyCode::0, ModifierFlag::SHIFT_L
+      </autogen>
+
+      <autogen>__KeyToKey__ KeyCode::J, ModifierFlag::COMMAND_L,
+        KeyCode::BRACKET_LEFT, ModifierFlag::NONE
+      </autogen>
+      <autogen>__KeyToKey__ KeyCode::K, ModifierFlag::COMMAND_L,
+        KeyCode::BRACKET_RIGHT, ModifierFlag::NONE
+      </autogen>
+
+      <autogen>__KeyToKey__ KeyCode::L, ModifierFlag::CONTROL_L,
+        KeyCode::BRACKET_LEFT, ModifierFlag::SHIFT_L
+      </autogen>
+      <autogen>__KeyToKey__ KeyCode::SEMICOLON, ModifierFlag::CONTROL_L,
+        KeyCode::BRACKET_RIGHT, ModifierFlag::SHIFT_L
+      </autogen>
+    </item>
+
+    <item>
+      <name>Map right-hand Command to left-hand Control in iTerm2</name>
+      <identifier>private.remap_right_command_to_left_control</identifier>
+      <only>ITERM</only>
+      <autogen>__KeyToKey__ KeyCode::COMMAND_R, KeyCode::CONTROL_L
+      </autogen>
+    </item>
+
+    <item>
+      <name>Map right-hand Command to left-hand Control and Command in iTerm2</name>
+      <identifier>private.remap_right_command_to_left_control_left_command</identifier>
+      <only>ITERM</only>
+      <autogen>__KeyToKey__ KeyCode::H, ModifierFlag::COMMAND_R, KeyCode::H, ModifierFlag::COMMAND_L, ModifierFlag::CONTROL_L</autogen>
+      <autogen>__KeyToKey__ KeyCode::L, ModifierFlag::COMMAND_R, KeyCode::L, ModifierFlag::COMMAND_L, ModifierFlag::CONTROL_L</autogen>
+    </item>
+    j
+    <item>
+      <name>Map right-hand H/L to Control Tab / Control Shift Tab</name>
+      <identifier>private.map_right-hand_h_l_to_control_tab___control_shift_tab</identifier>
+      <autogen>__KeyToKey__ KeyCode::L, ModifierFlag::COMMAND_R, KeyCode::TAB, ModifierFlag::CONTROL_L</autogen>
+      <autogen>__KeyToKey__ KeyCode::H, ModifierFlag::COMMAND_R, KeyCode::TAB, ModifierFlag::CONTROL_L, ModifierFlag::SHIFT_L</autogen>
+    </item>
+
+    <item>
+      <name>Map right-hand Command and single quote/semicolon to command TAB, and command+shift TAB</name>
+      <identifier>private.remap_right_command_semi_quote_to_command_tabs</identifier>
+      <autogen>__KeyToKey__ KeyCode::QUOTE, ModifierFlag::COMMAND_R, KeyCode::TAB, ModifierFlag::COMMAND_L</autogen>
+      <autogen>__KeyToKey__ KeyCode::SEMICOLON, ModifierFlag::COMMAND_R, KeyCode::TAB, ModifierFlag::COMMAND_L, ModifierFlag::SHIFT_L,</autogen>
+    </item>
+  </item>
+</root>
