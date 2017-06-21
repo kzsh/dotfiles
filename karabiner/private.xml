@@ -66,6 +66,9 @@
       <identifier>private.map_right_command___j_k_to_control_tilde___control_shift_tilde</identifier>
       <autogen>__KeyToKey__ KeyCode::K, ModifierFlag::COMMAND_R, KeyCode::BACKQUOTE, ModifierFlag::COMMAND_L</autogen>
       <autogen>__KeyToKey__ KeyCode::J, ModifierFlag::COMMAND_R, KeyCode::BACKQUOTE, ModifierFlag::COMMAND_L, ModifierFlag::SHIFT_L,</autogen>
+      <autogen>__KeyToKey__ KeyCode::TAB, ModifierFlag::COMMAND_L, KeyCode::VK_NONE</autogen>
+      <autogen>__KeyToKey__ KeyCode::TAB, ModifierFlag::CONTROL_L, KeyCode::VK_NONE</autogen>
+      <autogen>__KeyToKey__ KeyCode::BACKQUOTE, ModifierFlag::COMMAND_L, KeyCode::VK_NONE</autogen>
     </item>
   </item>
 </root>
