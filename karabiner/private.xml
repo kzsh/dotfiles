@@ -74,6 +74,7 @@
     <item>
       <name>Map Control + D / Control + U to half-page-down/half-page-up</name>
       <identifier>private.map_control___d___control___u_to_half-page-down_half-page-up</identifier>
+      <not>ITERM, TERMINAL, VI</not>
       <autogen>__KeyToKey__ KeyCode::U, ModifierFlag::CONTROL_L, KeyCode::PAGEUP</autogen>
       <autogen>__KeyToKey__ KeyCode::D, ModifierFlag::CONTROL_L, KeyCode::PAGEDOWN</autogen>
     </item>
