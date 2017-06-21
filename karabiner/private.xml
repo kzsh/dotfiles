@@ -70,5 +70,12 @@
       <autogen>__KeyToKey__ KeyCode::TAB, ModifierFlag::CONTROL_L, KeyCode::VK_NONE</autogen>
       <autogen>__KeyToKey__ KeyCode::BACKQUOTE, ModifierFlag::COMMAND_L, KeyCode::VK_NONE</autogen>
     </item>
+
+    <item>
+      <name>Map Control + D / Control + U to half-page-down/half-page-up</name>
+      <identifier>private.map_control___d___control___u_to_half-page-down_half-page-up</identifier>
+      <autogen>__KeyToKey__ KeyCode::U, ModifierFlag::CONTROL_L, KeyCode::PAGEUP</autogen>
+      <autogen>__KeyToKey__ KeyCode::D, ModifierFlag::CONTROL_L, KeyCode::PAGEDOWN</autogen>
+    </item>
   </item>
 </root>
