@@ -31,8 +31,8 @@ function git_repo_state() {
 }
 
 function has_jobs() {
-  if [[ "$hasjobs" -eq "0" ]]; then
   hasjobs=$(jobs -l | awk '{ print $3 }' | grep -v "Done" | wc -l | tr -d ' ')
+  if [[ "$hasjobs" == "0" ]]; then
     show_has_jobs=''
   else
     job_count="$((hasjobs))"
