@@ -242,7 +242,7 @@
 		<key>0x19-0x60000</key>
 		<dict>
 			<key>Action</key>
-			<integer>39</integer>
+			<integer>2</integer>
 			<key>Text</key>
 			<string></string>
 		</dict>
@@ -267,13 +267,6 @@
 			<key>Text</key>
 			<string></string>
 		</dict>
-		<key>0x68-0x140000</key>
-		<dict>
-			<key>Action</key>
-			<integer>2</integer>
-			<key>Text</key>
-			<string></string>
-		</dict>
 		<key>0x6a-0x100000</key>
 		<dict>
 			<key>Action</key>
@@ -295,17 +288,10 @@
 			<key>Text</key>
 			<string></string>
 		</dict>
-		<key>0x6c-0x140000</key>
-		<dict>
-			<key>Action</key>
-			<integer>0</integer>
-			<key>Text</key>
-			<string></string>
-		</dict>
 		<key>0x9-0x40000</key>
 		<dict>
 			<key>Action</key>
-			<integer>32</integer>
+			<integer>0</integer>
 			<key>Text</key>
 			<string></string>
 		</dict>
@@ -420,9 +406,9 @@
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>372 191 700 622 0 0 1440 877 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>269 342 796 473 0 0 1440 877 </string>
+	<string>269 374 937 465 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>7 33 1431 843 0 0 1440 877 </string>
+	<string>4 0 1436 875 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>4 0 1436 875 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -1390,7 +1376,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-06-10T13:03:40Z</date>
+	<date>2017-06-23T01:16:19Z</date>
 	<key>Secure Input</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
