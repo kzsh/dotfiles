@@ -32,8 +32,9 @@ sources=(
   "$INSTALL_DIR/config_bash_history.sh"
   "$INSTALL_DIR/bash_aliases.sh"
   "$INSTALL_DIR/bash_functions.sh"
-  "$INSTALL_DIR/git-completion.sh"
-  "$INSTALL_DIR/hub.bash_completion.sh"
+  "$COMPLETIONS_DIR/git/git-completion.sh"
+  "$COMPLETIONS_DIR/hub/hub.bash_completion.sh"
+  "$COMPLETIONS_DIR/fzf/shell/key-bindings.bash"
   "$COMPLETIONS_DIR/pass/pass.bash-completions.sh"
 )
 
