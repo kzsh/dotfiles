@@ -21,7 +21,7 @@ if command -v brew >/dev/null 2>&1; then
   debug_log "Loaded: autojump"
 else
 
-  [[ -s /usr/share/autojump/autojump.sh ]] && . /usr/share/autojump/autojump.sh
+  [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
   debug_log "Loaded: autojump"
 fi
 
