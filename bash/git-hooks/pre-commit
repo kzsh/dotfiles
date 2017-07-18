@@ -1,37 +1,27 @@
 #!/bin/bash
 #
-# An example hook script to verify what is about to be committed.
-# Called by "git commit" with no arguments.  The hook should
-# exit with non-zero status after issuing an appropriate message if
-# it wants to stop the commit.
-#
-# To enable this hook, rename this file to "pre-commit".
+# grep staged files that will be added or modified for a specific list of
+# blacklisted words and prevent the commit if they are found
 
-if git rev-parse --verify HEAD >/dev/null 2>&1
-then
-	against=HEAD
-else
-	# Initial commit: diff against an empty tree object
-	against=4b825dc642cb6eb9a060e54bf8d69288fbee4904
-fi
 ERROR=0
-MATCHER_LIST=(
-"binding\.pry"
+
+if git rev-parse --verify HEAD >/dev/null 2>&1; then
+  against=HEAD
+else
+  # Initial commit: diff against an empty tree object
+  against=0676e1596e33a931e321ee54b44ef8811fc8f3c0
+fi
+
+BLACKLIST=(
+  "binding\.pry"
 )
-grep  "$list"
+grep "$list"
 
 # Redirect output to stderr.
 exec 1>&2
 
-# Cross platform projects tend to avoid non-ASCII filenames; prevent
-# them from being added to the repository. We exploit the fact that the
-# printable range starts at the space character and ends with tilde.
-	# Note that the use of brackets around a tr range is ok here, (it's
-	# even required, for portability to Solaris 10's /usr/bin/tr), since
-	# the square bracket bytes happen to fall in the designated range.
-for matcher in "${MATCHER_LIST[@]}"; do
-	if [ "$(git diff --cached --staged --diff-filter=AM -z $against |
-	  grep -c "$matcher")" != "0" ]; then
+for matcher in "${BLACKLIST[@]}"; do
+  if [ "$(git diff --cached --staged --diff-filter=AM -z $against | grep -c "$matcher")" != "0" ]; then
     echo "Error: Attempt to commit with $matcher"
     ERROR=1
   fi
@@ -40,6 +30,3 @@ done
 if [ $ERROR == 1 ]; then
   exit 1
 fi
-
-# If there are whitespace errors, print the offending file names and fail.
-#DISABLED exec git diff-index --check --cached $against --
