@@ -26,6 +26,9 @@ alias be="bundle exec"
 alias vi="nvim"
 alias vim="nvim"
 
+alias vis="nvim -S ~/vimsession"
+alias vims="nvim -S ~/vimsession"
+
 # Brightness control
 if [ -f /usr/local/bin/screen-backlight ]; then
   alias sb="sudo /usr/local/bin/screen-backlight"
