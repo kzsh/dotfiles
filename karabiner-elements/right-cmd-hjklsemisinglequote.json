@@ -1,22 +1,25 @@
 {
-  "title": "Change application and tab navigation to use right_command+hjkl;'",
+  "title": "Use right_command+h/j/k/l/;/' to switch current tab/window/application",
   "rules": [
     {
-      "description": "Change right_command+; and right_command+' to left_command+tab and left_command+shift+tab.",
+      "description": "Use right_command+;/' to cycle through running applications (like command+tab).",
       "manipulators": [
         {
           "type": "basic",
           "from": {
             "key_code": "quote",
             "modifiers": {
-              "mandatory": ["right_command"]
-
+              "mandatory": [
+                "right_command"
+              ]
             }
           },
           "to": [
             {
               "key_code": "tab",
-              "modifiers": ["left_command"]
+              "modifiers": [
+                "left_command"
+              ]
             }
           ]
         },
@@ -25,34 +28,42 @@
           "from": {
             "key_code": "semicolon",
             "modifiers": {
-              "mandatory": ["right_command"]
+              "mandatory": [
+                "right_command"
+              ]
             }
           },
           "to": [
             {
               "key_code": "tab",
-              "modifiers": ["left_command", "left_shift"]
+              "modifiers": [
+                "left_command",
+                "left_shift"
+              ]
             }
           ]
         }
       ]
     },
     {
-      "description": "Change right_command+h and right_command+l to left_control+tab and left_control+shift+tab.",
+      "description": "Use right_command+h/l to switch tabs in an application.",
       "manipulators": [
         {
           "type": "basic",
           "from": {
             "key_code": "l",
             "modifiers": {
-              "mandatory": ["right_command"]
-
+              "mandatory": [
+                "right_command"
+              ]
             }
           },
           "to": [
             {
               "key_code": "tab",
-              "modifiers": ["left_control"]
+              "modifiers": [
+                "left_control"
+              ]
             }
           ]
         },
@@ -61,34 +72,42 @@
           "from": {
             "key_code": "h",
             "modifiers": {
-              "mandatory": ["right_command"]
+              "mandatory": [
+                "right_command"
+              ]
             }
           },
           "to": [
             {
               "key_code": "tab",
-              "modifiers": ["left_control", "left_shift"]
+              "modifiers": [
+                "left_control",
+                "left_shift"
+              ]
             }
           ]
         }
       ]
     },
     {
-      "description": "Change right_command+j and right_command+k to left_command+` and left_command+shift+`.",
+      "description": "Use right_command+j/k to switch windows of the foreground application .",
       "manipulators": [
         {
           "type": "basic",
           "from": {
             "key_code": "k",
             "modifiers": {
-              "mandatory": ["right_command"]
-
+              "mandatory": [
+                "right_command"
+              ]
             }
           },
           "to": [
             {
               "key_code": "grave_accent_and_tilde",
-              "modifiers": ["left_command"]
+              "modifiers": [
+                "left_command"
+              ]
             }
           ]
         },
@@ -97,28 +116,34 @@
           "from": {
             "key_code": "j",
             "modifiers": {
-              "mandatory": ["right_command"]
+              "mandatory": [
+                "right_command"
+              ]
             }
           },
           "to": [
             {
               "key_code": "grave_accent_and_tilde",
-              "modifiers": ["left_command", "left_shift"]
+              "modifiers": [
+                "left_command",
+                "left_shift"
+              ]
             }
           ]
         }
       ]
     },
     {
-      "description": "Disable left_command+tab and left_command+shift+tab",
+      "description": "Disable left_command+(tab/shift+tab) (to retrain reflexes using the other manipulators).",
       "manipulators": [
         {
           "type": "basic",
           "from": {
             "key_code": "tab",
             "modifiers": {
-              "mandatory": ["left_command"]
-
+              "mandatory": [
+                "left_command"
+              ]
             }
           },
           "to": [
@@ -132,7 +157,10 @@
           "from": {
             "key_code": "tab",
             "modifiers": {
-              "mandatory": ["left_command", "left_shift"]
+              "mandatory": [
+                "left_command",
+                "left_shift"
+              ]
             }
           },
           "to": [
