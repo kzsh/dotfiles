@@ -1,6 +1,6 @@
 completion_sources=(
-  "$HOME/src/scripts/bash/git-completion.sh"
-  "$HOME/src/scripts/bash/hub.bash_completion.sh"
+  "$HOME/src/scripts/bash/completions/git/git-completion.sh"
+  "$HOME/src/scripts/bash/completions/hub/hub.bash_completion.sh"
   "$(brew --prefix pass)/etc/bash_completion.d/pass"
   "$(brew --prefix nvm)/etc/bash_completion.d/nvm"
 )
