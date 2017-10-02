@@ -11,6 +11,9 @@
             "modifiers": {
               "mandatory": [
                 "right_command"
+              ],
+              "optional": [
+                "any"
               ]
             }
           },
@@ -18,7 +21,7 @@
             {
               "key_code": "tab",
               "modifiers": [
-                "left_command"
+                "right_command"
               ]
             }
           ]
@@ -30,6 +33,9 @@
             "modifiers": {
               "mandatory": [
                 "right_command"
+              ],
+              "optional": [
+                "any"
               ]
             }
           },
@@ -37,7 +43,7 @@
             {
               "key_code": "tab",
               "modifiers": [
-                "left_command",
+                "right_command",
                 "left_shift"
               ]
             }
