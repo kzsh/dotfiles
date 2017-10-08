@@ -84,7 +84,8 @@ function tmux_rename_window() {
 }
 
 # Build the prompt
-PS1="\$(tmux_rename_window)"
+PS1="\033]0;\a"
+PS1+="\$(tmux_rename_window)"
 PS1+="\n"
 if [[ "$SSH_TTY" ]]; then
   PS1+="${style_important}[SSH] " # [SSH]
