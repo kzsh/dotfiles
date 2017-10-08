@@ -11,3 +11,6 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 . "$DIR/program_config/autojump.sh"
 # shellcheck disable=1090
 . "$DIR/program_config/fzf.sh"
+
+# shellcheck disable=1090
+. "$DIR/program_config/direnv.sh"
