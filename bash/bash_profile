@@ -28,14 +28,11 @@ COMPLETIONS_DIR="$HOME/src/scripts/bash/completions"
 sources=(
   "$INSTALL_DIR/bash_debug_functions.sh"
   "$INSTALL_DIR/prompt.sh"
-  "$INSTALL_DIR/config_bash.sh"
+  "$INSTALL_DIR/load_program_configs.sh"
   "$INSTALL_DIR/config_bash_history.sh"
   "$INSTALL_DIR/bash_aliases.sh"
   "$INSTALL_DIR/bash_functions.sh"
-  "$COMPLETIONS_DIR/git/git-completion.sh"
-  "$COMPLETIONS_DIR/hub/hub.bash_completion.sh"
-  "$COMPLETIONS_DIR/fzf/shell/key-bindings.bash"
-  "$COMPLETIONS_DIR/pass/pass.bash-completions.sh"
+  "$INSTALL_DIR/completions.sh"
 )
 
 for src in "${sources[@]}"; do
