@@ -6,7 +6,6 @@ brew install fzf
 brew install nvm
 brew install pyenv
 brew install pyenv-virtualenv
-brew install redis
 brew install shellcheck
 brew install pass
 brew install tree
