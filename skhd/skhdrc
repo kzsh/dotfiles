@@ -46,10 +46,10 @@ ctrl - l -> : if [[ "$(chunkc tiling::query --window name)" != *"vim_hook"* ]]; 
 shift + alt - 0 : chunkc tiling::desktop --equalize
 
 # swap window
-alt + shift - h : chunkc tiling::window --swap west
-alt + shift - j : chunkc tiling::window --swap south
-alt + shift - k : chunkc tiling::window --swap north
-alt + shift - l : chunkc tiling::window --swap east
+ctrl + lcmd - h : chunkc tiling::window --swap west
+ctrl + lcmd - j : chunkc tiling::window --swap south
+ctrl + lcmd - k : chunkc tiling::window --swap north
+ctrl + lcmd - l : chunkc tiling::window --swap east
 
 # move window
 ctrl + alt - h : chunkc tiling::window --warp west
