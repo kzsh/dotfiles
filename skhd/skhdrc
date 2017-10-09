@@ -42,9 +42,6 @@ ctrl - j -> : if [[ "$(chunkc tiling::query --window name)" != *"vim_hook"* ]]; 
 ctrl - k -> : if [[ "$(chunkc tiling::query --window name)" != *"vim_hook"* ]]; then chunkc tiling::window --focus north; fi
 ctrl - l -> : if [[ "$(chunkc tiling::query --window name)" != *"vim_hook"* ]]; then chunkc tiling::window --focus east; fi
 
-# rcmd - j : chunkc tiling::window --focus prev
-# rcmd - k : chunkc tiling::window --focus next
-
 # equalize size of windows
 shift + alt - 0 : chunkc tiling::desktop --equalize
 
