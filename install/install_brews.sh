@@ -4,6 +4,7 @@ brew install bash
 brew install direnv
 brew install fzf
 brew install nvm
+brew install neovim
 brew install pyenv
 brew install pyenv-virtualenv
 brew install shellcheck
@@ -15,6 +16,3 @@ brew install wget
 
 # tmux
 brew install reattach-to-user-namespace
-
-brew tap neovim/neovim
-brew install --HEAD --with-release neovim
