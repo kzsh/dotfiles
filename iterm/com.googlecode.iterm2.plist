@@ -368,6 +368,8 @@
 	</dict>
 	<key>HideScrollbar</key>
 	<false/>
+	<key>HotkeyMigratedFromSingleToMulti</key>
+	<true/>
 	<key>JobName</key>
 	<true/>
 	<key>LoadPrefsFromCustomFolder</key>
@@ -411,15 +413,15 @@
 	<key>NSWindow Frame ProfilesPanel</key>
 	<string>345 735 735 382 0 0 1920 1177 </string>
 	<key>NSWindow Frame SUStatusFrame</key>
-	<string>762 696 400 129 0 0 1920 1057 </string>
+	<string>442 486 400 129 0 0 1280 778 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
-	<string>652 588 620 392 0 0 1920 1177 </string>
+	<string>332 289 620 392 0 0 1280 778 </string>
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>524 260 606 456 0 0 1920 1057 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>557 712 937 465 0 0 1920 1177 </string>
+	<string>240 282 918 495 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>6 25 1271 747 0 0 1280 777 </string>
+	<string>4 31 1271 747 0 0 1280 778 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>425 35 1495 875 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -1240,7 +1242,7 @@
 	<key>NoSyncInstallationId</key>
 	<string>5B5BAF23-714F-4B8E-A013-19C8E224A1F7</string>
 	<key>NoSyncLastTipTime</key>
-	<real>490716897.90268701</real>
+	<real>528040404.06111401</real>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -1318,6 +1320,10 @@
 		<string>0063</string>
 		<string>0064</string>
 		<string>0065</string>
+		<string>0066</string>
+		<string>0067</string>
+		<string>0068</string>
+		<string>0069</string>
 	</array>
 	<key>OpenBookmark</key>
 	<false/>
@@ -1384,7 +1390,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-07-27T22:08:12Z</date>
+	<date>2017-09-24T07:14:22Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>Secure Input</key>
@@ -1407,10 +1413,12 @@
 	<string>/-+\~_.</string>
 	<key>findIgnoreCase_iTerm</key>
 	<true/>
+	<key>findMode_iTerm</key>
+	<integer>0</integer>
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>3.0.15</string>
+	<string>3.1.0</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>0</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
