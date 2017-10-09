@@ -31,7 +31,7 @@ chunkc set 6_desktop_tree                ~/.config/chunkwm/chunkwm_layouts/dev_6
 chunkc set 7_desktop_tree                ~/.config/chunkwm/chunkwm_layouts/dev_7
 chunkc set 8_desktop_tree                ~/.config/chunkwm/chunkwm_layouts/dev_8
 chunkc set 9_desktop_tree                ~/.config/chunkwm/chunkwm_layouts/dev_9
-chunkc set 10_desktop_tree                ~/.config/chunkwm/chunkwm_layouts/dev_10
+chunkc set 10_desktop_tree               ~/.config/chunkwm/chunkwm_layouts/dev_10
 
 chunkc set global_desktop_offset_top     0
 chunkc set global_desktop_offset_bottom  0
