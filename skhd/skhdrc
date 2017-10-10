@@ -97,7 +97,7 @@ rcmd + shift - z : chunkc tiling::window --send-to-desktop 6
 rcmd + shift - x : chunkc tiling::window --send-to-desktop 7
 rcmd + shift - c : chunkc tiling::window --send-to-desktop 8
 rcmd + shift - v : chunkc tiling::window --send-to-desktop 9
-rcmd + shift - b : chunkc tiling::window --send-to-desktop 0
+rcmd + shift - b : chunkc tiling::window --send-to-desktop 10
 
 # focus monitor
 rcmd - m : if [[ "$(chunkc tiling::query --monitor id)" == "1" ]]; then chunkc tiling::monitor -f 2; else chunkc tiling::monitor -f 1; fi
