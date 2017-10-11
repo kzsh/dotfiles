@@ -69,29 +69,7 @@ shift + lcmd - l : chunkc tiling::window --warp-floating right
 # shift + lcmd - k : chunkc tiling::window --warp-floating bottom-right
 
 # desktop switching
-# rcmd - a : if [[ "$(chunkc tiling::query --monitor id)" == "1" ]]; then khd -p "ctrl + alt + cmd - 1"; else khd -p "ctrl + alt + cmd - 6"; fi
-# rcmd - s : if [[ "$(chunkc tiling::query --monitor id)" == "1" ]]; then khd -p "ctrl + alt + cmd - 2"; else khd -p "ctrl + alt + cmd - 7"; fi
-# rcmd - d : if [[ "$(chunkc tiling::query --monitor id)" == "1" ]]; then khd -p "ctrl + alt + cmd - 3"; else khd -p "ctrl + alt + cmd - 8"; fi
-# rcmd - f : if [[ "$(chunkc tiling::query --monitor id)" == "1" ]]; then khd -p "ctrl + alt + cmd - 4"; else khd -p "ctrl + alt + cmd - 9"; fi
-# rcmd - g : if [[ "$(chunkc tiling::query --monitor id)" == "1" ]]; then khd -p "ctrl + alt + cmd - 5"; else khd -p "ctrl + alt + cmd + shift - 0"; fi
-
-rcmd - q :  khd -p "ctrl + alt + cmd - 1"
-rcmd - w :  khd -p "ctrl + alt + cmd - 2"
-rcmd - e :  khd -p "ctrl + alt + cmd - 3"
-rcmd - r :  khd -p "ctrl + alt + cmd - 4"
-rcmd - t :  khd -p "ctrl + alt + cmd - 5"
-
-rcmd - a : khd -p "ctrl + alt + cmd - 6"
-rcmd - s : khd -p "ctrl + alt + cmd - 7"
-rcmd - d : khd -p "ctrl + alt + cmd - 8"
-rcmd - f : khd -p "ctrl + alt + cmd - 9"
-rcmd - g : khd -p "ctrl + alt + cmd - 0"
-
-rcmd - z :  khd -p "ctrl + alt + cmd + shift - 1"
-rcmd - x :  khd -p "ctrl + alt + cmd + shift - 2"
-rcmd - c :  khd -p "ctrl + alt + cmd + shift - 3"
-rcmd - v :  khd -p "ctrl + alt + cmd + shift - 4"
-rcmd - b :  khd -p "ctrl + alt + cmd + shift - 5"
+# NOTE: this is handled by a karabiner script
 
 # send window to desktop
 
@@ -112,6 +90,7 @@ rcmd + shift - x : chunkc tiling::window --send-to-desktop 12
 rcmd + shift - c : chunkc tiling::window --send-to-desktop 13
 rcmd + shift - v : chunkc tiling::window --send-to-desktop 14
 rcmd + shift - b : chunkc tiling::window --send-to-desktop 15
+
 # focus monitor
 rcmd - m : if [[ "$(chunkc tiling::query --monitor id)" == "1" ]]; then chunkc tiling::monitor -f 2; else chunkc tiling::monitor -f 1; fi
 # ctrl + alt - k : chunkc tiling::monitor -f prev
@@ -130,14 +109,10 @@ rcmd - 3  : chunkc tiling::monitor -f 3
 
 # increase region size
 # decrease region size
-# shift + lcmd - j : chunkc tiling::window --use-temporary-ratio 0.1 --adjust-window-edge south
-# shift + lcmd - k : chunkc tiling::window --use-temporary-ratio -0.1 --adjust-window-edge south
-# shift + alt - k : chunkc tiling::window --use-temporary-ratio 0.1 --adjust-window-edge north
-# shift + alt - j : chunkc tiling::window --use-temporary-ratio -0.1 --adjust-window-edge north
-# shift + lcmd - h : chunkc tiling::window --use-temporary-ratio 0.1 --adjust-window-edge west
-# shift + lcmd - l : chunkc tiling::window --use-temporary-ratio -0.1 --adjust-window-edge west
-# shift + alt - h : chunkc tiling::window --use-temporary-ratio -0.1 --adjust-window-edge east
-# shift + alt - l : chunkc tiling::window --use-temporary-ratio 0.1 --adjust-window-edge east
+ralt - j : chunkc tiling::window --use-temporary-ratio 0.1 --adjust-window-edge south
+ralt - k : chunkc tiling::window --use-temporary-ratio -0.1 --adjust-window-edge south
+ralt - h : chunkc tiling::window --use-temporary-ratio 0.1 --adjust-window-edge west
+ralt - l : chunkc tiling::window --use-temporary-ratio -0.1 --adjust-window-edge west
 
 # set insertion point for focused container
 #ctrl + alt - f : chunkc tiling::window --use-insertion-point cancel
