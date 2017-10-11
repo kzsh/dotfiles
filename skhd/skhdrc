@@ -75,30 +75,43 @@ shift + lcmd - l : chunkc tiling::window --warp-floating right
 # rcmd - f : if [[ "$(chunkc tiling::query --monitor id)" == "1" ]]; then khd -p "ctrl + alt + cmd - 4"; else khd -p "ctrl + alt + cmd - 9"; fi
 # rcmd - g : if [[ "$(chunkc tiling::query --monitor id)" == "1" ]]; then khd -p "ctrl + alt + cmd - 5"; else khd -p "ctrl + alt + cmd + shift - 0"; fi
 
-rcmd - a : khd -p "ctrl + alt + cmd - 1"
-rcmd - s : khd -p "ctrl + alt + cmd - 2"
-rcmd - d : khd -p "ctrl + alt + cmd - 3"
-rcmd - f : khd -p "ctrl + alt + cmd - 4"
-rcmd - g : khd -p "ctrl + alt + cmd - 5"
+rcmd - q :  khd -p "ctrl + alt + cmd - 1"
+rcmd - w :  khd -p "ctrl + alt + cmd - 2"
+rcmd - e :  khd -p "ctrl + alt + cmd - 3"
+rcmd - r :  khd -p "ctrl + alt + cmd - 4"
+rcmd - t :  khd -p "ctrl + alt + cmd - 5"
 
-rcmd - z :  khd -p "ctrl + alt + cmd - 6"
-rcmd - x :  khd -p "ctrl + alt + cmd - 7"
-rcmd - c :  khd -p "ctrl + alt + cmd - 8"
-rcmd - v :  khd -p "ctrl + alt + cmd - 9"
-rcmd - b :  khd -p "ctrl + alt + cmd - 0"
+rcmd - a : khd -p "ctrl + alt + cmd - 6"
+rcmd - s : khd -p "ctrl + alt + cmd - 7"
+rcmd - d : khd -p "ctrl + alt + cmd - 8"
+rcmd - f : khd -p "ctrl + alt + cmd - 9"
+rcmd - g : khd -p "ctrl + alt + cmd - 0"
+
+rcmd - z :  khd -p "ctrl + alt + cmd + shift - 1"
+rcmd - x :  khd -p "ctrl + alt + cmd + shift - 2"
+rcmd - c :  khd -p "ctrl + alt + cmd + shift - 3"
+rcmd - v :  khd -p "ctrl + alt + cmd + shift - 4"
+rcmd - b :  khd -p "ctrl + alt + cmd + shift - 5"
 
 # send window to desktop
-rcmd + shift - a : chunkc tiling::window --send-to-desktop 1
-rcmd + shift - s : chunkc tiling::window --send-to-desktop 2
-rcmd + shift - d : chunkc tiling::window --send-to-desktop 3
-rcmd + shift - f : chunkc tiling::window --send-to-desktop 4
-rcmd + shift - g : chunkc tiling::window --send-to-desktop 5
-rcmd + shift - z : chunkc tiling::window --send-to-desktop 6
-rcmd + shift - x : chunkc tiling::window --send-to-desktop 7
-rcmd + shift - c : chunkc tiling::window --send-to-desktop 8
-rcmd + shift - v : chunkc tiling::window --send-to-desktop 9
-rcmd + shift - b : chunkc tiling::window --send-to-desktop 10
 
+rcmd + shift - q : chunkc tiling::window --send-to-desktop 1
+rcmd + shift - w : chunkc tiling::window --send-to-desktop 2
+rcmd + shift - e : chunkc tiling::window --send-to-desktop 3
+rcmd + shift - r : chunkc tiling::window --send-to-desktop 4
+rcmd + shift - t : chunkc tiling::window --send-to-desktop 5
+
+rcmd + shift - a : chunkc tiling::window --send-to-desktop 6
+rcmd + shift - s : chunkc tiling::window --send-to-desktop 7
+rcmd + shift - d : chunkc tiling::window --send-to-desktop 8
+rcmd + shift - f : chunkc tiling::window --send-to-desktop 9
+rcmd + shift - g : chunkc tiling::window --send-to-desktop 10
+
+rcmd + shift - z : chunkc tiling::window --send-to-desktop 11
+rcmd + shift - x : chunkc tiling::window --send-to-desktop 12
+rcmd + shift - c : chunkc tiling::window --send-to-desktop 13
+rcmd + shift - v : chunkc tiling::window --send-to-desktop 14
+rcmd + shift - b : chunkc tiling::window --send-to-desktop 15
 # focus monitor
 rcmd - m : if [[ "$(chunkc tiling::query --monitor id)" == "1" ]]; then chunkc tiling::monitor -f 2; else chunkc tiling::monitor -f 1; fi
 # ctrl + alt - k : chunkc tiling::monitor -f prev
