@@ -14,5 +14,10 @@ brew install tig
 brew install tmux
 brew install wget
 
+brew install koekeishiya/formulae/skhd
+brew install koekeishiya/formulae/khd
+brew tap crisidev/homebrew-chunkwm
+brew install chunkwm
+
 # tmux
 brew install reattach-to-user-namespace
