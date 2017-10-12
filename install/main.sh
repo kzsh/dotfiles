@@ -23,8 +23,6 @@ shopt -s globstar
 
 PATH="$PATH:$HOME/bin"
 
-. "$BASE_DIR/bash_debug_functions.sh"
-
 sources=(
   "$BASE_DIR/bash_debug_functions.sh"
   "$BASE_DIR/prompt.sh"
