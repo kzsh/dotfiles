@@ -26,6 +26,7 @@ PATH="$PATH:$HOME/bin"
 sources=(
   "$BASE_DIR/bash_debug_functions.sh"
   "$BASE_DIR/prompt.sh"
+  "$BASE_DIR/chunkwm_vim_compatability.sh"
   "$BASE_DIR/config_bash_history.sh"
   "$BASE_DIR/bash_aliases.sh"
   "$BASE_DIR/bash_functions.sh"
