@@ -29,8 +29,9 @@ alias vim="nvim"
 alias vis="nvim -S ~/vimsession"
 alias vims="nvim -S ~/vimsession"
 
-alias journal='vim + "~/journal/$(date +%Y)/$(date +%Y%m%d).md" -c "execute \"normal! Go$(date +%T)\<CR>========\<CR>\" | startinsert"'
-alias jj='vim + "~/journal/$(date +%Y)/$(date +%Y%m%d).md" -c "execute \"normal! Go$(date +%T)\<CR>========\<CR>\" | startinsert"'
+JOURNAL_ALIAS='vim + "/Users/username/journal/$(date +%Y)/$(date +%Y%m%d).md" -c "execute \"normal! Go$(date +%T)\<CR>========\<CR>\" | startinsert "'
+alias journal="$JOURNAL_ALIAS"
+alias jj="$JOURNAL_ALIAS"
 
 # Brightness control
 if [ -f /usr/local/bin/screen-backlight ]; then
