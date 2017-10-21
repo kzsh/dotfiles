@@ -51,7 +51,7 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>source</key>
-					<string>on run {input, parameters}	tell application "Google Chrome"		if exists (first window whose (title of first tab begins with "DevDocs")) then			activate (first window whose (title of first tab begins with "DevDocs"))			return "process_running"		else			return "start_process"		end if	end tellend run</string>
+					<string>on run {input, parameters}	tell application "Google Chrome"		repeat with w in windows			if title of w begins with "DevDocs" then				if index of w is not 1 then					activate					set index of w to 1					return "focused window"				end if			end if		end repeat		-- no window matches our query		return "start_process"	end tellend run</string>
 				</dict>
 				<key>BundleIdentifier</key>
 				<string>com.apple.Automator.RunScript</string>
@@ -105,7 +105,7 @@ end run</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>218.000000:316.000000</string>
+				<string>218.000000:496.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run AppleScript.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -286,7 +286,7 @@ fi</string>
 	</array>
 	<key>connectors</key>
 	<dict>
-		<key>82558424-F954-4087-885E-C9FBE3990D63</key>
+		<key>92A5D627-5BB4-4BB8-9A25-68A02D6A21C6</key>
 		<dict>
 			<key>from</key>
 			<string>E0FD1B5A-5FD1-4C0C-9BD5-06FF708B60A1 - E0FD1B5A-5FD1-4C0C-9BD5-06FF708B60A1</string>
