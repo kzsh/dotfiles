@@ -26,8 +26,8 @@ alias be="bundle exec"
 alias vi="nvim"
 alias vim="nvim"
 
-alias vis="nvim -S ~/vimsession"
-alias vims="nvim -S ~/vimsession"
+alias vir="nvim -S ~/vimsession"
+alias vimr="nvim -S ~/vimsession"
 
 JOURNAL_ALIAS='vim + "/Users/username/journal/$(date +%Y)/$(date +%Y%m%d).md" -c "execute \"normal! Go$(date +%T)\<CR>========\<CR>\" | startinsert "'
 alias journal="$JOURNAL_ALIAS"
