@@ -18,3 +18,5 @@ function vis() {
 
   nvim $(rg --files --no-ignore --hidden --follow -g "!{.git,node_modules}/*" "$dir" 2> /dev/null  | fzf)
 }
+
+alias vims="vis"
