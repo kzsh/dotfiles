@@ -12,3 +12,8 @@ export PROMPT_COMMAND='if [ "$(id -u)" -ne 0 ]; then echo "$(date "+%Y-%m-%d.%H:
 
 # Save and reload the history after each command finishes
 PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+
+# fh - search command history in ~/.logs (all history)
+fh() {
+  rg -o -e "\s?\d+\s{2}.*" -e "\s{2}.*" $(ls -lrt -d -1 $HOME/.logs/{*,.*} | grep -v "\.logs\/\.") | awk '{$1=""; $2=""; print $0}' | fzf --tac^C
+}
