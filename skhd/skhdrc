@@ -37,10 +37,10 @@
 # alt - w : chunkc tiling::window --close
 
 # focus window
-ctrl - h -> : if [[ "$(chunkc tiling::query --window name)" != *"vim_hook"* ]]; then chunkc tiling::window --focus west; fi
-ctrl - j -> : if [[ "$(chunkc tiling::query --window name)" != *"vim_hook"* ]]; then chunkc tiling::window --focus south; fi
-ctrl - k -> : if [[ "$(chunkc tiling::query --window name)" != *"vim_hook"* ]]; then chunkc tiling::window --focus north; fi
-ctrl - l -> : if [[ "$(chunkc tiling::query --window name)" != *"vim_hook"* ]]; then chunkc tiling::window --focus east; fi
+ctrl - h : if [[ "$(chunkc tiling::query --window name)" == *"vim_hook"* ]]; then khd -p "ctrl + shift - h"; else chunkc tiling::window --focus west; fi
+ctrl - j : if [[ "$(chunkc tiling::query --window name)" == *"vim_hook"* ]]; then khd -p "ctrl + shift - j"; else chunkc tiling::window --focus south; fi
+ctrl - k : if [[ "$(chunkc tiling::query --window name)" == *"vim_hook"* ]]; then khd -p "ctrl + shift - k"; else chunkc tiling::window --focus north; fi
+ctrl - l : if [[ "$(chunkc tiling::query --window name)" == *"vim_hook"* ]]; then khd -p "ctrl + shift - l"; else chunkc tiling::window --focus east; fi
 
 # equalize size of windows
 shift + alt - 0 : chunkc tiling::desktop --equalize
