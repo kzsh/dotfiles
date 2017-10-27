@@ -435,17 +435,17 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>524 260 606 456 0 0 1920 1057 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>53 321 770 429 0 0 1280 800 </string>
+	<string>53 413 918 381 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>2 0 1276 800 0 0 1280 800 </string>
-	<key>NSWindow Frame iTerm Window 1</key>
-	<string>2 0 1276 800 0 0 1280 800 </string>
-	<key>NSWindow Frame iTerm Window 2</key>
 	<string>1 0 1277 800 0 0 1280 800 </string>
+	<key>NSWindow Frame iTerm Window 1</key>
+	<string>1 0 1277 800 0 0 1280 800 </string>
+	<key>NSWindow Frame iTerm Window 2</key>
+	<string>2 0 1276 800 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
-	<string>643 0 634 388 0 0 1280 778 </string>
+	<string>640 6 640 388 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 4</key>
-	<string>1 0 1277 778 0 0 1280 778 </string>
+	<string>961 6 318 388 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 5</key>
 	<string>643 0 634 778 0 0 1280 778 </string>
 	<key>NSWindow Frame iTerm Window 6</key>
@@ -469,10 +469,14 @@
 			<false/>
 			<key>Ansi 0 Color</key>
 			<dict>
+				<key>Alpha Component</key>
+				<real>1</real>
 				<key>Blue Component</key>
-				<real>0.19370138645172119</real>
+				<real>0.20000000000000001</real>
+				<key>Color Space</key>
+				<string>sRGB</string>
 				<key>Green Component</key>
-				<real>0.15575926005840302</real>
+				<real>0.15686274509803921</real>
 				<key>Red Component</key>
 				<real>0.0</real>
 			</dict>
@@ -633,12 +637,16 @@
 			<true/>
 			<key>Background Color</key>
 			<dict>
+				<key>Alpha Component</key>
+				<real>1</real>
 				<key>Blue Component</key>
-				<real>0.15170273184776306</real>
+				<real>0.10980392156862745</real>
+				<key>Color Space</key>
+				<string>sRGB</string>
 				<key>Green Component</key>
-				<real>0.11783610284328461</real>
+				<real>0.10980392156862745</real>
 				<key>Red Component</key>
-				<real>0.0</real>
+				<real>0.10980392156862745</real>
 			</dict>
 			<key>Background Image Location</key>
 			<string></string>
