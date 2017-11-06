@@ -34,7 +34,7 @@
 # cmd - return : open -na /Applications/Kitty.app
 
 # close focused window
-# alt - w : chunkc tiling::window --close
+lcmd - w  -> : chunkc tiling::window --focus next
 
 # focus window
 ctrl - h : if [[ "$(chunkc tiling::query --window name)" == *"vim_hook"* ]]; then khd -p "ctrl + shift - h"; else chunkc tiling::window --focus west; fi
