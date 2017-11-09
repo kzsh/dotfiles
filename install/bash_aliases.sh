@@ -14,6 +14,7 @@ alias l='ls -l'
 # open current dir in Finder
 alias oo='open -a Finder ./'
 alias aa='open -a'
+alias chrome='open -a Google\ Chrome'
 
 # cd to top level of the current git repo
 alias cdg='cd $(git rev-parse --show-toplevel)'
