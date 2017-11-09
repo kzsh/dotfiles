@@ -21,6 +21,8 @@ alias cdg='cd $(git rev-parse --show-toplevel)'
 
 alias be="bundle exec"
 
+alias ag="rg"
+
 # use neovim
 alias vi="nvim"
 alias vim="nvim"
