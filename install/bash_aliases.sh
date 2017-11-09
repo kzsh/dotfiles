@@ -19,8 +19,6 @@ alias chrome='open -a Google\ Chrome'
 # cd to top level of the current git repo
 alias cdg='cd $(git rev-parse --show-toplevel)'
 
-alias ghb='hub browse'
-
 alias be="bundle exec"
 
 # use neovim
