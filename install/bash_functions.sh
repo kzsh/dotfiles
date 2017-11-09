@@ -21,3 +21,11 @@ function vis() {
 }
 
 alias vims="vis"
+
+function kb() {
+  local curr_dir
+  curr_dir=$(pwd)
+  cd "$HOME/kb" || exit "kb not found"
+  vis "$@"
+  cd "$curr_dir" || exit "Could not return to dir from which kb was launched"
+}
