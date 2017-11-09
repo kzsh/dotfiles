@@ -3,3 +3,5 @@
 # Allow fixing to specific versions
 brew tap homebrew/boneyard
 brew tap caskroom/versions
+
+brew install editorconfig
