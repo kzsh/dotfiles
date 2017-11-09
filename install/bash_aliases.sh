@@ -11,11 +11,11 @@ alias ll='ls -al'
 alias l='ls -l'
 
 
-#open current dir in Finder
+# open current dir in Finder
 alias oo='open -a Finder ./'
 alias aa='open -a'
 
-#cd to top level of the current git repo
+# cd to top level of the current git repo
 alias cdg='cd $(git rev-parse --show-toplevel)'
 
 alias ghb='hub browse'
