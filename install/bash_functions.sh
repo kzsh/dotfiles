@@ -8,6 +8,7 @@ function f () {
   find . -iname "$1"
   #mdfind "*$1*" -onlyin -name .
 }
+
 function vis() {
   local dir
   if [[ -z "$1" ]]; then
