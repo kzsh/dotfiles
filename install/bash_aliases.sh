@@ -21,7 +21,7 @@ alias cdg='cd $(git rev-parse --show-toplevel)'
 
 alias be="bundle exec"
 
-alias ag="rg"
+alias ag="rg --colors 'match:fg:blue' --colors 'path:fg:yellow' --colors 'line:fg:yellow'"
 
 # use neovim
 alias vi="nvim"
