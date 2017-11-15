@@ -6,6 +6,8 @@
 	<true/>
 	<key>AboutToPasteTabsWithCancel_selection</key>
 	<integer>2</integer>
+	<key>AdjustWindowForFontSizeChange</key>
+	<false/>
 	<key>AppleAntiAliasingThreshold</key>
 	<integer>1</integer>
 	<key>AppleScrollAnimationEnabled</key>
@@ -290,6 +292,13 @@
 			<key>Text</key>
 			<string></string>
 		</dict>
+		<key>0x74-0x100000</key>
+		<dict>
+			<key>Action</key>
+			<integer>26</integer>
+			<key>Text</key>
+			<string>53E17D7A-7076-4183-99B4-B0DF5781DD04</string>
+		</dict>
 		<key>0x9-0x40000</key>
 		<dict>
 			<key>Action</key>
@@ -368,8 +377,16 @@
 			<string></string>
 		</dict>
 	</dict>
+	<key>HideActivityIndicator</key>
+	<false/>
 	<key>HideScrollbar</key>
 	<false/>
+	<key>HideTab</key>
+	<true/>
+	<key>HideTabCloseButton</key>
+	<true/>
+	<key>HideTabNumber</key>
+	<true/>
 	<key>HotkeyMigratedFromSingleToMulti</key>
 	<true/>
 	<key>JobName</key>
@@ -395,7 +412,7 @@
 	gAKACoAN0xAJChEVGVdOUy5rZXlzoxITFIADgASABaMWFxiABoAHgAiACVpJZGVudGlm
 	aWVyVVdpZHRoVkhpZGRlblEwI0BowAAAAAAACNIhIiMkWiRjbGFzc25hbWVYJGNsYXNz
 	ZXNcTlNEaWN0aW9uYXJ5oiMlWE5TT2JqZWN00xAJCicrGaMSExSAA4AEgAWjLC0YgAuA
-	DIAIgAlRMSNAc7AAAAAAANIhIjM0Xk5TTXV0YWJsZUFycmF5ozM1JVdOU0FycmF5XxAP
+	DIAIgAlRMSNAdKAAAAAAANIhIjM0Xk5TTXV0YWJsZUFycmF5ozM1JVdOU0FycmF5XxAP
 	TlNLZXllZEFyY2hpdmVy0Tg5VUFycmF5gAEACAARABoAIwAtADIANwBGAEwAUQBcAGMA
 	ZgBoAGoAbABzAHsAfwCBAIMAhQCJAIsAjQCPAJEAnACiAKkAqwC0ALUAugDFAM4A2wDe
 	AOcA7gDyAPQA9gD4APwA/gEAAQIBBAEGAQ8BFAEjAScBLwFBAUQBSgAAAAAAAAIBAAAA
@@ -421,25 +438,25 @@
 	<key>NSWindow Frame ProfilesPanel</key>
 	<string>345 735 735 382 0 0 1920 1177 </string>
 	<key>NSWindow Frame SUStatusFrame</key>
-	<string>762 786 400 129 0 0 1920 1178 </string>
+	<string>442 503 400 129 0 0 1280 800 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
-	<string>332 289 620 392 0 0 1280 778 </string>
+	<string>332 306 620 392 0 0 1280 800 </string>
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>524 260 606 456 0 0 1920 1057 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>558 525 918 494 0 0 1920 1178 </string>
+	<string>53 287 770 429 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>4 31 1271 747 0 0 1280 778 </string>
+	<string>2 0 1916 1080 0 0 1920 1080 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>4 23 1271 755 0 0 1280 778 </string>
+	<string>2 0 1916 1080 0 0 1920 1080 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>6 286 1273 765 0 0 1920 1057 </string>
+	<string>2 0 1916 1080 0 0 1920 1080 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
-	<string>4 0 1276 777 0 0 1280 777 </string>
+	<string>1 0 1277 800 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 4</key>
-	<string>4 0 1276 777 0 0 1280 777 </string>
+	<string>640 0 640 800 0 0 1280 800 </string>
 	<key>NSWindow Frame iTerm Window 5</key>
-	<string>4 0 1276 777 0 0 1280 777 </string>
+	<string>643 0 634 778 0 0 1280 778 </string>
 	<key>NSWindow Frame iTerm Window 6</key>
 	<string>4 14 1271 763 0 0 1280 777 </string>
 	<key>NSWindow Frame iTerm Window 7</key>
@@ -461,10 +478,14 @@
 			<false/>
 			<key>Ansi 0 Color</key>
 			<dict>
+				<key>Alpha Component</key>
+				<real>1</real>
 				<key>Blue Component</key>
-				<real>0.19370138645172119</real>
+				<real>0.20000000000000001</real>
+				<key>Color Space</key>
+				<string>sRGB</string>
 				<key>Green Component</key>
-				<real>0.15575926005840302</real>
+				<real>0.15686274509803921</real>
 				<key>Red Component</key>
 				<real>0.0</real>
 			</dict>
@@ -625,12 +646,16 @@
 			<true/>
 			<key>Background Color</key>
 			<dict>
+				<key>Alpha Component</key>
+				<real>1</real>
 				<key>Blue Component</key>
-				<real>0.15170273184776306</real>
+				<real>0.10980392156862745</real>
+				<key>Color Space</key>
+				<string>sRGB</string>
 				<key>Green Component</key>
-				<real>0.11783610284328461</real>
+				<real>0.10980392156862745</real>
 				<key>Red Component</key>
-				<real>0.0</real>
+				<real>0.10980392156862745</real>
 			</dict>
 			<key>Background Image Location</key>
 			<string></string>
@@ -1207,6 +1232,8 @@
 					<string>\btelnet:([a-z0-9A-Z_]+@)?([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\b</string>
 				</dict>
 			</array>
+			<key>Space</key>
+			<integer>0</integer>
 			<key>Sync Title</key>
 			<false/>
 			<key>Tags</key>
@@ -1232,17 +1259,15 @@
 			<key>Visual Bell</key>
 			<true/>
 			<key>Window Type</key>
-			<integer>0</integer>
+			<integer>12</integer>
 			<key>Working Directory</key>
 			<string>/Users/andrew</string>
 		</dict>
 	</array>
 	<key>NoSyncConfirmBeta</key>
 	<true/>
-	<key>NoSyncDoNotWarnBeforeMultilinePaste</key>
-	<false/>
 	<key>NoSyncDoNotWarnBeforeMultilinePaste_selection</key>
-	<integer>0</integer>
+	<integer>1</integer>
 	<key>NoSyncDoNotWarnBeforePastingOneLineEndingInNewlineAtShellPrompt</key>
 	<false/>
 	<key>NoSyncDoNotWarnBeforePastingOneLineEndingInNewlineAtShellPrompt_selection</key>
@@ -1404,7 +1429,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-10-05T16:38:21Z</date>
+	<date>2017-11-10T14:10:04Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>Secure Input</key>
@@ -1412,17 +1437,21 @@
 	<key>ShowFullScreenTabBar</key>
 	<true/>
 	<key>SplitPaneDimmingAmount</key>
-	<real>0.3892753405448719</real>
+	<real>0.10000000000000001</real>
+	<key>StretchTabsToFillBar</key>
+	<true/>
 	<key>TabStyle</key>
-	<integer>0</integer>
+	<integer>1</integer>
 	<key>TabViewType</key>
 	<integer>0</integer>
 	<key>TripleClickSelectsFullWrappedLines</key>
 	<true/>
 	<key>UseBorder</key>
 	<false/>
+	<key>UseLionStyleFullscreen</key>
+	<false/>
 	<key>WindowNumber</key>
-	<true/>
+	<false/>
 	<key>WordCharacters</key>
 	<string>/-+\~_.</string>
 	<key>findIgnoreCase_iTerm</key>
@@ -1432,7 +1461,7 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>3.1.2</string>
+	<string>3.1.4</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>0</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
