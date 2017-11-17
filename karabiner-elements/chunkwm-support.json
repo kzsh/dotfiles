@@ -276,6 +276,53 @@
           ]
         }
       ]
+    }, {
+      "description": "trigger brightness value script on brightness change",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "f1",
+            "modifiers": {
+              "mandatory": [
+                "fn"
+              ]
+            }
+          },
+          "to": [
+            {
+              "shell_command": "/usr/local/bin/set_space_brightness_from_current_brightness.sh"
+            },
+            {
+              "key_code": "f1",
+              "modifiers": [
+                "fn"
+              ]
+            }
+          ]
+        }, {
+          "type": "basic",
+          "from": {
+            "key_code": "f2",
+            "modifiers": {
+              "mandatory": [
+                "fn"
+              ]
+            }
+          },
+          "to": [
+            {
+              "shell_command": "/usr/local/bin/set_space_brightness_from_current_brightness.sh"
+            },
+            {
+              "key_code": "f2",
+              "modifiers": [
+                "fn"
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }
