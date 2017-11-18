@@ -1,16 +1,18 @@
 #!/bin/bash
-BRIGHTNESS_PATH="$HOME/.config/chunkwm/space_brightness"
-BRIGHTNESS_FILE="space_brightness"
 BRIGHTNESS_COMMAND=$(which brightness)
 if [[ -z "$BRIGHTNESS_COMMAND" ]]; then
   echo "'brightness' command couldn't be found.  Install it."
   exit 1
 fi
 
+CHUNKWM_PATH="$HOME/.config/chunkwm"
+BRIGHTNESS_FILE_NAME="space_brightness"
+BRIGHTNESS_FILE_PATH="$CHUNKWM_PATH/$BRIGHTNESS_FILE_NAME"
+
 function main() {
-  if [[ -s $BRIGHTNESS_PATH/$BRIGHTNESS_FILE ]]; then
-    mkdir -p $BRIGHTNESS_PATH
-    cat << EOF > "$BRIGHTNESS_FILE"
+  if [[ ! -s $BRIGHTNESS_FILE_PATH ]]; then
+    mkdir -p "$CHUNKWM_PATH"
+    cat << EOF > "$BRIGHTNESS_FILE_PATH"
 q=0.5
 w=0.5
 e=0.5
