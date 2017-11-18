@@ -1,3 +1,6 @@
 #!/bin/bash
-rm "$HOME/.config/chunkwm/current_space/"*
-touch "$HOME/.config/chunkwm/current_space/$1"
+CHUNKWM_DIR="$HOME/.config/chunkwm"
+CURRENT_SPACE_DIR="$CHUNKWM_DIR/current_space"
+mkdir -p "$CURRENT_SPACE_DIR"
+rm "$CURRENT_SPACE_DIR"/*
+touch "$CURRENT_SPACE_DIR/$1"
