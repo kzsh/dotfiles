@@ -1,6 +1,12 @@
 #!/bin/bash
 BRIGHTNESS_PATH="$HOME/.config/chunkwm/space_brightness"
 BRIGHTNESS_FILE="space_brightness"
+BRIGHTNESS_COMMAND=$(which brightness)
+if [[ -z "$BRIGHTNESS_COMMAND" ]]; then
+  echo "'brightness' command couldn't be found.  Install it."
+  exit 1
+fi
+
 function main() {
   if [[ -s $BRIGHTNESS_PATH/$BRIGHTNESS_FILE ]]; then
     mkdir -p $BRIGHTNESS_PATH
@@ -28,9 +34,9 @@ EOF
   else
     brightness_setting=$(get_setting_for_space "$1")
   fi
-  /usr/local/bin/brightness "$brightness_setting"
-}
 
+  $BRIGHTNESS_COMMAND "$brightness_setting"
+}
 
 function get_setting_for_space() {
   local setting
