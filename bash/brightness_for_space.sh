@@ -1,5 +1,6 @@
 #!/bin/bash
-BRIGHTNESS_COMMAND=$(which brightness)
+BRIGHTNESS_COMMAND=/usr/local/bin/brightness
+
 if [[ -z "$BRIGHTNESS_COMMAND" ]]; then
   echo "'brightness' command couldn't be found.  Install it."
   exit 1
