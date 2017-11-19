@@ -49,8 +49,8 @@ function get_setting_for_space() {
 
 function set_setting_for_space() {
   local setting
-  sed -i '' -e 's/'$1'=.*/'$1'='$2'/' "$HOME/.config/chunkwm/space_brightness"
-  setting=$(cat "$HOME/.config/chunkwm/space_brightness" | grep "^$1=.*" )
+  sed -i '' -e 's/'$1'=.*/'$1'='$2'/' "$BRIGHTNESS_FILE_PATH"
+  setting=$(cat "$BRIGHTNESS_FILE_PATH" | grep "^$1=.*" )
   echo "${setting:2:5}"
 }
 
