@@ -72,8 +72,6 @@ shift + lcmd - l : chunkc tiling::window --warp-floating right
 # NOTE: this is handled by a karabiner script
 
 # send window to desktop
-
-# send window to desktop
 rcmd + shift - q : chunkc tiling::window --send-to-desktop 1
 rcmd + shift - w : chunkc tiling::window --send-to-desktop 2
 rcmd + shift - e : chunkc tiling::window --send-to-desktop 3
