@@ -35,6 +35,7 @@
 
 # close focused window
 # lcmd - w  -> : chunkc tiling::window --focus next
+ctrl + alt + cmd - d : ~/src/scripts/bash/set_background_color_to_dialog_result.sh
 
 # focus window
 ctrl - h : if [[ "$(chunkc tiling::query --window name)" == *"vim_hook"* ]]; then khd -p "ctrl + shift - h"; else chunkc tiling::window --focus west; fi
