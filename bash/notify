@@ -14,4 +14,4 @@ TITLE=${args[0]}
 
 CONTENT=("${args[@]:1}")
 
-osascript -e "display notification \"${CONTENT[@]}\" with title \"$TITLE\""
+osascript -e "display notification quoted form of \"${CONTENT[*]}\" with title quoted form of \"$TITLE\""
