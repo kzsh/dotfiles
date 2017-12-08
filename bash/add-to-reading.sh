@@ -1,11 +1,5 @@
 #!/bin/bash
-HEADER="To: andrew@hunt.li\nSubject: [automated] reading\nContent-Type: text/plain"
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+BODY="${*}"
 
-if [[ "$1" == "--dry-run" ]]; then
-  BODY="${*:2}"
-  echo -e "${HEADER}\n\n${BODY}"
-else
-  BODY="${*}"
-  echo -e "${HEADER}\n\n${BODY}" | sendmail -t
-fi
-
+"$SCRIPT_DIR/send_email.sh" "andrew@hunt.li" "[automated] reading" "$BODY"
