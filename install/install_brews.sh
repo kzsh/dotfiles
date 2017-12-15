@@ -13,6 +13,7 @@ brew install tree
 brew install tig
 brew install tmux
 brew install wget
+brew install coreutils
 
 brew install koekeishiya/formulae/skhd
 brew install koekeishiya/formulae/khd
