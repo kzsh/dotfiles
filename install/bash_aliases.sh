@@ -29,8 +29,8 @@ alias ag="rg --colors 'match:fg:red' --colors 'path:fg:yellow' --colors 'line:fg
 alias vi="nvim"
 alias vim="nvim"
 
-alias vir="nvim -S ~/vimsession"
-alias vimr="nvim -S ~/vimsession"
+alias vir="nvim -S \$VIM_DIR/.vimsession"
+alias vimr="nvim -S \$VIM_DIR/.vimsession"
 
 JOURNAL_ALIAS='vim + "/Users/username/journal/$(date +%Y)/$(date +%Y%m%d).md" -c "execute \"normal! Go$(date +%T)\<CR>========\<CR>\" | startinsert "'
 alias journal="$JOURNAL_ALIAS"
