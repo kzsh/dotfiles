@@ -4,6 +4,9 @@ alias gco='git checkout'
 alias gb='git branch'
 alias gl='git pull'
 
+# cd to top level of the current git repo
+alias cdg='cd $(git rev-parse --show-toplevel)'
+
 # color output
 alias ls='ls -G'
 
@@ -16,12 +19,11 @@ alias oo='open -a Finder ./'
 alias aa='open -a'
 alias chrome='open -a Google\ Chrome'
 
-# cd to top level of the current git repo
-alias cdg='cd $(git rev-parse --show-toplevel)'
-
+# Ruby
 alias be="bundle exec"
 
-alias ag="rg --colors 'match:fg:blue' --colors 'path:fg:yellow' --colors 'line:fg:yellow'"
+# Keep convenient command but use rg
+alias ag="rg --colors 'match:fg:red' --colors 'path:fg:yellow' --colors 'line:fg:yellow'"
 
 # use neovim
 alias vi="nvim"
