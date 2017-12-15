@@ -32,6 +32,9 @@ alias vim="nvim"
 alias vir="nvim -S \$VIM_DIR/.vimsession"
 alias vimr="nvim -S \$VIM_DIR/.vimsession"
 
+# edit all modified files in and out of the index
+alias vimm="vim -- \$(git st --porcelain | awk '{ print \$2}')"
+
 JOURNAL_ALIAS='vim + "/Users/username/journal/$(date +%Y)/$(date +%Y%m%d).md" -c "execute \"normal! Go$(date +%T)\<CR>========\<CR>\" | startinsert "'
 alias journal="$JOURNAL_ALIAS"
 alias jj="$JOURNAL_ALIAS"
