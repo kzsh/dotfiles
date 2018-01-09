@@ -29,3 +29,17 @@ function kb() {
   vis "$@"
   cd "$curr_dir" || exit "Could not return to dir from which kb was launched"
 }
+
+function vilast() {
+  local most_recent_grep
+  most_recent_grep=$(tail -r -50 ~/.bash_history | grep "^\(ag\|rg\|grep\) .\+" | grep -v " -l " | head -1)
+  if [[ -n $most_recent_grep ]]; then
+    nvim -- "$(rg -l "$(echo "$most_recent_grep" | awk '{first = $1; $1 = ""; sub(/^[ \t]+/, ""); print $0}')")"
+  else
+    echo "no searches recent enough."
+  fi
+}
+
+function vimlast() {
+  vilast "$@"
+}
