@@ -15,7 +15,7 @@ SOLAR_WHITE=$(tput setaf 7)
 # Prompt styles
 style_user="\[${RESET}${SOLAR_ORANGE}\]"
 style_host="\[${RESET}${SOLAR_YELLOW}\]"
-style_path="\[${RESET}${SOLAR_GREEN}\]"
+style_path="\[${RESET}${BOLD}${SOLAR_WHITE}\]"
 style_chars="\[${RESET}${SOLAR_WHITE}\]"
 style_important="\[${RESET}${BOLD}${SOLAR_BLUE}\]"
 style_branch="${SOLAR_CYAN}"
@@ -62,7 +62,7 @@ function prompt_git() {
   if [[ "$flags" ]]; then
     output="$output[$flags]"
   fi
-  echo -ne "${SOLAR_WHITE} on ${style_branch}${output}$(git_repo_state)"
+  echo -ne "${RESET}${SOLAR_WHITE} on ${style_branch}${output}$(git_repo_state)"
 }
 
 # Show the name of the current virtualenv
