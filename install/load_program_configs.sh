@@ -20,6 +20,15 @@ function build_aliases() {
 . "$HOME/src/scripts/install/bash_debug_functions.sh"
 
 # shellcheck disable=1090
+. "$DIR/program_config/git.sh"
+
+# shellcheck disable=1090
+. "$DIR/program_config/pass.sh"
+
+# shellcheck disable=1090
+. "$DIR/program_config/nvm.sh"
+
+# shellcheck disable=1090
 . "$DIR/program_config/vim.sh"
 
 # shellcheck disable=1090
