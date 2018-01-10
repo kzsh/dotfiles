@@ -6,16 +6,15 @@ BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 export DEBUG_STARTUP=
 
-VIM=$(which nvim)
-if [ -z "$VIM" ]; then
-  VIM=$(which vim)
+if which nvim > /dev/null 2>&1; then
+  EDITOR=$(which nvim)
+elif which vim > /dev/null 2>&1; then
+  EDITOR=$(which vim)
+else
+  EDITOR=$(which vi)
 fi
 
-if [ -z "$VIM" ]; then
-  VIM=$(which vi)
-fi
-
-export EDITOR=$VIM
+export EDITOR
 
 set -o vi
 set editing-mode vi
