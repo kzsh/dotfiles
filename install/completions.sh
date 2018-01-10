@@ -1,7 +1,7 @@
 completion_sources=(
-  "$HOME/src/scripts/bash/completions/git/git-completion.sh"
-  "$(brew --prefix pass)/etc/bash_completion.d/pass"
-  "$(brew --prefix nvm)/etc/bash_completion.d/nvm"
+  #"$HOME/src/scripts/bash/completions/git/git-completion.sh"
+  #"$(brew --prefix pass)/etc/bash_completion.d/pass"
+  #"$(brew --prefix nvm)/etc/bash_completion.d/nvm"
 )
 
 for src in "${completion_sources[@]}"; do
