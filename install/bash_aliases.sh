@@ -5,7 +5,8 @@ alias gb='git branch'
 alias gl='git pull'
 
 # cd to top level of the current git repo
-alias cdg='cd $(git rev-parse --show-toplevel)'
+alias git_root='git rev-parse --show-toplevel'
+alias cdg='cd $(git_root)'
 
 # color output
 alias ls='ls -G'
