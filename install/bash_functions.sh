@@ -11,13 +11,8 @@ function f () {
 
 function vis() {
   local dir
-  if [[ -z "$1" ]]; then
-    dir="./"
-  else
-    dir="$1"
-  fi
-
-  nvim $(rg --files --no-ignore --hidden --follow -g "!{.git,node_modules}/*" "$dir" 2> /dev/null  | fzf)
+  dir="$(given_path_or_default "$1")"
+  nvim -c ":execute 'Files' $dir"
 }
 
 alias vims="vis"
@@ -40,6 +35,20 @@ function vilast() {
   fi
 }
 
-function vimlast() {
-  vilast "$@"
+alias vimlast="vilast"
+
+function given_path_or_default() {
+  if [[ -z "$1" ]]; then
+    root=$(git_root)
+
+    if [[ "$?" == "0" ]]; then
+      dir="$root"
+    else
+      dir='./'
+    fi
+  else
+    dir="$1"
+  fi
+
+  echo "$dir"
 }
