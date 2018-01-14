@@ -12,7 +12,7 @@ function f () {
 function vis() {
   local dir
   dir="$(given_path_or_default "$1")"
-  nvim -c ":execute 'Files' $dir"
+  nvim -c ":execute 'Files' '$dir'"
 }
 
 alias vims="vis"
