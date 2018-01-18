@@ -13,8 +13,7 @@ function build_aliases() {
 }
 
 # shellcheck disable=1090
-# disable load pyenv.  It should now be loaded via .envrc with projects that use it.
-# . "$DIR/program_config/pyenv.sh"
+. "$DIR/program_config/pyenv.sh"
 
 # shellcheck disable=1090
 . "$HOME/src/scripts/install/bash_debug_functions.sh"
