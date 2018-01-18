@@ -261,7 +261,7 @@
           },
           "to": [
             {
-              "shell_command": "/usr/local/bin/set_space_brightness_from_current_brightness.sh"
+              "shell_command": "~/src/scripts/bash/chunkwm-integrations/set_space_brightness_from_current_brightness.sh"
             },
             {
               "key_code": "f1",
@@ -282,7 +282,7 @@
           },
           "to": [
             {
-              "shell_command": "/usr/local/bin/set_space_brightness_from_current_brightness.sh"
+              "shell_command": "~/src/scripts/bash/chunkwm-integrations/set_space_brightness_from_current_brightness.sh"
             },
             {
               "key_code": "f2",
@@ -296,4 +296,3 @@
     }
   ]
 }
-
