@@ -83,9 +83,27 @@ function tmux_rename_window() {
   esac
 }
 
+function set_iterm2_profile() {
+  is_inverted=$(cat ~/.config/chunkwm/inversion_enabled)
+  if [[ -z "$is_inverted" ]]; then
+    if [[ "$is_inverted" == "1" ]]; then
+      theme="Default Bright"
+    else
+      theme="Default Dark"
+    fi
+
+    if [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
+      echo -e "\033]50;SetProfile=$theme\a"
+    else
+      echo ""
+    fi
+  fi
+}
+
 # Build the prompt
 PS1="\033]0;\a"
 PS1+="\$(tmux_rename_window)"
+PS1+="\$(set_iterm2_profile)"
 PS1+="\n"
 if [[ "$SSH_TTY" ]]; then
   PS1+="${style_important}[SSH] " # [SSH]
