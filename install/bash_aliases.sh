@@ -41,6 +41,8 @@ vimm() {
   nvim -- "$(git st --porcelain | awk '{ print \$2}')"
 }
 
+alias todo='CURR=`pwd`; cd ~/TODO && vim TODO.md; cd $CURR'
+
 # Brightness control
 if [ -f /usr/local/bin/screen-backlight ]; then
   alias sb="sudo /usr/local/bin/screen-backlight"
