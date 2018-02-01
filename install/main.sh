@@ -1,10 +1,8 @@
-#!/bin/bash
-
 # https://github.com/koalman/shellcheck/wiki/SC1090
-
 BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 export DEBUG_STARTUP=
+. "$BASE_DIR/bash_debug_functions.sh"
 
 if which nvim > /dev/null 2>&1; then
   EDITOR=$(which nvim)
@@ -23,7 +21,6 @@ shopt -s globstar
 PATH="$PATH:$HOME/bin"
 
 sources=(
-  "$BASE_DIR/bash_debug_functions.sh"
   "$BASE_DIR/prompt.sh"
   "$BASE_DIR/config_bash_history.sh"
   "$BASE_DIR/bash_aliases.sh"
