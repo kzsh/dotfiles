@@ -52,3 +52,19 @@ function given_path_or_default() {
 
   echo "$dir"
 }
+
+# Run yamllint, looking for config files in a series of logical directories
+function yaml_lint() {
+  paths=(
+    "./"
+    "$(git_root)"
+    "$HOME/.yamllint"
+  )
+
+  for path in "${paths[@]}"; do
+    config_path="$path/.yamllint"
+    [[ -f "$config_path" ]] && "$(which yamllint)" -c "$config_path" $@
+  done
+}
+
+alias yamllint='yaml_lint'
