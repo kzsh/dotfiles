@@ -17,10 +17,15 @@
           "to": [
             {
               "key_code": "1",
-              "modifiers": [ "right_command","left_option", "left_control" ]
+              "modifiers": [
+                "left_shift",
+                "right_command",
+                "left_option"
+              ]
             }
           ]
-        }, {
+        },
+        {
           "type": "basic",
           "from": {
             "key_code": "w",
@@ -33,10 +38,15 @@
           "to": [
             {
               "key_code": "2",
-              "modifiers": [ "right_command","left_option", "left_control" ]
+              "modifiers": [
+                "left_shift",
+                "right_command",
+                "left_option"
+              ]
             }
           ]
-        }, {
+        },
+        {
           "type": "basic",
           "from": {
             "key_code": "e",
@@ -49,10 +59,15 @@
           "to": [
             {
               "key_code": "3",
-              "modifiers": [ "right_command","left_option", "left_control" ]
+              "modifiers": [
+                "left_shift",
+                "right_command",
+                "left_option"
+              ]
             }
           ]
-        }, {
+        },
+        {
           "type": "basic",
           "from": {
             "key_code": "r",
@@ -65,10 +80,15 @@
           "to": [
             {
               "key_code": "4",
-              "modifiers": [ "right_command","left_option", "left_control" ]
+              "modifiers": [
+                "left_shift",
+                "right_command",
+                "left_option"
+              ]
             }
           ]
-        }, {
+        },
+        {
           "type": "basic",
           "from": {
             "key_code": "t",
@@ -81,10 +101,15 @@
           "to": [
             {
               "key_code": "5",
-              "modifiers": [ "right_command","left_option", "left_control" ]
+              "modifiers": [
+                "left_shift",
+                "right_command",
+                "left_option"
+              ]
             }
           ]
-        }, {
+        },
+        {
           "type": "basic",
           "from": {
             "key_code": "a",
@@ -97,10 +122,15 @@
           "to": [
             {
               "key_code": "6",
-              "modifiers": [ "right_command","left_option", "left_control" ]
+              "modifiers": [
+                "left_shift",
+                "right_command",
+                "left_option"
+              ]
             }
           ]
-        }, {
+        },
+        {
           "type": "basic",
           "from": {
             "key_code": "s",
@@ -113,10 +143,15 @@
           "to": [
             {
               "key_code": "7",
-              "modifiers": [ "right_command","left_option", "left_control" ]
+              "modifiers": [
+                "left_shift",
+                "right_command",
+                "left_option"
+              ]
             }
           ]
-        }, {
+        },
+        {
           "type": "basic",
           "from": {
             "key_code": "d",
@@ -129,10 +164,15 @@
           "to": [
             {
               "key_code": "8",
-              "modifiers": [ "right_command","left_option", "left_control" ]
+              "modifiers": [
+                "left_shift",
+                "right_command",
+                "left_option"
+              ]
             }
           ]
-        }, {
+        },
+        {
           "type": "basic",
           "from": {
             "key_code": "f",
@@ -145,10 +185,15 @@
           "to": [
             {
               "key_code": "9",
-              "modifiers": [ "right_command","left_option", "left_control" ]
+              "modifiers": [
+                "left_shift",
+                "right_command",
+                "left_option"
+              ]
             }
           ]
-        }, {
+        },
+        {
           "type": "basic",
           "from": {
             "key_code": "g",
@@ -161,10 +206,15 @@
           "to": [
             {
               "key_code": "0",
-              "modifiers": [ "right_command","left_option", "left_control" ]
+              "modifiers": [
+                "left_shift",
+                "right_command",
+                "left_option"
+              ]
             }
           ]
-        }, {
+        },
+        {
           "type": "basic",
           "from": {
             "key_code": "z",
@@ -177,10 +227,16 @@
           "to": [
             {
               "key_code": "1",
-              "modifiers": [ "left_shift", "right_command","left_option", "left_control" ]
+              "modifiers": [
+                "left_shift",
+                "right_command",
+                "left_option",
+                "left_control"
+              ]
             }
           ]
-        }, {
+        },
+        {
           "type": "basic",
           "from": {
             "key_code": "x",
@@ -193,10 +249,16 @@
           "to": [
             {
               "key_code": "2",
-              "modifiers": [ "left_shift", "right_command","left_option", "left_control" ]
+              "modifiers": [
+                "left_shift",
+                "right_command",
+                "left_option",
+                "left_control"
+              ]
             }
           ]
-        }, {
+        },
+        {
           "type": "basic",
           "from": {
             "key_code": "c",
@@ -209,10 +271,16 @@
           "to": [
             {
               "key_code": "3",
-              "modifiers": [ "left_shift", "right_command","left_option", "left_control" ]
+              "modifiers": [
+                "left_shift",
+                "right_command",
+                "left_option",
+                "left_control"
+              ]
             }
           ]
-        }, {
+        },
+        {
           "type": "basic",
           "from": {
             "key_code": "v",
@@ -225,10 +293,16 @@
           "to": [
             {
               "key_code": "4",
-              "modifiers": [ "left_shift", "right_command","left_option", "left_control" ]
+              "modifiers": [
+                "left_shift",
+                "right_command",
+                "left_option",
+                "left_control"
+              ]
             }
           ]
-        }, {
+        },
+        {
           "type": "basic",
           "from": {
             "key_code": "b",
@@ -241,12 +315,18 @@
           "to": [
             {
               "key_code": "5",
-              "modifiers": [ "left_shift", "right_command","left_option", "left_control" ]
+              "modifiers": [
+                "left_shift",
+                "right_command",
+                "left_option",
+                "left_control"
+              ]
             }
           ]
         }
       ]
-    }, {
+    },
+    {
       "description": "trigger brightness value script on brightness change",
       "manipulators": [
         {
@@ -270,7 +350,8 @@
               ]
             }
           ]
-        }, {
+        },
+        {
           "type": "basic",
           "from": {
             "key_code": "f2",
