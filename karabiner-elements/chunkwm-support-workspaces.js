@@ -12,7 +12,7 @@ const TARGET_KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
 
 const TARGET_MODS = [
   ["left_shift", "right_command", "left_option"],
-  ["left_shift", "right_command", "left_option", "left_control"],
+  ["left_shift", "right_command", "left_control"],
 ]
 
 const SPACE_COUNT = 15
