@@ -57,6 +57,20 @@ function logs() {
   ag $@ "$HOME/.logs"
 }
 
+function reuse_tig() {
+  tig_job=$(jobs | grep -v grep | grep "\[\d\+\][+-]\s*Stopped.*tig\s\?.*" | tail -1 | grep -o "\[\(.\+\)\]" | tr -d "[]")
+
+  echo $tig_job
+  if [[ -n "$tig_job" ]]; then
+    fg "%${tig_job}"
+  else
+    /usr/local/bin/tig "$@"
+  fi
+
+}
+
+alias tig="reuse_tig"
+
 function given_path_or_default() {
   if [[ -z "$1" ]]; then
     root=$(git_root)
