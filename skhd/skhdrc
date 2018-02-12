@@ -92,23 +92,23 @@ rcmd + shift - c : chunkc tiling::window --send-to-desktop 13
 rcmd + shift - v : chunkc tiling::window --send-to-desktop 14
 rcmd + shift - b : chunkc tiling::window --send-to-desktop 15
 
-ctrl + alt + cmd - 1 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "q" &
-ctrl + alt + cmd - 2 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "w" &
-ctrl + alt + cmd - 3 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "e" &
-ctrl + alt + cmd - 4 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "r" &
-ctrl + alt + cmd - 5 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "t" &
+shift + alt + cmd - 1 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "q" &
+shift + alt + cmd - 2 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "w" &
+shift + alt + cmd - 3 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "e" &
+shift + alt + cmd - 4 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "r" &
+shift + alt + cmd - 5 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "t" &
 
-ctrl + alt + cmd - 6 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "a" &
-ctrl + alt + cmd - 7 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "s" &
-ctrl + alt + cmd - 8 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "d" &
-ctrl + alt + cmd - 9 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "f" &
-ctrl + alt + cmd - 0 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "g" &
+shift + alt + cmd - 6 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "a" &
+shift + alt + cmd - 7 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "s" &
+shift + alt + cmd - 8 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "d" &
+shift + alt + cmd - 9 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "f" &
+shift + alt + cmd - 0 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "g" &
 
-ctrl + shift + alt + cmd - 1 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "z" &
-ctrl + shift + alt + cmd - 2 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "x" &
-ctrl + shift + alt + cmd - 3 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "c" &
-ctrl + shift + alt + cmd - 4 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "v" &
-ctrl + shift + alt + cmd - 5 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "b" &
+ctrl + shift + cmd - 1 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "z" &
+ctrl + shift + cmd - 2 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "x" &
+ctrl + shift + cmd - 3 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "c" &
+ctrl + shift + cmd - 4 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "v" &
+ctrl + shift + cmd - 5 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "b" &
 
 # focus monitor
 rcmd - m : if [[ "$(chunkc tiling::query --monitor id)" == "1" ]]; then chunkc tiling::monitor -f 2; else chunkc tiling::monitor -f 1; fi
