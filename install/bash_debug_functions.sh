@@ -1,12 +1,11 @@
 #!/bin/bash
 
 if ! command -v get_time > /dev/null; then
-  get_time() {
-    echo "$(python -c 'import time; print time.time()')"
-  }
+function get_time() {
+  python -c 'import time; print(time.time())'
+}
   LAST_TIME=$(get_time)
 fi
-
 
 if ! command -v debug_log > /dev/null; then
   debug_log() {
