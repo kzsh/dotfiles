@@ -53,6 +53,10 @@ function yaml_lint() {
 
 alias yamllint='yaml_lint'
 
+function logs() {
+  ag $@ "$HOME/.logs"
+}
+
 function given_path_or_default() {
   if [[ -z "$1" ]]; then
     root=$(git_root)
