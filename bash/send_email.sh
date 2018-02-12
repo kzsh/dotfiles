@@ -14,7 +14,7 @@ function main() {
     usage
   fi
 
-  HEADER="To: $1\nSubject: $2\nContent-Type: text/plain"
+  HEADER="To: $1\nSubject: $2\nContent-Type: text/plain; charset=UTF-8"
 
   BODY="${*:3}"
   echo -e "${HEADER}\n\n${BODY}" | sendmail -t
