@@ -37,22 +37,6 @@ function vilast() {
 
 alias vimlast="vilast"
 
-function given_path_or_default() {
-  if [[ -z "$1" ]]; then
-    root=$(git_root)
-
-    if [[ "$?" == "0" ]]; then
-      dir="$root"
-    else
-      dir='./'
-    fi
-  else
-    dir="$1"
-  fi
-
-  echo "$dir"
-}
-
 # Run yamllint, looking for config files in a series of logical directories
 function yaml_lint() {
   paths=(
@@ -68,3 +52,19 @@ function yaml_lint() {
 }
 
 alias yamllint='yaml_lint'
+
+function given_path_or_default() {
+  if [[ -z "$1" ]]; then
+    root=$(git_root)
+
+    if [[ "$?" == "0" ]]; then
+      dir="$root"
+    else
+      dir='./'
+    fi
+  else
+    dir="$1"
+  fi
+
+  echo "$dir"
+}
