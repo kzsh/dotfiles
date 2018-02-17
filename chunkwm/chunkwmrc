@@ -18,20 +18,20 @@ chunkc core::hotload 1
 # NOTE: the following are config variables for the chunkwm-tiling plugin.
 #
 
-chunkc set global_desktop_mode           bsp
+chunkc set global_desktop_mode             bsp
 # chunkc set 2_desktop_mode                monocle
 # chunkc set 5_desktop_mode                float
 
-chunkc set 1_desktop_tree                ~/.config/chunkwm/layouts/dev_1
-chunkc set 2_desktop_tree                ~/.config/chunkwm/layouts/dev_2
-chunkc set 3_desktop_tree                ~/.config/chunkwm/layouts/dev_3
-chunkc set 4_desktop_tree                ~/.config/chunkwm/layouts/dev_4
-chunkc set 5_desktop_tree                ~/.config/chunkwm/layouts/dev_5
-chunkc set 6_desktop_tree                ~/.config/chunkwm/layouts/dev_6
-chunkc set 7_desktop_tree                ~/.config/chunkwm/layouts/dev_7
-chunkc set 8_desktop_tree                ~/.config/chunkwm/layouts/dev_8
-chunkc set 9_desktop_tree                ~/.config/chunkwm/layouts/dev_9
-chunkc set 10_desktop_tree               ~/.config/chunkwm/layouts/dev_10
+chunkc set 1_desktop_tree                 ~/.config/chunkwm/layouts/dev_1
+chunkc set 2_desktop_tree                 ~/.config/chunkwm/layouts/dev_2
+chunkc set 3_desktop_tree                 ~/.config/chunkwm/layouts/dev_3
+chunkc set 4_desktop_tree                 ~/.config/chunkwm/layouts/dev_4
+chunkc set 5_desktop_tree                 ~/.config/chunkwm/layouts/dev_5
+chunkc set 6_desktop_tree                 ~/.config/chunkwm/layouts/dev_6
+chunkc set 7_desktop_tree                 ~/.config/chunkwm/layouts/dev_7
+chunkc set 8_desktop_tree                 ~/.config/chunkwm/layouts/dev_8
+chunkc set 9_desktop_tree                 ~/.config/chunkwm/layouts/dev_9
+chunkc set 10_desktop_tree                ~/.config/chunkwm/layouts/dev_10
 chunkc set 11_desktop_tree                ~/.config/chunkwm/layouts/dev_11
 chunkc set 12_desktop_tree                ~/.config/chunkwm/layouts/dev_12
 chunkc set 13_desktop_tree                ~/.config/chunkwm/layouts/dev_13
