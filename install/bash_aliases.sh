@@ -30,8 +30,8 @@ alias ag="rg --colors 'match:fg:red' --colors 'path:fg:yellow' --colors 'line:fg
 alias vi="nvim"
 alias vim="nvim"
 
-alias vir="nvim -S \$VIM_DIR/.vimsession"
-alias vimr="nvim -S \$VIM_DIR/.vimsession"
+alias vir="nvim -S \$VIM_DIR/.vimsession.vim"
+alias vimr="nvim -S \$VIM_DIR/.vimsession.vim"
 
 # edit all modified files in and out of the index
 alias vimm="vim -- \$(git st --porcelain | awk '{ print \$2}')"
