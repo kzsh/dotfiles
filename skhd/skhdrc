@@ -40,6 +40,7 @@ cmd - return : if [[ "$(chunkc tiling::query --window owner)" == "kitty" ]]; the
 
 ctrl + alt + cmd - j : osascript ~/src/scripts/applescripts/applescript/OpenNewChromeWindow.scpt
 ctrl + alt + cmd - k : osascript ~/src/scripts/applescripts/applescript/OpenNewITermWindow.scpt
+
 # focus window
 ctrl - h : if [[ "$(chunkc tiling::query --window name)" == *"vim_hook"* ]]; then khd -p "ctrl + alt - h"; else chunkc tiling::window --focus west; fi
 ctrl - j : if [[ "$(chunkc tiling::query --window name)" == *"vim_hook"* ]]; then khd -p "ctrl + alt - j"; else chunkc tiling::window --focus south; fi
@@ -54,12 +55,6 @@ ctrl + lcmd - h : chunkc tiling::window --swap west
 ctrl + lcmd - j : chunkc tiling::window --swap south
 ctrl + lcmd - k : chunkc tiling::window --swap north
 ctrl + lcmd - l : chunkc tiling::window --swap east
-
-# move window
-ctrl + alt - h : chunkc tiling::window --warp west
-ctrl + alt - j : chunkc tiling::window --warp south
-ctrl + alt - k : chunkc tiling::window --warp north
-ctrl + alt - l : chunkc tiling::window --warp east
 
 # move floating windows / windows on a floating space
 
