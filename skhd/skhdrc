@@ -30,8 +30,7 @@
 #                                  an EOL character signifies the end of the bind.
 
 
-# open terminal, blazingly fast compared to iTerm/Hyper
-# cmd - return : open -na /Applications/Kitty.app
+cmd - return : if [[ "$(chunkc tiling::query --window owner)" == "kitty" ]]; then khd -p "cmd + shift - return"; else open -na /Applications/Kitty.app; fi
 
 # close focused window
 # lcmd - w  -> : chunkc tiling::window --focus next
