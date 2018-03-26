@@ -33,6 +33,8 @@ alias vim="nvim"
 alias vir="nvim -S \$VIM_DIR/.vimsession.vim"
 alias vimr="nvim -S \$VIM_DIR/.vimsession.vim"
 
+alias viinit="nvim \$VIM_DIR/init.vim"
+alias viminit="viinit"
 
 JOURNAL_ALIAS='vim + "/Users/username/journal/$(date +%Y)/$(date +%Y%m%d).md" -c "execute \"normal! Go$(date +%T)\<CR>========\<CR>\" | startinsert "'
 alias journal="\$JOURNAL_ALIAS"
