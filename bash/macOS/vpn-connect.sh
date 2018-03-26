@@ -21,9 +21,9 @@ tell application "System Events"
 
     do shell script "scutil --nc start " & vpn_name & " --user " & user_name
 
+    set the clipboard to passwd
     delay 5
-    keystroke passwd
-    keystroke return
+    set the clipboard to ""
 
     display notification with title "Connected to " & vpn_name
     do shell script "echo Connected to " & vpn_name
