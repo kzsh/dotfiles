@@ -33,9 +33,10 @@
 cmd - return : if [[ "$(chunkc tiling::query --window owner)" == "kitty" ]]; then khd -p "cmd + shift - return"; else open -na /Applications/Kitty.app; fi
 
 # close focused window
-# lcmd - w  -> : chunkc tiling::window --focus next
-ctrl + alt + cmd - d : ~/src/scripts/bash/set_background_color_to_dialog_result.sh
-ctrl + alt + cmd - c : ~/src/scripts/bash/chunkwm-integrations/toggle_global_inversion.sh
+# cmd - w  -> : chunkc tiling::window --focus biggest
+
+#ctrl + alt + cmd - d : ~/src/scripts/bash/set_background_color_to_dialog_result.sh
+#ctrl + alt + cmd - c : ~/src/scripts/bash/chunkwm-integrations/toggle_global_inversion.sh
 
 # focus window
 ctrl - h : if [[ "$(chunkc tiling::query --window name)" == *"vim_hook"* ]]; then khd -p "ctrl + shift - h"; else chunkc tiling::window --focus west; fi
