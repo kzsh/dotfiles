@@ -83,3 +83,5 @@ bind generic Y !@bash -c "echo -n %(commit) | pbcopy"
 bind generic aa !@bash -c "echo \"%(commit)\" >> /tmp/tig-quick-list"
 bind generic ac !@bash -c "echo "" > /tmp/tig-quick-list"
 bind generic ay !@bash -c "cat /tmp/tig-quick-list | pbcopy"
+
+color cursor black green	bold
