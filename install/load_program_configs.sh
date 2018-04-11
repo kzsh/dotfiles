@@ -16,6 +16,9 @@ function build_aliases() {
 . "$DIR/program_config/pyenv.sh"
 
 # shellcheck disable=1090
+. "$DIR/program_config/nvm.sh"
+
+# shellcheck disable=1090
 . "$DIR/program_config/git.sh"
 
 # shellcheck disable=1090
