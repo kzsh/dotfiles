@@ -4,6 +4,7 @@ if [[ -L $0 ]]; then
 else
   CURRDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 fi
+
 . "$CURRDIR/logging.sh"
 
 BRIGHTNESS_COMMAND=/usr/local/bin/brightness
@@ -18,28 +19,8 @@ BRIGHTNESS_FILE_PATH="$CHUNKWM_PATH/$BRIGHTNESS_FILE_NAME"
 
 function main() {
   if [[ ! -s $BRIGHTNESS_FILE_PATH ]]; then
-    log "Creating missing file $BRIGHTNESS_FILE_PATH with default values"
-    mkdir -p "$CHUNKWM_PATH"
-    cat << EOF > "$BRIGHTNESS_FILE_PATH"
-q=0.5
-w=0.5
-e=0.5
-r=0.5
-t=0.5
-a=0.5
-s=0.5
-d=0.5
-f=0.5
-g=0.5
-z=0.5
-x=0.5
-c=0.5
-v=0.5
-b=0.5
-EOF
-log "Done"
+    "$CURRDIR/set_global_brightness.sh" "0.5"
   fi
-
   if [[ -n "$2" ]]; then
     brightness_setting=$(set_setting_for_space "$1" "$2")
   else
