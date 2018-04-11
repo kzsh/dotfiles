@@ -22,9 +22,6 @@ function build_aliases() {
 . "$DIR/program_config/pass.sh"
 
 # shellcheck disable=1090
-. "$DIR/program_config/nvm.sh"
-
-# shellcheck disable=1090
 . "$DIR/program_config/vim.sh"
 
 # shellcheck disable=1090
