@@ -2,7 +2,7 @@
 BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 export DEBUG_STARTUP=
-. "$BASE_DIR/bash_debug_functions.sh"
+. "$BASE_DIR/debug_functions.sh"
 
 if which nvim > /dev/null 2>&1; then
   EDITOR=$(which nvim)
@@ -22,9 +22,9 @@ PATH="$PATH:$HOME/bin"
 
 sources=(
   "$BASE_DIR/prompt.sh"
-  "$BASE_DIR/config_bash_history.sh"
-  "$BASE_DIR/bash_aliases.sh"
-  "$BASE_DIR/bash_functions.sh"
+  "$BASE_DIR/configure_history.sh"
+  "$BASE_DIR/aliases.sh"
+  "$BASE_DIR/functions.sh"
   "$BASE_DIR/load_program_configs.sh"
   # "$BASE_DIR/completions.sh"
 )
