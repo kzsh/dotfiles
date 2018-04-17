@@ -15,7 +15,7 @@ function main() {
     create_missing_virtual_environment
     echo "RUN COMPLETE: Install $PYTHON_VERSION"
   else
-    echo "SKIP: install.  pyenv virtualenv $PYTHON_VERSION is already installed"
+    echo "SKIP: install.  pyenv virtualenv $VIRTUAL_ENVIRONMENT is already installed"
   fi
 
   pyenv activate "$VIRTUAL_ENVIRONMENT"
@@ -30,7 +30,7 @@ function create_missing_virtual_environment() {
 }
 
 function full_virtualenv_path() {
- echo "$PYTHON_VERSION/env/$VIRTUAL_ENVIRONMENT" 
+ echo "$PYTHON_VERSION/env/$VIRTUAL_ENVIRONMENT"
 }
 
 function is_python_version_installed() {
