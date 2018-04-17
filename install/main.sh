@@ -26,7 +26,6 @@ sources=(
   "$BASE_DIR/aliases.sh"
   "$BASE_DIR/functions.sh"
   "$BASE_DIR/load_program_configs.sh"
-  # "$BASE_DIR/completions.sh"
 )
 
 for src in "${sources[@]}"; do
