@@ -33,8 +33,8 @@ alias vim="nvim"
 alias vir="nvim -S \$VIM_DIR/.vimsession.vim"
 alias vimr="nvim -S \$VIM_DIR/.vimsession.vim"
 
-alias viinit="nvim \$VIM_DIR/init.vim"
-alias viminit="viinit"
+alias vii="nvim \$VIM_DIR/init.vim"
+alias vimi="viinit"
 
 # edit all modified files in and out of the index
 vimm() {
