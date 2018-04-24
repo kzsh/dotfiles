@@ -71,6 +71,23 @@ function reuse_tig() {
 
 alias tig="reuse_tig"
 
+hist() {
+  cmd="command rg \".*\" --no-filename $HOME/.logs 2> /dev/null"
+
+  eval "$cmd" | fzf | awk '{$1=$2=$3=""; print $0}' | sed 's/^[ \t]*//g' | while read -r item; do
+    printf '%q ' "$item"
+  done
+  echo
+}
+
+hist-widget() {
+  local selected="$(hist)"
+  READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}$selected${READLINE_LINE:$READLINE_POINT}"
+  READLINE_POINT=$(( READLINE_POINT + ${#selected} ))
+}
+
+bind -x '"\C-t": "hist-widget"'
+
 function given_path_or_default() {
   if [[ -z "$1" ]]; then
     root=$(git_root)
