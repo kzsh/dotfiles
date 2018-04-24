@@ -10,6 +10,7 @@
 	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
 	ln = log --graph --pretty=format:'%Cgreen%h%Creset%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 	lc = log-compact
+  wip = !~/src/scripts/bash/git/wip.sh
 [branch]
 	autosetuprebase = always
 [core]
