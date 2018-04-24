@@ -4,13 +4,13 @@
 # https://github.com/altercation/solarized/tree/master/iterm2-colors-solarized
 BOLD=$(tput bold)
 RESET=$(tput sgr0)
-SOLAR_YELLOW=$(tput setaf 3)
-PURPLE=$(tput setaf 13)
-SOLAR_ORANGE=$(tput setaf 9)
-SOLAR_BLUE=$(tput setaf 4)
-SOLAR_CYAN=$(tput setaf 6)
-SOLAR_GREEN=$(tput setaf 2)
-SOLAR_WHITE=$(tput setaf 7)
+SOLAR_YELLOW=$(tput setaf 136)
+PURPLE=$(tput setaf 260)
+SOLAR_ORANGE=$(tput setaf 166)
+SOLAR_BLUE=$(tput setaf 33)
+SOLAR_CYAN=$(tput setaf 37)
+SOLAR_GREEN=$(tput setaf 64)
+SOLAR_WHITE=$(tput setaf 254)
 
 # Prompt styles
 style_user="\[${RESET}${SOLAR_YELLOW}\]"
