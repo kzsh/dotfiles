@@ -13,10 +13,10 @@ SOLAR_GREEN=$(tput setaf 2)
 SOLAR_WHITE=$(tput setaf 7)
 
 # Prompt styles
-style_user="\[${RESET}${SOLAR_ORANGE}\]"
+style_user="\[${RESET}${SOLAR_YELLOW}\]"
 style_host="\[${RESET}${SOLAR_YELLOW}\]"
-style_path="\[${RESET}${BOLD}${SOLAR_WHITE}\]"
-style_chars="\[${RESET}${SOLAR_WHITE}\]"
+style_path="\[${RESET}${BOLD}${SOLAR_YELLOW}\]"
+style_chars="\[${RESET}${SOLAR_ORANGE}\]"
 style_important="\[${RESET}${BOLD}${SOLAR_BLUE}\]"
 style_branch="${SOLAR_CYAN}"
 style_virtualenv="${BOLD}${SOLAR_ORANGE}"
@@ -62,7 +62,7 @@ function prompt_git() {
   if [[ "$flags" ]]; then
     output="$output[$flags]"
   fi
-  echo -ne "${RESET}${SOLAR_WHITE} on ${style_branch}${output}$(git_repo_state)"
+  echo -ne "${RESET}${SOLAR_BLUE} on ${style_branch}${output}$(git_repo_state)"
 }
 
 # Show the name of the current virtualenv
@@ -110,7 +110,7 @@ if [[ "$SSH_TTY" ]]; then
 fi
 PS1+="\$(has_jobs)"
 PS1+="${style_user}\u${style_chars}@${style_host}\h" # username@host
-PS1+="${style_chars}: ${style_path}\w" # : directory
+PS1+="${style_chars} :: ${style_path}\w" # : directory
 if [[ -z "$SSH_TTY" ]]; then
   PS1+="\$(prompt_git)" # Git details
   PS1+="\$(prompt_virtualenv)" # Virtualenv details
