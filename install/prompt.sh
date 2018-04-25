@@ -18,10 +18,14 @@ style_host="\[${RESET}${SOLAR_YELLOW}\]"
 style_path="\[${RESET}${BOLD}${SOLAR_YELLOW}\]"
 style_chars="\[${RESET}${SOLAR_ORANGE}\]"
 style_important="\[${RESET}${BOLD}${SOLAR_BLUE}\]"
-style_branch="${SOLAR_CYAN}"
+style_branch="${SOLAR_ORANGE}"
 style_virtualenv="${BOLD}${SOLAR_ORANGE}"
 style_has_jobs="${SOLAR_ORANGE}"
 style_job_count="${PURPLE}"
+
+style_git_unstaged="${RESET}${SOLAR_GREEN}"
+style_git_staged="${RESET}${SOLAR_YELLOW}"
+style_git_untracked="${RESET}${SOLAR_CYAN}"
 
 # Show the commit status of the current git repo
 function git_repo_state() {
@@ -53,16 +57,16 @@ function prompt_git() {
 
   flags="$(
   echo "$status" | awk 'BEGIN {r=""}
-    /^# Changes to be committed:$/        {r=r " +"}
-    /^# Changes not staged for commit:$/  {r=r " !"}
-    /^# Untracked files:$/                {r=r " ?"}
+    /^Changes to be committed:$/        {r=r "'${style_git_staged}'•"}
+    /^Changes not staged for commit:$/  {r=r "'${style_git_unstaged}'•"}
+    /^Untracked files:$/                {r=r "'${style_git_untracked}'•"}
     END {print r}'
   )"
 
   if [[ "$flags" ]]; then
-    output="$output[$flags]"
+    output="$output[${flags}${style_branch}]"
   fi
-  echo -ne "${RESET}${SOLAR_BLUE} on ${style_branch}${output}$(git_repo_state)"
+  echo -ne "${RESET}${SOLAR_BLUE} on ${style_branch}${output}" # $(git_repo_state)"
 }
 
 # Show the name of the current virtualenv
