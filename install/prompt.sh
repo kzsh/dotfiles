@@ -109,7 +109,7 @@ if [[ "$SSH_TTY" ]]; then
   PS1+="${style_important}[SSH] " # [SSH]
 fi
 PS1+="\$(has_jobs)"
-PS1+="${style_user}\u${style_chars}@${style_host}\h" # username@host
+#PS1+="${style_user}\u${style_chars}" # @${style_host}\h" # username@host
 PS1+="${style_chars}:: ${style_path}\w" # : directory
 if [[ -z "$SSH_TTY" ]]; then
   PS1+="\$(prompt_git)" # Git details
