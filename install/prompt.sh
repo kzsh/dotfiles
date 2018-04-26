@@ -27,6 +27,7 @@ style_git_unstaged="${RESET}${SOLAR_GREEN}"
 style_git_staged="${RESET}${SOLAR_YELLOW}"
 style_git_untracked="${RESET}${SOLAR_CYAN}"
 
+GIT_DIFF_CHAR="•"
 # Show the commit status of the current git repo
 function git_repo_state() {
   local status
@@ -52,9 +53,9 @@ function prompt_git() {
 
   flags="$(
   echo "$status" | awk 'BEGIN {r=""}
-    /^Changes to be committed:$/        {r=r "'${style_git_staged}'•"}
-    /^Changes not staged for commit:$/  {r=r "'${style_git_unstaged}'•"}
-    /^Untracked files:$/                {r=r "'${style_git_untracked}'•"}
+    /^Changes to be committed:$/        {r=r "'${style_git_staged}${GIT_DIFF_CHAR}'"}
+    /^Changes not staged for commit:$/  {r=r "'${style_git_unstaged}${GIT_DIFF_CHAR}'"}
+    /^Untracked files:$/                {r=r "'${style_git_untracked}${GIT_DIFF_CHAR}'"}
     END {print r}'
   )"
 
