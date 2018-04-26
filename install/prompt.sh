@@ -35,14 +35,9 @@ function git_repo_state() {
 }
 
 function has_jobs() {
-  hasjobs=$(jobs -l | awk '{ print $3 }' | grep -v "Done" | wc -l | tr -d ' ')
-  if [[ "$hasjobs" == "0" ]]; then
-    show_has_jobs=''
-  else
-    job_count="$((hasjobs))"
-    show_has_jobs="[${style_job_count}$job_count${style_has_jobs}] "
-  fi
-  echo -ne "${style_has_jobs}${show_has_jobs}"
+  job_count=$(jobs -l | awk '{ print $3 }' | grep -vc "Done")
+  prompt_jobs="[${style_job_count}$job_count${style_has_jobs}] "
+  echo -ne "${style_has_jobs}${prompt_jobs}"
 }
 
 # Show the name and status of the current git repo
