@@ -14,5 +14,20 @@ export PROMPT_COMMAND='if [ "$(id -u)" -ne 0 ]; then echo "$(date "+%Y-%m-%d.%H:
 
 # fh - search command history in ~/.logs (all history)
 fh() {
-  rg -o -e "\s?\d+\s{2}.*" -e "\s{2}.*" $(ls -lrt -d -1 $HOME/.logs/{*,.*} | grep -v "\.logs\/\.") | awk '{$1=""; $2=""; print $0}' | fzf --tac^C
+  rg -o -e "\s?\d+\s{2}.*" -e "\s{2}.*" $(ls -lrt -d -1 $HOME/.logs/{*,.*} \
+    | grep -v "\.logs\/\.") \
+    | awk '{$1=""; $2=""; print $0}' \
+    | fzf --tac \
+    | while read -r item; do
+      printf '%q ' "$item"
+    done
+    echo
 }
+
+fh-widget() {
+  local selected="$(hist)"
+  READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}$selected${READLINE_LINE:$READLINE_POINT}"
+  READLINE_POINT=$(( READLINE_POINT + ${#selected} ))
+}
+
+bind -x '"\C-f": "fh-widget"'
