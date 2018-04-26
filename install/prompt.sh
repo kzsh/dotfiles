@@ -102,6 +102,9 @@ function set_iterm2_profile() {
 
 # Build the prompt
 PS1="\033]0;\a"
+# Reset to insert mode between prompts
+PS1+="\ei"
+
 # PS1+="\$(tmux_rename_window)"
 # PS1+="\$(set_iterm2_profile)"
 PS1+="\n"
