@@ -110,7 +110,7 @@ if [[ "$SSH_TTY" ]]; then
 fi
 PS1+="\$(has_jobs)"
 PS1+="${style_user}\u${style_chars}@${style_host}\h" # username@host
-PS1+="${style_chars} :: ${style_path}\w" # : directory
+PS1+="${style_chars}:: ${style_path}\w" # : directory
 if [[ -z "$SSH_TTY" ]]; then
   PS1+="\$(prompt_git)" # Git details
   PS1+="\$(prompt_virtualenv)" # Virtualenv details
