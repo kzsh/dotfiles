@@ -12,22 +12,5 @@ fi
 
 export PROMPT_COMMAND='if [ "$(id -u)" -ne 0 ]; then echo "$(date "+%Y-%m-%d.%H:%M:%S") $(pwd) $(history 1)" >> ~/.logs/bash-history-$(date "+%Y-%m-%d").log; fi'
 
-# fh - search command history in ~/.logs (all history)
-fh() {
-  rg -o -e "\s?\d+\s{2}.*" -e "\s{2}.*" $(ls -lrt -d -1 $HOME/.logs/{*,.*} \
-    | grep -v "\.logs\/\.") \
-    | awk '{$1=""; $2=""; print $0}' \
-    | fzf --tac \
-    | while read -r item; do
-      printf '%q ' "$item"
-    done
-    echo
-}
-
-fh-widget() {
-  local selected="$(hist)"
-  READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}$selected${READLINE_LINE:$READLINE_POINT}"
-  READLINE_POINT=$(( READLINE_POINT + ${#selected} ))
-}
-
-bind -x '"\C-f": "fh-widget"'
+# Save and reload the history after each command finishes
+PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"

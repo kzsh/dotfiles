@@ -74,8 +74,8 @@ alias tig="reuse_tig"
 hist() {
   cmd="command rg \".*\" --no-filename $HOME/.logs 2> /dev/null"
 
-  eval "$cmd" | fzf | awk '{$1=$2=$3=""; print $0}' | sed 's/^[ \t]*//g' | while read -r item; do
-    printf '%q ' "$item"
+  eval "$cmd" | awk '{$1=$2=$3=""; print $0}' | sed 's/^\s*//g' | ~/src/scripts/ruby/deduplicate.rb | fzf  | while read -r item; do
+    printf '%s ' "$item"
   done
   echo
 }
@@ -86,7 +86,7 @@ hist-widget() {
   READLINE_POINT=$(( READLINE_POINT + ${#selected} ))
 }
 
-bind -x '"\C-t": "hist-widget"'
+bind -x '"\C-f": "hist-widget"'
 
 function given_path_or_default() {
   if [[ -z "$1" ]]; then
