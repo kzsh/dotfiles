@@ -1,5 +1,5 @@
 #!/bin/bash
-export HISTCONTROL=ignoredups:erasedups
+export HISTCONTROL=erasedups
 export HISTSIZE=100
 export HISTFILESIZE=1000000               # big big history
 
