@@ -19,4 +19,6 @@ function lazy_load_nvm() {
   "$original_command" $args
 }
 
+PATH=$PATH:$HOME/.nvm/versions/node/v9.8.0/bin
+
 build_aliases "lazy_load_nvm" "nvm"
