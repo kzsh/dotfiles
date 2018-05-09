@@ -1,5 +1,5 @@
 #!/bin/bash
-function f () {
+function f() {
   if [[ -z "$1" ]]; then
     echo "Provide a search term"
     return
