@@ -1,6 +1,6 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-function build_aliases() {
+build_aliases() {
   local target_function
   target_function=$1
   aliased_functions=${*:2}
@@ -12,26 +12,20 @@ function build_aliases() {
   done
 }
 
-# shellcheck disable=1090
-. "$DIR/program_config/pyenv.sh"
+programs_dir="$DIR/program_config"
 
-# shellcheck disable=1090
-. "$DIR/program_config/nvm.sh"
+programs=(
+  "$programs_dir/pyenv.sh"
+  "$programs_dir/nvm.sh"
+  "$programs_dir/git.sh"
+  "$programs_dir/pass.sh"
+  "$programs_dir/vim.sh"
+  "$programs_dir/autojump.sh"
+  "$programs_dir/fzf.sh"
+  "$programs_dir/direnv.sh"
+)
 
-# shellcheck disable=1090
-. "$DIR/program_config/git.sh"
-
-# shellcheck disable=1090
-. "$DIR/program_config/pass.sh"
-
-# shellcheck disable=1090
-. "$DIR/program_config/vim.sh"
-
-# shellcheck disable=1090
-. "$DIR/program_config/autojump.sh"
-
-# shellcheck disable=1090
-. "$DIR/program_config/fzf.sh"
-
-# shellcheck disable=1090
-. "$DIR/program_config/direnv.sh"
+for program in "${programs[@]}"; do
+  #shellcheck disable=1090
+  . "$program"
+done
