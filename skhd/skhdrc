@@ -31,6 +31,7 @@
 
 
 cmd - return : if [[ "$(chunkc tiling::query --window owner)" == "kitty" ]]; then khd -p "cmd + shift - return"; else open -na /Applications/Kitty.app; fi
+# cmd - return : if [[ "$(chunkc tiling::query --window owner)" == "iTerm2" ]]; then khd -p "cmd - n"; else open -a /Applications/iTerm.app; fi
 
 # close focused window
 # cmd - w  -> : chunkc tiling::window --focus biggest
