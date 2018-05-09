@@ -2,7 +2,6 @@
 BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 export DEBUG_STARTUP=
-. "$BASE_DIR/debug_functions.sh"
 
 if which nvim > /dev/null 2>&1; then
   EDITOR=$(which nvim)
@@ -21,6 +20,7 @@ shopt -s globstar
 PATH="$PATH:$HOME/bin"
 
 sources=(
+  "$BASE_DIR/debug_functions.sh"
   "$BASE_DIR/prompt.sh"
   "$BASE_DIR/configure_history.sh"
   "$BASE_DIR/aliases.sh"
