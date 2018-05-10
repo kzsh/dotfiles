@@ -81,7 +81,8 @@ hist() {
 }
 
 hist-widget() {
-  local selected="$(hist)"
+  local selected
+  selected="$(hist)"
   READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}$selected${READLINE_LINE:$READLINE_POINT}"
   READLINE_POINT=$(( READLINE_POINT + ${#selected} ))
 }
