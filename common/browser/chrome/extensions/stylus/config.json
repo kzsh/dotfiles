@@ -1,0 +1,60 @@
+[
+	{
+		"installDate": 1525357624313,
+		"enabled": false,
+		"updateUrl": null,
+		"md5Url": null,
+		"url": null,
+		"originalMd5": null,
+		"name": "solarized",
+		"sections": [
+			{
+				"code": ":root {\n    --primary-background: #083c4a;\n    --primary-foreground: #839496;\n    --highlight-foreground: hsl(186, 8%, 68%);\n}\n\nhtml, iframe {\n   background-color: var(--primary-background);\n   color: var(--primary-foreground)\n}\n\ninput, select, option {\n   background-color: var(--primary-background);\n   color: var(--primary-foreground)\n}\na {\n   background-color: inherit;\n   color: var(--highlight-foreground);\n   text-decoration: underline; \n   font-weight: bold;\n}\n\na:visited {\n   background-color: var(--primary-background);\n   color: var(--highlight-foreground);\n   text-decoration: underline; \n   font-weight: normal;\n}",
+				"urls": [],
+				"urlPrefixes": [],
+				"domains": [],
+				"regexps": [
+					"^((?!google|chrome-extension).)*$"
+				]
+			},
+			{
+				"code": ":root {\n    --accepted-answer: #719e0711;\n    --highlight-foreground: hsl(186, 8%, 68%);\n}\n\n.accepted-answer {\n   background-color: var(--accepted-answer);\n}\n.answer > * {\n   filter: invert(0);\n    \n}",
+				"urls": [],
+				"urlPrefixes": [],
+				"domains": [],
+				"regexps": []
+			}
+		],
+		"id": 8
+	},
+	{
+		"installDate": 1525375325751,
+		"enabled": false,
+		"updateUrl": null,
+		"md5Url": null,
+		"url": null,
+		"originalMd5": null,
+		"name": "invert",
+		"sections": [
+			{
+				"code": "body {\n    background: #222;\n    color: #333;\n    filter: contrast(0.9) invert(0.85);\n}\nimg,\nsvg {\n    filter: invert(1.15);\n}",
+				"urls": [],
+				"urlPrefixes": [],
+				"domains": [],
+				"regexps": [
+					"^((?!https?:\\/\\/(.*?devdocs.io)).)*$"
+				]
+			},
+			{
+				"code": ".blob-num-addition,\n.blob-code-addition {\n    background-color: #76015c44;\n}\n.blob-num-deletion,\n.blob-code-deletion {\n    background-color: #03a99644;\n}\n\ng-emoji{\n    filter: invert(1.15);\n}",
+				"urls": [],
+				"urlPrefixes": [],
+				"domains": [
+					"github.com"
+				],
+				"regexps": []
+			}
+		],
+		"id": 11
+	}
+]

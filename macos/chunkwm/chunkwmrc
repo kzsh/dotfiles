@@ -104,7 +104,8 @@ chunkc core::load ffm.so
 # NOTE: shell commands require escaped quotes
 #       to pass value containing a whitespace.
 #
-
+chunkc core::log_file stderr /usr/local/var/log/chunkwm/log.err
+chunkc core::log_file stdout /usr/local/var/log/chunkwm/log.out
 chunkc tiling::rule --owner Spotify --role AXWindow --subrole AXDialog --state tile
 chunkc tiling::rule --owner Finder --name Copy --state float
 chunkc tiling::rule --owner \"App Store\" --state float
