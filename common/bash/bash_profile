@@ -1,1 +1,3 @@
-. $HOME/src/scripts/install/main.sh
+export CONFIG_DIR=$HOME/.dotfiles
+
+. $CONFIG_DIR/common/bash/config/main.sh
