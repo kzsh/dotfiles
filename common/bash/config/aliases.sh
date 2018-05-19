@@ -27,12 +27,6 @@ alias be="bundle exec"
 alias dm='docker-machine'
 alias dc='docker-compose'
 
-# Pass
-# Note: `pp` shadows PAR::Packer - PAR Packager
-alias pp='pass'
-
-alias pc='pass -c '
-
 # Keep convenient command but use rg
 alias ag="rg --colors 'match:fg:red' --colors 'path:fg:yellow' --colors 'line:fg:yellow'"
 
