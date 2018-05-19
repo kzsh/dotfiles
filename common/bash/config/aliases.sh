@@ -20,8 +20,12 @@ alias oo='open -a Finder ./'
 alias aa='open -a'
 alias chrome='open -a Google\ Chrome'
 
-# Ruby
+# Ruby Bundle
 alias be="bundle exec"
+
+# Docker
+alias dm='docker-machine'
+alias dc='docker-compose'
 
 # Keep convenient command but use rg
 alias ag="rg --colors 'match:fg:red' --colors 'path:fg:yellow' --colors 'line:fg:yellow'"
@@ -51,7 +55,3 @@ fi
 if [ -f /usr/local/bin/keyboard-backlight ]; then
   alias kb="sudo /usr/local/bin/keyboard-backlight"
 fi
-
-# Docker
-alias dm='docker-machine'
-alias dc='docker-compose'
