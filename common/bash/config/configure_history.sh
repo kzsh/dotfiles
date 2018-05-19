@@ -1,9 +1,9 @@
 #!/bin/bash
 export HISTCONTROL=erasedups
 export HISTSIZE=100
-export HISTFILESIZE=1000000               # big big history
+export HISTFILESIZE=1000000
 
-shopt -s histappend                      # append to history, don't overwrite it
+shopt -s histappend
 shopt -s histverify
 
 if [[ ! -f $HOME/.logs ]]; then
