@@ -89,6 +89,12 @@ hist-widget() {
 
 bind -x '"\C-f": "hist-widget"'
 
+pass-find() {
+  pass $1 $(rg --files $HOME/.password-store | sed 's#^/.*\.password-store/\(.*\)\.gpg#\1#g' | fzf)
+}
+
+bind -x '"\C-p": "pass-find -c"'
+
 function given_path_or_default() {
   if [[ -z "$1" ]]; then
     root=$(git_root)
