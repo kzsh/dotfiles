@@ -174,7 +174,7 @@ alt - s : chunkc tiling::window --toggle sticky;\
 shift + alt - t : chunkc set window_float_next 1
 
 # restart chunkwm
-ctrl + alt + lcmd - r : brew services restart chunkwm
+ctrl + alt + lcmd - r : brew services restart chunkwm & brew services restart skhd &
 
 # change layout of desktop
 ctrl + alt - a : chunkc tiling::desktop --layout bsp

@@ -74,7 +74,7 @@ alias tig="reuse_tig"
 hist() {
   cmd="command rg \".*\" --no-filename $HOME/.logs 2> /dev/null"
 
-  eval "$cmd" | awk '{$1=$2=$3=""; print $0}' | sed 's/^\s*//g' | ~/src/scripts/ruby/deduplicate.rb | fzf  | while read -r item; do
+  eval "$cmd" | awk '{$1=$2=$3=""; print $0}' | sed 's/^\s*//g' | deduplicate | fzf  | while read -r item; do
     printf '%s ' "$item"
   done
   echo
