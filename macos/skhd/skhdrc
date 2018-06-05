@@ -29,18 +29,8 @@
 #
 #                                  an EOL character signifies the end of the bind.
 
-
-cmd + ctrl - return : if [[ "$(chunkc tiling::query --window owner)" == "kitty" ]]; then khd -p "cmd + shift - return"; else open -na /Applications/Kitty.app; fi
-# cmd - return : if [[ "$(chunkc tiling::query --window owner)" == "iTerm2" ]]; then khd -p "cmd - n"; else open -a /Applications/iTerm.app; fi
-
-# close focused window
-# cmd - w  -> : chunkc tiling::window --focus biggest
-
-#ctrl + alt + cmd - d : ~/src/scripts/bash/set_background_color_to_dialog_result.sh
-#ctrl + alt + cmd - c : ~/src/scripts/bash/chunkwm-integrations/toggle_global_inversion.sh
-
-ctrl + alt + cmd - j : osascript ~/src/scripts/applescripts/applescript/OpenNewChromeWindow.scpt
-ctrl + alt + cmd - k : osascript ~/src/scripts/applescripts/applescript/OpenNewITermWindow.scpt
+ctrl + alt + cmd - k : open -na /Applications/kitty.app
+ctrl + alt + cmd - j : open -na /Applications/Google\ Chrome.app && osascript -e 'tell application "Google Chrome" to activate'
 
 # focus window
 ctrl - h : if [[ "$(chunkc tiling::query --window name)" == *"vim_hook"* ]]; then khd -p "ctrl + alt - h"; else chunkc tiling::window --focus west; fi
