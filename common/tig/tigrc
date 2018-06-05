@@ -21,6 +21,7 @@ bind generic gj next
 bind generic gk previous
 bind generic gp parent
 bind generic gP back
+bind generic H back
 bind generic gn view-next
 
 bind main    G  move-last-line
