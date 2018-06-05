@@ -69,8 +69,6 @@ function reuse_tig() {
 
 }
 
-alias tig="reuse_tig"
-
 hist() {
   cmd="command rg \".*\" --no-filename $HOME/.logs 2> /dev/null"
 
