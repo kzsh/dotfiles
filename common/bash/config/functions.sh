@@ -70,17 +70,23 @@ function reuse_tig() {
 }
 
 hist() {
-  cmd="command rg \".*\" --no-filename $HOME/.logs 2> /dev/null"
+  cmd="command rg \".*\" --no-line-number --no-filename $HOME/.logs 2> /dev/null"
 
-  eval "$cmd" | awk '{$1=$2=$3=""; print $0}' | sed 's/^\s*//g' | deduplicate | fzf  | while read -r item; do
+    eval "$cmd" \
+    | awk '{$1=$2=$3=""; print $0}' \
+    | sed 's/^[ \d]*//; s/ *$//;' \
+    | ~/src/scripts/ruby/deduplicate.rb \
+		| grep -v '^\w\{1,3\}\s*$' \
+    | grep -v '^\s*\(vi \|cd \|rm \|j \|f \|ag \|~\||\|exit \)' \
+    | fzf \
+    | while read -r item; do
     printf '%s ' "$item"
   done
   echo
 }
 
 hist-widget() {
-  local selected
-  selected="$(hist)"
+  local selected="$(hist)"
   READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}$selected${READLINE_LINE:$READLINE_POINT}"
   READLINE_POINT=$(( READLINE_POINT + ${#selected} ))
 }
