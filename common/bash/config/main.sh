@@ -1,5 +1,6 @@
 # https://github.com/koalman/shellcheck/wiki/SC1090
 BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+export CONFIG_DIR="$BASE_DIR"
 
 export DEBUG_STARTUP=
 
