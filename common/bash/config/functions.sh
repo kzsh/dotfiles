@@ -93,11 +93,22 @@ hist-widget() {
 
 bind -x '"\C-f": "hist-widget"'
 
-pass-find() {
-  pass $1 $(rg --files $HOME/.password-store | sed 's#^/.*\.password-store/\(.*\)\.gpg#\1#g' | fzf)
+find-directory() {
+  find ${1:-.} -path '*/\.*' -prune \
+                  -o -type d -print 2> /dev/null | fzf +m \
+    | while read -r item; do
+    printf '%s ' "$item"
+  done
 }
 
-bind -x '"\C-p": "pass-find -c"'
+fd-widget() {
+  local selected="$(find-directory)"
+  READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}$selected${READLINE_LINE:$READLINE_POINT}"
+  READLINE_POINT=$(( READLINE_POINT + ${#selected} - 1 ))
+}
+
+bind -x '"\C-n": "fd-widget"'
+
 
 function given_path_or_default() {
   if [[ -z "$1" ]]; then
