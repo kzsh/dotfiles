@@ -29,7 +29,7 @@
 #
 #                                  an EOL character signifies the end of the bind.
 
-ctrl + alt + cmd - k : open -na /Applications/kitty.app
+ctrl + alt + cmd - k : open -a /Applications/iTerm.app
 ctrl + alt + cmd - j : open -na /Applications/Google\ Chrome.app && osascript -e 'tell application "Google Chrome" to activate'
 
 # focus window
