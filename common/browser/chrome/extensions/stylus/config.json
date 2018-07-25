@@ -29,7 +29,7 @@
 	},
 	{
 		"installDate": 1525375325751,
-		"enabled": false,
+		"enabled": true,
 		"updateUrl": null,
 		"md5Url": null,
 		"url": null,
@@ -37,12 +37,12 @@
 		"name": "invert",
 		"sections": [
 			{
-				"code": "body {\n    background: #222;\n    color: #333;\n    filter: contrast(0.9) invert(0.85);\n}\nimg,\nsvg {\n    filter: invert(1.15);\n}",
+				"code": "body {\n    background: #222;\n    color: #333;\n    filter: invert(0.85);\n}\n\nimg,\nsvg,\nvideo {\n    filter: invert(1.17); \n}\nimg[aria-hidden=\"true\"] {\n    filter:invert(0);\n}",
 				"urls": [],
 				"urlPrefixes": [],
 				"domains": [],
 				"regexps": [
-					"^((?!https?:\\/\\/(.*?devdocs.io)).)*$"
+					"^((?!https?:\\/\\/(.*?(devdocs\\.io|www\\.netflix\\.com))).)*$"
 				]
 			},
 			{
@@ -51,6 +51,42 @@
 				"urlPrefixes": [],
 				"domains": [
 					"github.com"
+				],
+				"regexps": []
+			},
+			{
+				"code": ".vote-accepted-on {\n    filter: invert(1);\n}",
+				"urls": [
+					"stackoverflow.com"
+				],
+				"urlPrefixes": [],
+				"domains": [],
+				"regexps": []
+			},
+			{
+				"code": "body {\n    filter: invert(1);\n}\n\nytd-app {\n    filter: invert(0);\n}\n\n#player {\n    filter: invert(1);\n}\n\nvideo {\n    filter: invert(0);\n}",
+				"urls": [],
+				"urlPrefixes": [],
+				"domains": [
+					"youtube.com"
+				],
+				"regexps": []
+			},
+			{
+				"code": "body {\n    filter: invert(0);\n}",
+				"urls": [],
+				"urlPrefixes": [],
+				"domains": [
+					"codepen.io"
+				],
+				"regexps": []
+			},
+			{
+				"code": "body {\n    filter: invert(0);\n}",
+				"urls": [],
+				"urlPrefixes": [],
+				"domains": [
+					"codesandbox.io"
 				],
 				"regexps": []
 			}
