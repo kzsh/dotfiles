@@ -4,6 +4,3 @@ case $- in
   *i*) ;;
   *) return;;
 esac
-
-# direnv
-eval "$(direnv hook bash)"

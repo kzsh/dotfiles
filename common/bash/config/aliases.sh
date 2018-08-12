@@ -14,7 +14,6 @@ alias ls='ls -G'
 alias ll='ls -al'
 alias l='ls -l'
 
-
 # open current dir in Finder
 alias oo='open -a Finder ./'
 alias aa='open -a'
