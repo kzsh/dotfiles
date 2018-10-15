@@ -81,6 +81,7 @@ bind generic crs !git rebase --skip
 bind generic <F1> view-help
 bind generic <C-w><C-w> view-next
 
+bind generic yy !@bash -c "echo -n %(commit) | pbcopy"
 bind generic Y !@bash -c "echo -n %(commit) | pbcopy"
 
 bind generic aa !@bash -c "echo \"%(commit)\" >> /tmp/tig-quick-list"
