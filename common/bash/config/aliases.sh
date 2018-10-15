@@ -4,6 +4,9 @@ alias gcm='git checkout master'
 alias gco='git checkout'
 alias gb='git branch'
 
+__git_complete gco _git_checkout
+__git_complete gb _git_branch
+
 # cd to top level of the current git repo
 alias git_root='git rev-parse --show-toplevel'
 alias cdg='cd $(git_root)'
