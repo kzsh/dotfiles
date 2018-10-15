@@ -68,12 +68,14 @@ function reuse_tig() {
 hist() {
   cmd="command rg \".*\" --no-line-number --no-filename $HOME/.logs 2> /dev/null"
 
+    # TODO: replace below with `cut -f4-`
     eval "$cmd" \
-    | awk '{$1=$2=$3=""; print $0}' \
+    | sort \
+    | awk '{$1=$2=$3=$4=""; print $0}' \
     | sed 's/^[ \d]*//; s/ *$//;' \
     | ~/src/scripts/ruby/deduplicate.rb \
-		| grep -v '^\w\{1,3\}\s*$' \
-    | grep -v '^\s*\(vi \|cd \|rm \|j \|f \|ag \|~\||\|exit \)' \
+    | grep -v '^\S\{1,3\}\s*$' \
+    | grep -v '^\s*\(vi \|mv \|echo \|cd \|rm \|j \|f \|ag \|exit\|clear\|yarn\|npm \|ln \)' \
     | fzf \
     | while read -r item; do
     printf '%s ' "$item"
