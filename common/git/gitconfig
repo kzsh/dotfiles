@@ -5,6 +5,8 @@
 	co = !git checkout
 	cm = !git checkout master
 	cp = !git cherry-pick
+	edit = !nvim -- "$(git st --porcelain | awk '{ print $2}')"
+
 	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
 	ln = log --graph --pretty=format:'%Cgreen%h%Creset%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 	lc = log-compact
