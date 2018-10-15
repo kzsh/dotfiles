@@ -18,6 +18,11 @@ shopt -s globstar
 
 PATH="$PATH:$HOME/bin"
 
+brew_path="$(brew --prefix)"
+if [ -f "$brew_path/etc/bash_completion" ]; then
+. "$brew_path/etc/bash_completion"
+fi
+
 sources=(
   "$BASE_DIR/debug_functions.sh"
   "$BASE_DIR/prompt.sh"
