@@ -16,9 +16,9 @@ programs_dir="$DIR/program_config"
 
 programs=(
   "$programs_dir/pyenv.sh"
-  "$programs_dir/nvm.sh"
+  # "$programs_dir/nvm.sh"
   "$programs_dir/git.sh"
-  "$programs_dir/pass.sh"
+  #"$programs_dir/pass.sh"
   "$programs_dir/vim.sh"
   "$programs_dir/autojump.sh"
   "$programs_dir/fzf.sh"
