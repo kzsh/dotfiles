@@ -1,8 +1,8 @@
 # git aliases (completion is handled in git-completion)
+
 alias gcm='git checkout master'
 alias gco='git checkout'
 alias gb='git branch'
-alias gl='git pull'
 
 # cd to top level of the current git repo
 alias git_root='git rev-parse --show-toplevel'
