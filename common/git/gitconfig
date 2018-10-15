@@ -2,8 +2,6 @@
 	path = projects/.git-config-work
 [alias]
 	st  = status
-	l  = !git pull
-	b  = !git branch
 	co = !git checkout
 	cm = !git checkout master
 	cp = !git cherry-pick
