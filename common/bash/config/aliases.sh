@@ -41,7 +41,7 @@ alias vimr="nvim -S \$VIM_DIR/.vimsession.vim"
 
 # edit all modified files in and out of the index
 vimm() {
-  nvim -- "$(git st --porcelain | awk '{ print \$2}')"
+  nvim -- "$(git st --porcelain | awk '{ print $2}')"
 }
 
 alias todo='CURR=`pwd`; cd ~/TODO && vim TODO.md; cd $CURR'
