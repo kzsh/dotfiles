@@ -18,8 +18,6 @@
 	excludesfile = /Users/andrew/.gitignore_global
 [push]
 	default = simple
-[merge]
-	ff = no
 
 # Colorize command outputs
 [color]
@@ -52,4 +50,6 @@
 [log-compact]
 	defaults = --two-initials --abbrev=8
 [pull]
-  rebase = true
+	rebase = true
+[gpg]
+	program = gpg
