@@ -1,5 +1,5 @@
 [include]
-	path = projects/.git-config-work
+	path = ~/.git-config-work
 [alias]
 	st  = status
 	co = !git checkout
