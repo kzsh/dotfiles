@@ -2,23 +2,9 @@
 function f() {
   local path
   path="${2%/}"
-  find ${path:-.} -iname $1 "${@:3}"
-}
-
-function vis() {
-  local dir
-  dir="$(given_path_or_default "$1")"
-  nvim -c ":execute 'Files' '$dir'"
-}
-
-alias vims="vis"
-
-function kb() {
-  local curr_dir
-  curr_dir=$(pwd)
-  cd "$HOME/kb" || exit "kb not found"
-  vis "$@"
-  cd "$curr_dir" || exit "Could not return to dir from which kb was launched"
+  path="${path:-./}"
+  rg --smart-case --files "$path"** -g $1
+  # | fzf -f "$1" --preview="cat"
 }
 
 function vilast() {
@@ -32,6 +18,11 @@ function vilast() {
 }
 
 alias vimlast="vilast"
+
+function ff() {
+  vim -c "execute \"vimgrep '$1' %\" | execute \"normal \\/$1\<CR>\"" -- $(ag "$1" -l);
+}
+
 
 # Run yamllint, looking for config files in a series of logical directories
 function yaml_lint() {
@@ -65,18 +56,13 @@ function reuse_tig() {
 
 }
 
+# | ~/src/scripts/ruby/deduplicate.rb \
 hist() {
-  cmd="command rg \".*\" --no-line-number --no-filename $HOME/.logs 2> /dev/null"
-
-    # TODO: replace below with `cut -f4-`
+  cmd="command rg \".*\" --no-line-number $HOME/.logs 2> /dev/null"
     eval "$cmd" \
-    | sort \
-    | awk '{$1=$2=$3=$4=""; print $0}' \
-    | sed 's/^[ \d]*//; s/ *$//;' \
-    | ~/src/scripts/ruby/deduplicate.rb \
-    | grep -v '^\S\{1,3\}\s*$' \
-    | grep -v '^\s*\(vi \|mv \|echo \|cd \|rm \|j \|f \|ag \|exit\|clear\|yarn\|npm \|ln \)' \
-    | fzf \
+      | awk '{$1=$2=$3=""; gsub(/^ */, "", $0); if(!seen[$0]++) print $0}' \
+    | grep -v '^\s*\(n?vim?\|vo\|mv\|echo\|cd\|rm\|j\|f\|ag\|exit\|clear\|yarn\|npm\|ln\|ls\|gb\|gb -D\|fg\|tig\|ocker\)\s*' \
+    | fzf +m \
     | while read -r item; do
     printf '%s ' "$item"
   done

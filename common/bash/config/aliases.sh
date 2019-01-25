@@ -17,6 +17,9 @@ alias ls='ls -G'
 alias ll='ls -al'
 alias l='ls -l'
 
+
+alias sed='sed -E'
+
 # open current dir in Finder
 alias oo='open -a Finder ./'
 alias aa='open -a'
@@ -29,8 +32,10 @@ alias be="bundle exec"
 alias dm='docker-machine'
 alias dc='docker-compose'
 
+alias rg="rg --colors path:fg:red --colors line:style:bold"
+
 # Keep convenient command but use rg
-alias ag="rg --colors 'match:fg:red' --colors 'path:fg:yellow' --colors 'line:fg:yellow'"
+alias ag="rg"
 
 # use neovim
 alias vi="nvim"

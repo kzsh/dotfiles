@@ -27,6 +27,7 @@ bind generic gn view-next
 bind main    G  move-last-line
 bind generic G  move-last-line
 
+bind generic y  none
 # bind generic v  none
 # bind generic vm view-main
 # bind generic vd view-diff
@@ -37,7 +38,7 @@ bind generic G  move-last-line
 # bind generic vr view-refs
 # bind generic vs view-status
 # bind generic vu view-stage
-# bind generic vy view-stash
+bind generic w view-stash
 # bind generic vg view-grep
 # bind generic vp view-pager
 # bind generic vh view-help

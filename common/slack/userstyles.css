@@ -1,0 +1,9 @@
+body {
+  filter: invert (0.9);
+}
+.c-message__sender_link,
+.emoji-outer,
+.p-channel_sidebar__channel--im-slackbot:before,
+i {
+  filter: invert(1);
+}

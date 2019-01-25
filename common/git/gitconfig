@@ -51,5 +51,3 @@
 	defaults = --two-initials --abbrev=8
 [pull]
 	rebase = true
-[gpg]
-	program = gpg

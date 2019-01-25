@@ -21,6 +21,7 @@ programs=(
   #"$programs_dir/pass.sh"
   "$programs_dir/vim.sh"
   "$programs_dir/autojump.sh"
+  "$programs_dir/ripgrep.sh"
   "$programs_dir/fzf.sh"
   "$programs_dir/direnv.sh"
 )
