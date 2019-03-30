@@ -24,6 +24,7 @@ programs=(
   "$programs_dir/ripgrep.sh"
   "$programs_dir/fzf.sh"
   "$programs_dir/direnv.sh"
+  "$programs_dir/gcp.sh"
 )
 
 for program in "${programs[@]}"; do
