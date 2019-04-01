@@ -39,28 +39,11 @@ ctrl - j : if [[ "$(chunkc tiling::query --window name)" == *"vim_hook"* ]]; the
 ctrl - k : if [[ "$(chunkc tiling::query --window name)" == *"vim_hook"* ]]; then khd -p "ctrl + alt - k"; else chunkc tiling::window --focus north; fi
 ctrl - l : if [[ "$(chunkc tiling::query --window name)" == *"vim_hook"* ]]; then khd -p "ctrl + alt - l"; else chunkc tiling::window --focus east; fi
 
-# equalize size of windows
-shift + alt - 0 : chunkc tiling::desktop --equalize
-
 # swap window
 ctrl + lcmd - h : chunkc tiling::window --swap west
 ctrl + lcmd - j : chunkc tiling::window --swap south
 ctrl + lcmd - k : chunkc tiling::window --swap north
 ctrl + lcmd - l : chunkc tiling::window --swap east
-
-# move floating windows / windows on a floating space
-
-shift + lcmd - m : chunkc tiling::window --warp-floating fullscreen
-shift + lcmd - h : chunkc tiling::window --warp-floating left
-shift + lcmd - l : chunkc tiling::window --warp-floating right
-
-# shift + lcmd - u : chunkc tiling::window --warp-floating top-left
-# shift + lcmd - i : chunkc tiling::window --warp-floating top-right
-# shift + lcmd - j : chunkc tiling::window --warp-floating bottom-left
-# shift + lcmd - k : chunkc tiling::window --warp-floating bottom-right
-
-# desktop switching
-# NOTE: this is handled by a karabiner script
 
 # send window to desktop
 rcmd + shift - q : chunkc tiling::window --send-to-desktop 1
@@ -99,44 +82,34 @@ ctrl + shift + cmd - 3 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes
 ctrl + shift + cmd - 4 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "v" &
 ctrl + shift + cmd - 5 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "b" &
 
-# focus monitor
-rcmd - m : if [[ "$(chunkc tiling::query --monitor id)" == "1" ]]; then chunkc tiling::monitor -f 2; else chunkc tiling::monitor -f 1; fi
-# ctrl + alt - k : chunkc tiling::monitor -f prev
-# ctrl + alt - j : chunkc tiling::monitor -f next
-rcmd - 1  : chunkc tiling::monitor -f 1
-rcmd - 2  : chunkc tiling::monitor -f 2
-rcmd - 3  : chunkc tiling::monitor -f 3
+# shrink/extend width/height
+ralt - h : chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge west --adjust-window-edge east
+ralt - j : chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge north --adjust-window-edge south
+ralt - k : chunkc tiling::window --use-temporary-ratio  0.05 --adjust-window-edge north --adjust-window-edge south
+ralt - l : chunkc tiling::window --use-temporary-ratio  0.05 --adjust-window-edge west --adjust-window-edge east
 
-# send window to monitor and follow focus
-# ctrl + cmd - z  : chunkc tiling::window --send-to-monitor prev; chunkc tiling::monitor -f prev
-# ctrl + cmd - c  : chunkc tiling::window --send-to-monitor next; chunkc tiling::monitor -f next
-# ctrl + cmd - 1  : chunkc tiling::window --send-to-monitor 1; chunkc tiling::monitor -f 1
-# ctrl + cmd - 2  : chunkc tiling::window --send-to-monitor 2; chunkc tiling::monitor -f 2
-# ctrl + cmd - 3  : chunkc tiling::window --send-to-monitor 3; chunkc tiling::monitor -f 3
-
-
-# increase region size
-# decrease region size
-ralt - j : chunkc tiling::window --use-temporary-ratio 0.1 --adjust-window-edge south
-ralt - k : chunkc tiling::window --use-temporary-ratio -0.1 --adjust-window-edge south
-ralt - h : chunkc tiling::window --use-temporary-ratio 0.1 --adjust-window-edge west
-ralt - l : chunkc tiling::window --use-temporary-ratio -0.1 --adjust-window-edge west
+# equalize size of windows
+ralt - 0 : chunkc tiling::desktop --equalize
 
 # set insertion point for focused container
-#ctrl + alt - f : chunkc tiling::window --use-insertion-point cancel
-#ctrl + alt - h : chunkc tiling::window --use-insertion-point west
-#ctrl + alt - j : chunkc tiling::window --use-insertion-point south
-#ctrl + alt - k : chunkc tiling::window --use-insertion-point north
-#ctrl + alt - l : chunkc tiling::window --use-insertion-point east
+# lcmd + shift - "esc" : chunkc tiling::window --use-insertion-point cancel
+lcmd + shift - h : chunkc tiling::window --use-insertion-point west
+lcmd + shift - j : chunkc tiling::window --use-insertion-point south
+lcmd + shift - k : chunkc tiling::window --use-insertion-point north
+lcmd + shift - l : chunkc tiling::window --use-insertion-point east
+
+# float next window to be tiled
+lcmd + shift - t : chunkc set window_float_next 1
+
 
 # rotate tree
 alt - r : chunkc tiling::desktop --rotate 90
 
 # mirror tree y-axis
-alt - y : chunkc tiling::desktop --mirror vertical
+# alt - y : chunkc tiling::desktop --mirror vertical
 
 # mirror tree x-axis
-alt - x : chunkc tiling::desktop --mirror horizontal
+# alt - x : chunkc tiling::desktop --mirror horizontal
 
 # toggle desktop offset
 alt - a : chunkc tiling::desktop --toggle offset
@@ -145,24 +118,16 @@ alt - a : chunkc tiling::desktop --toggle offset
 alt - f : chunkc tiling::window --toggle fullscreen
 
 # toggle window native fullscreen
-shift + alt - f : chunkc tiling::window --toggle native-fullscreen
+ctrl + shift + alt - f : chunkc tiling::window --toggle native-fullscreen
 
 # toggle window parent zoom
-alt - d : chunkc tiling::window --toggle parent
+shift + alt - f : chunkc tiling::window --toggle parent
 
 # toggle window split type
-# Disabled.  Blocks accents
-# alt - e : chunkc tiling::window --toggle split
+alt - x : chunkc tiling::window --toggle split
 
 # float / unfloat window
 alt - t : chunkc tiling::window --toggle float
-
-# toggle sticky, float and resize to picture-in-picture size
-alt - s : chunkc tiling::window --toggle sticky;\
-          chunkc tiling::window --warp-floating pip-right
-
-# float next window to be tiled
-shift + alt - t : chunkc set window_float_next 1
 
 # restart chunkwm
 ctrl + alt + lcmd - r : brew services restart chunkwm & brew services restart skhd &
@@ -170,8 +135,10 @@ ctrl + alt + lcmd - r : brew services restart chunkwm & brew services restart sk
 # change layout of desktop
 ctrl + alt - a : chunkc tiling::desktop --layout bsp
 
-ctrl + alt - w : chunkc tiling::desktop --deserialize ~/.chunkwm_layouts/dev_1
+ctrl + alt + cmd - w : chunkc tiling::desktop --deserialize ~/.config/chunkwm/layouts/wide.json
+ctrl + alt + cmd - n : chunkc tiling::desktop --deserialize ~/.config/chunkwm/layouts/normal.json
+shift + ctrl + alt + cmd - w : chunkc tiling::desktop --serialize ~/.config/chunkwm/layouts/wide.json
+shift + ctrl + alt + cmd - n : chunkc tiling::desktop --serialize ~/.config/chunkwm/layouts/normal.json
 
 # Disabled Command - h
 cmd - h :
-cmd + shift - h :
