@@ -1,17 +1,14 @@
 {
-  "title": "Use space+asdfzx to make ()[]{}",
-  "parameters": {
-    "basic.to_if_alone_timeout_milliseconds": 150
-  },
+  "title": "Use right_command+uijkJK to make ()[]{}",
   "rules": [
     {
-      "description": "Use space+asdfzx to make ()[]{}",
+      "description": "Use right_command+uijkJK to make ()[]{}",
       "manipulators": [
         {
           "from": {
-            "key_code": "j",
+            "key_code": "u",
             "modifiers": {
-              "mandatory": ["left_command"]
+              "mandatory": ["right_command"]
             }
           },
           "to": [
@@ -24,9 +21,9 @@
         },
         {
           "from": {
-            "key_code": "k",
+            "key_code": "i",
             "modifiers": {
-              "mandatory": ["left_command"]
+              "mandatory": ["right_command"]
             }
           },
           "to": [
@@ -39,9 +36,9 @@
         },
         {
           "from": {
-            "key_code": "l",
+            "key_code": "j",
             "modifiers": {
-              "mandatory": ["left_command"]
+              "mandatory": ["right_command"]
             }
           },
           "to": [
@@ -54,9 +51,9 @@
         },
         {
           "from": {
-            "key_code": ";",
+            "key_code": "k",
             "modifiers": {
-              "mandatory": ["left_command"]
+              "mandatory": ["right_command"]
             }
           },
           "to": [
@@ -69,9 +66,9 @@
         },
         {
           "from": {
-            "key_code": "u",
+            "key_code": "j",
             "modifiers": {
-              "mandatory": ["left_command"]
+              "mandatory": ["right_command"]
             }
           },
           "to": [
@@ -83,9 +80,9 @@
         },
         {
           "from": {
-            "key_code": "i",
+            "key_code": "k",
             "modifiers": {
-              "mandatory": ["left_command"]
+              "mandatory": ["right_command"]
             }
           },
           "to": [
