@@ -1,12 +1,12 @@
 #!/bin/bash
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[-1]}" )" && pwd )"
-NODE_VERSION="$(cat "$SCRIPT_DIR/.nvmrc")"
+NODE_VERSION="$(cat "./.nvmrc")"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
 function main() {
-  if ! is_node_version_installed; then
+
+  if ! has_expected_node_version || ! is_node_version_installed; then
     echo "RUN: Install $NODE_VERSION"
     install_missing_nvm
     echo "RUN COMPLETE: Install $NODE_VERSION"
@@ -14,6 +14,10 @@ function main() {
     echo "SKIP: install.  node $NODE_VERSION is already installed"
   fi
 
+}
+
+has_expected_node_version() {
+  command -v node && [[ "$(node --version)" != "$(cat "$SCRIPT_DIR/.nvmrc")" ]]; then
 }
 
 function is_node_version_installed() {
