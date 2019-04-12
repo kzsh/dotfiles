@@ -6,6 +6,7 @@
 	cm = !git checkout master
 	cp = !git cherry-pick
 	edit = !nvim -- "$(git st --porcelain | awk '{ print $2}')"
+	browse-pulls = !hub browse -- pulls
 
 	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
 	ln = log --graph --pretty=format:'%Cgreen%h%Creset%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
@@ -15,7 +16,7 @@
 	autosetuprebase = always
 [core]
 	autocrlf = false
-	excludesfile = /Users/andrew/.gitignore_global
+	excludesfile = ~/.gitignore_global
 [push]
 	default = simple
 
