@@ -98,10 +98,6 @@ lcmd + shift - j : chunkc tiling::window --use-insertion-point south
 lcmd + shift - k : chunkc tiling::window --use-insertion-point north
 lcmd + shift - l : chunkc tiling::window --use-insertion-point east
 
-# float next window to be tiled
-lcmd + shift - t : chunkc set window_float_next 1
-
-
 # rotate tree
 alt - r : chunkc tiling::desktop --rotate 90
 
