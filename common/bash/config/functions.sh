@@ -55,14 +55,112 @@ function reuse_tig() {
   fi
 
 }
+REMOVE_MATCH=$(cat <<-'EOS' | paste -sd '%' - | sed 's/%/\\|/g'
+nvim
+vim
+vi
+vo
+mv
+echo
+cd
+rm
+j
+f
+ag
+exit
+clear
+yarn
+npm
+ln
+ls
+gb
+gb -D
+fg
+tig
+ocker
+git st
+git push
+git wip
+qgit
+:
+\/
+\~
+|
+{
+yarb
+yuarn
+yar
+arn
+yanr
+yurn
+uarn
+uyarn
+vfg
+vf
+v\s
+v$
+y$
+zs$
+why
+wip
+which
+whence
+wgit
+whoami
+tree
+zz
+✅
+🎯
+🔍
+xe
+t\s
+xeit
+xirt
+xit
+xo
+zsh
+bash
+\$
+!
+-
+=
+\?
+;
+'
+"
+\*
+at$
+#
+EOS
+)
 
-# | ~/src/scripts/ruby/deduplicate.rb \
+remove_common_history() {
+  grep -v "^ *\($REMOVE_MATCH\) *"
+}
+
+persist_completions() {
+  find ~/.logs/* \
+  | xargs cat \
+  | awk '{xit=$3;$2=$3=""; print xit$0 }' \
+  | LANG=C sed '/^[^0]/d' \
+  | LANG=C sed 's/ +[ 0-9.]+/	/g' \
+  | LANG=C cut -c 2- \
+  | LANG=C sort -k2 -u \
+  | LANG=C sort -ru \
+  | awk '{$1=""; print $0}' \
+  | fzf +m \
+  | while read -r item; do
+    printf '%s ' "$item"
+  done
+  echo
+}
+
+
 hist() {
-  cmd="command rg \".*\" --no-line-number $HOME/.logs 2> /dev/null"
+  cmd="cat $HOME/.custom-history-completions/completions 2> /dev/null"
     eval "$cmd" \
-      | awk '{$1=$2=$3=""; gsub(/^ */, "", $0); if(!seen[$0]++) print $0}' \
-    | grep -v '^\s*\(n?vim?\|vo\|mv\|echo\|cd\|rm\|j\|f\|ag\|exit\|clear\|yarn\|npm\|ln\|ls\|gb\|gb -D\|fg\|tig\|ocker\)\s*' \
     | fzf +m \
+    | awk '{$1=""; print $0}' \
     | while read -r item; do
     printf '%s ' "$item"
   done
@@ -70,7 +168,7 @@ hist() {
 }
 
 hist-widget() {
-  local selected="$(hist)"
+  local selected="$(persist_completions)"
   READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}$selected${READLINE_LINE:$READLINE_POINT}"
   READLINE_POINT=$(( READLINE_POINT + ${#selected} ))
 }
