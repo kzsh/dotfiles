@@ -1,3 +1,4 @@
+#!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 build_aliases() {
@@ -30,4 +31,6 @@ programs=(
 for program in "${programs[@]}"; do
   #shellcheck disable=1090
   . "$program"
+  [[ -n "$DEBUG_STARTUP" ]] && debug_log "Loaded: ${program}"
 done
+

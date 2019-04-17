@@ -1,30 +1,46 @@
+#!/bin/bash
+
 # https://github.com/koalman/shellcheck/wiki/SC1090
 BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 export CONFIG_DIR="$BASE_DIR"
 
 export DEBUG_STARTUP=
 
-if which nvim > /dev/null 2>&1; then
-  EDITOR=$(which nvim)
-elif which vim > /dev/null 2>&1; then
-  EDITOR=$(which vim)
-else
-  EDITOR=$(which vi)
-fi
+export EDITOR=/usr/local/bin/nvim
 
-export EDITOR
+test_available_vim() {
+  if ! command -v nvim > /dev/null 2>&1; then
+    echo "Neovim not available could not configure editor"
+  fi
+}
+
+test_available_vim &
 
 shopt -s globstar
+shopt -s extglob
 
 PATH="$PATH:$HOME/bin"
 
-brew_path="$(brew --prefix)"
-if [ -f "$brew_path/etc/bash_completion" ]; then
-. "$brew_path/etc/bash_completion"
+# Assume brew prefix to avoid costly `brew --prefix` operation but verify it
+# out-of-band and notify if it's not right.
+
+export BREW_PATH=/usr/local
+test_brew_prefix() {
+  if [[ "$(brew --prefix)" != "$BREW_PATH" ]]; then
+    echo "MISMATCHED BREW PREFIX.  Update \$BREW_PATH from '$BREW_PATH', to '$(brew --prefix)'"
+  fi
+
+}
+test_brew_prefix &
+
+if [ -f "$BREW_PATH/etc/bash_completion" ]; then
+  . "$BREW_PATH/etc/bash_completion"
 fi
 
+[[ -n "$DEBUG_STARTUP" ]] && . "$BASE_DIR/debug_functions.sh"
+
 sources=(
-  "$BASE_DIR/debug_functions.sh"
   "$BASE_DIR/prompt.sh"
   "$BASE_DIR/configure_history.sh"
   "$BASE_DIR/aliases.sh"
@@ -37,6 +53,6 @@ for src in "${sources[@]}"; do
   if [[ -s $src ]]; then
     #shellcheck disable=1090
     . "$src"
-    debug_log "Loaded: $src"
+    [[ -n "$DEBUG_STARTUP" ]] && debug_log "Loaded: $src"
   fi
 done
