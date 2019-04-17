@@ -5,7 +5,7 @@
 	co = !git checkout
 	cm = !git checkout master
 	cp = !git cherry-pick
-	edit = !nvim -- "$(git st --porcelain | awk '{ print $2}')"
+	edit = !~/src/scripts/bash/git/git-edit.sh
 	browse-pulls = !hub browse -- pulls
 
 	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
