@@ -2,9 +2,8 @@
 function f() {
   local path
   path="${2%/}"
-  path="${path:-./}"
-  rg --smart-case --files "$path"** -g $1
-  # | fzf -f "$1" --preview="cat"
+  path="${path:-.}"
+  find "$path" -iname "*$1*" | rg --color=always "$1"
 }
 
 function vilast() {
