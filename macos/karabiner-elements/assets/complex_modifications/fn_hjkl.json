@@ -1,6 +1,41 @@
 {
-  "title": "Use fn+h/j/k/l as arrow keys",
+  "title": "Alternative arrow keys",
   "rules": [
+    {
+      "description": "Use rcmd + j/k as up/down arrow keys",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "j",
+            "modifiers": {
+              "mandatory": ["right_command"],
+              "optional": ["any"]
+            }
+          },
+          "to": [
+            {
+              "key_code": "down_arrow"
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "k",
+            "modifiers": {
+              "mandatory": ["right_command"],
+              "optional": ["any"]
+            }
+          },
+          "to": [
+            {
+              "key_code": "up_arrow"
+            }
+          ]
+        }
+      ]
+    },
     {
       "description": "Use fn+h/j/k/l as arrow keys",
       "manipulators": [
@@ -63,13 +98,32 @@
               "key_code": "right_arrow"
             }
           ]
+        }
+      ]
+    }, {
+      "description": "Use cmd + shift + h/j/k/l as arrow keys",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "h",
+            "modifiers": {
+              "mandatory": ["left_gui", "shift"],
+              "optional": ["any"]
+            }
+          },
+          "to": [
+            {
+              "key_code": "left_arrow"
+            }
+          ]
         },
         {
           "type": "basic",
           "from": {
             "key_code": "j",
             "modifiers": {
-              "mandatory": ["right_command"],
+              "mandatory": ["left_gui", "shift"],
               "optional": ["any"]
             }
           },
@@ -84,13 +138,28 @@
           "from": {
             "key_code": "k",
             "modifiers": {
-              "mandatory": ["right_command"],
+              "mandatory": ["left_gui", "shift"],
               "optional": ["any"]
             }
           },
           "to": [
             {
               "key_code": "up_arrow"
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "l",
+            "modifiers": {
+              "mandatory": ["left_gui", "shift"],
+              "optional": ["any"]
+            }
+          },
+          "to": [
+            {
+              "key_code": "right_arrow"
             }
           ]
         }
