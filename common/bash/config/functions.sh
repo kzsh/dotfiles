@@ -6,17 +6,20 @@ function f() {
   find "$path" -iname "*$1*" | rg --color=always "$1"
 }
 
-function vilast() {
+function via() {
   local most_recent_grep
-  most_recent_grep=$(tail -r -50 ~/.bash_history | grep "^\(ag\|rg\|grep\) .\+" | grep -v " -l " | head -1)
-  if [[ -n $most_recent_grep ]]; then
-    nvim -- "$(rg -l "$(echo "$most_recent_grep" | awk '{first = $1; $1 = ""; sub(/^[ \t]+/, ""); print $0}')")"
-  else
-    echo "no searches recent enough."
-  fi
+  most_recent_grep=$(tail -r -10 ~/.bash_history | grep "^\(ag\|rg\|grep\)\s\+.\+" | grep -v " -l " | head -1)
+  normalized_grep_value="$(echo "$most_recent_grep" | awk '{$1=""; print $0}' | cut -d';' -f1 | sed -e "s/^ *'(.+)'$/\1/")"
+  echo $most_recent_grep
+  echo $normalized_grep_value
+  # if [[ -n $normalized_grep_value ]]; then
+  #   nvim -- $(rg -l $normalized_grep_value | xargs)
+  # else
+  #   echo "no searches recent enough."
+  # fi
 }
 
-alias vimlast="vilast"
+alias vima="via"
 
 function ff() {
   vim -c "execute \"vimgrep '$1' %\" | execute \"normal \\/$1\<CR>\"" -- $(ag "$1" -l);
