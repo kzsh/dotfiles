@@ -1,0 +1,39 @@
+{
+  "title": "Use right_command as enter",
+  "rules": [
+    {
+      "description": "Use right_command as enter",
+      "manipulators": [
+        {
+          "from": {
+            "key_code": "right_gui"
+          },
+          "to": [{
+            "key_code": "right_gui"
+          }],
+          "to_if_alone": [
+            {
+              "key_code": "return_or_enter"
+            }
+          ],
+          "type": "basic"
+        }
+      ]
+    },
+    {
+      "description": "disable enter (to retrain)",
+      "manipulators": [
+        {
+          "from": {
+            "key_code": "return_or_enter"
+          },
+          "to": [{
+            "key_code": "out"
+          }],
+          "type": "basic"
+        }
+      ]
+    }
+  ]
+}
+
