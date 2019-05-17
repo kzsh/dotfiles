@@ -1,5 +1,7 @@
 #!/bin/bash
 
+ACCESS_TOKEN='[ADD ACCESS TOKEN HERE]'
+BASE_URL='ADD BASE URL HERE'
 API_VERSION='api/v3'
 
 request() {
