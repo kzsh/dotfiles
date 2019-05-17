@@ -26,7 +26,7 @@ tell application "System Events"
 		keystroke ("$DOMAIN" as string)
 		keystroke return
 	end tell
-	repeat until (window 2 of process "$VPN_APPLICATION" exists)
+	repeat until (window 3 of process "$VPN_APPLICATION" exists)
 		delay 1
 	end repeat
 	tell process "$VPN_APPLICATION"
