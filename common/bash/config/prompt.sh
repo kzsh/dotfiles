@@ -23,6 +23,7 @@ style_virtualenv="${BOLD}${SOLAR_ORANGE}"
 style_has_jobs="${SOLAR_YELLOW}"
 style_job_count="${PURPLE}"
 style_last_exit_code_bad="${RED}"
+style_last_exit_code_base="${SOLAR_YELLOW}"
 
 style_git_unstaged="${RESET}${SOLAR_GREEN}"
 style_git_staged="${RESET}${SOLAR_YELLOW}"
@@ -33,10 +34,15 @@ style_git_untracked="${RESET}${SOLAR_CYAN}"
 GIT_DIFF_CHAR="•"
 
 # Main methods
-__build_prompt() {
+__set_prompt() {
+  export __KZSH__LAST_EXIT_CODE=$?
   build_ps1
-  export PROMPT_COMMAND="export_last_exit_code; log_history; $PROMPT_COMMAND"
+  history -a
+  history -c
+  history -r
+  log_history
 }
+export PROMPT_COMMAND=__set_prompt
 
 build_ps1() {
   # Build the prompt
@@ -45,12 +51,19 @@ build_ps1() {
   if [[ "$SSH_TTY" ]]; then
     PS1+="${style_important}[SSH] " # [SSH]
   fi
+
   PS1+="\$(has_jobs)"
   PS1+="${style_chars}:: ${style_path}\w" # : directory
+
   if [[ -z "$SSH_TTY" ]]; then
     PS1+="\$(prompt_git)" # Git details
     PS1+="\$(prompt_virtualenv)" # Virtualenv details
   fi
+
+  if [[ "$__KZSH__LAST_EXIT_CODE" != "0" ]]; then
+    PS1+=" (${style_last_exit_code_base}\$(last_exit)${style_last_exit_code_base})"
+  fi
+
   PS1+="\n"
   PS1+="${style_chars}\$ \[${RESET}\]"
 }
@@ -59,6 +72,10 @@ __initialization() {
   if [[ ! -f $HOME/.logs ]]; then
     mkdir -p "$HOME/.logs"
   fi
+}
+
+last_exit() {
+    echo -ne "${style_last_exit_code_bad}${__KZSH__LAST_EXIT_CODE}"
 }
 
 # Local methods
@@ -104,13 +121,15 @@ function prompt_virtualenv() {
 
 log_history() {
   if [[ "$(id -u)" -ne 0 ]]; then
-    data="$(date "+%Y-%m-%d.%H:%M:%S")	$(pwd)	$(last_exit_code)	$(history 1)"
-    echo "$data" >> ~/.logs/bash-history-"$(date "+%Y-%m-%d")".log
-  fi
-}
+    cmd=$(history 1 | cut -d' ' -f4-)
+    logfile="$HOME/.logs/bash-history-$(date "+%Y-%m-%d").log"
+    data="$(date "+%Y-%m-%d.%H:%M:%S")	$(pwd)	$(last_exit_code)	$cmd"
 
-export_last_exit_code() {
-  export __KZSH__LAST_EXIT_CODE="$?"
+    # Add entry if it isn't a duplicate of the last entry
+    if [[ "$(tail -1 "$logfile" | awk '{ $1=""; print $0 }')" != "$(echo "$data" | awk '{ $1=""; print $0 }')" ]]; then
+      echo "$data" >> "$logfile"
+    fi
+  fi
 }
 
 last_exit_code() {
@@ -118,4 +137,3 @@ last_exit_code() {
 }
 
 __initialization
-__build_prompt
