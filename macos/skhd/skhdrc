@@ -93,10 +93,10 @@ ralt - 0 : chunkc tiling::desktop --equalize
 
 # set insertion point for focused container
 # lcmd + shift - "esc" : chunkc tiling::window --use-insertion-point cancel
-lcmd + shift - h : chunkc tiling::window --use-insertion-point west
-lcmd + shift - j : chunkc tiling::window --use-insertion-point south
-lcmd + shift - k : chunkc tiling::window --use-insertion-point north
-lcmd + shift - l : chunkc tiling::window --use-insertion-point east
+lcmd + alt - h : chunkc tiling::window --use-insertion-point west
+lcmd + alt - j : chunkc tiling::window --use-insertion-point south
+lcmd + alt - k : chunkc tiling::window --use-insertion-point north
+lcmd + alt - l : chunkc tiling::window --use-insertion-point east
 
 # rotate tree
 alt - r : chunkc tiling::desktop --rotate 90
