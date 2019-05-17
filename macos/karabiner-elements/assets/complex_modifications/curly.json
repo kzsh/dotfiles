@@ -1,14 +1,14 @@
 {
-  "title": "Use left_command+uijkJK to make ()[]{}",
+  "title": "Use right_command+uijkJK to make ()[]{}",
   "rules": [
     {
-      "description": "Use left_command+uijkJK to make ()[]{}",
+      "description": "Use right_command+uijkJK to make ()[]{}",
       "manipulators": [
         {
           "from": {
             "key_code": "u",
             "modifiers": {
-              "mandatory": ["spacebar"]
+              "mandatory": ["right_command"]
             }
           },
           "to": [
@@ -23,7 +23,7 @@
           "from": {
             "key_code": "i",
             "modifiers": {
-              "mandatory": ["spacebar"]
+              "mandatory": ["right_command"]
             }
           },
           "to": [
@@ -38,7 +38,7 @@
           "from": {
             "key_code": "j",
             "modifiers": {
-              "mandatory": ["left_command"]
+              "mandatory": ["right_command"]
             }
           },
           "to": [
@@ -53,7 +53,7 @@
           "from": {
             "key_code": "k",
             "modifiers": {
-              "mandatory": ["left_command"]
+              "mandatory": ["right_command"]
             }
           },
           "to": [
@@ -68,7 +68,7 @@
           "from": {
             "key_code": "j",
             "modifiers": {
-              "mandatory": ["left_command", "left_shift"]
+              "mandatory": ["right_command"]
             }
           },
           "to": [
@@ -82,7 +82,7 @@
           "from": {
             "key_code": "k",
             "modifiers": {
-              "mandatory": ["left_command", "left_shift"]
+              "mandatory": ["right_command"]
             }
           },
           "to": [
@@ -91,21 +91,6 @@
             }
           ],
           "type": "basic"
-        }
-      ]
-    },
-    {
-      "manipulators": [
-        {
-          "description": "Space as fn",
-          "type": "basic",
-          "from": {
-            "key_code": "spacebar",
-            "modifiers": { "optional": ["any"] }
-          },
-          "to": [{ "lazy": true, "key_code": "fn" }],
-          "to_if_held_down": [{ "key_code": "spacebar" }],
-          "to_if_alone": [{ "key_code": "spacebar" }]
         }
       ]
     }
