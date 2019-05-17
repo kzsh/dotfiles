@@ -7,6 +7,6 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 pyenv activate gcloud-sdk
 
-~/src/vendor/google-cloud-sdk/bin/gcloud "$@"
+"$HOME"/src/vendor/google-cloud-sdk/bin/gcloud "$@"
 
 pyenv deactivate
