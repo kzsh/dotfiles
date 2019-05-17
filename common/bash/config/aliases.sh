@@ -44,6 +44,11 @@ alias vim="nvim"
 alias vir="nvim -S \$VIM_DIR/.vimsession.vim"
 alias vimr="nvim -S \$VIM_DIR/.vimsession.vim"
 
+# Allow vi-mode bindings for node repl
+if [ $(command -v rlwrap) ] ; then
+  alias node='NODE_NO_READLINE=1 rlwrap node';
+fi
+
 # edit all modified files in and out of the index
 vimm() {
   nvim -- "$(git st --porcelain | awk '{ print $2}')"
