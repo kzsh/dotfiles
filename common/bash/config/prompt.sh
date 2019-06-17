@@ -121,7 +121,7 @@ function prompt_virtualenv() {
 
 log_history() {
   if [[ "$(id -u)" -ne 0 ]]; then
-    cmd=$(history 1 | cut -d' ' -f4-)
+    cmd=$(history 1 | awk '{ $1=""; print $0}' | sed 's/^ *//g')
     logfile="$HOME/.logs/bash-history-$(date "+%Y-%m-%d").log"
     data="$(date "+%Y-%m-%d.%H:%M:%S")	$(pwd)	$(last_exit_code)	$cmd"
 
