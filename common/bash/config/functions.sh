@@ -2,10 +2,9 @@
 function f() {
   local path
   path="${2%/}"
-  path="${path:-.}"
-  /usr/local/bin/rg --files -g "$1" | rg --color=always $(echo "$1" | sed 's/\*/.*/g; s/^\.\*//g; s/\.\*$//g')
-
-  # find "$path" -iname "*$1*" | rg --color=always "$1"
+  path="${path:-./}"
+  rg --smart-case --files "$path"** -g $1
+  # | fzf -f "$1" --preview="cat"
 }
 
 function via() {
