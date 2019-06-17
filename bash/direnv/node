@@ -1,15 +1,31 @@
 #!/usr/bin/env bash
+. ~/src/scripts/bash/utils/script_dir.sh
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+SCRIPT_DIR="$EXEC_DIR"
 
 NVM_DIR="$HOME/.nvm"
 
-EXPECTED_NODE_VERSION="$(cat "$SCRIPT_DIR/.nvmrc")"
+EXPECTED_NODE_VERSION="$(echo "$1" | grep '^v\?[0-9.]\+$')"
 
-NODE_BIN_PATH="$NVM_DIR/versions/node/$EXPECTED_NODE_VERSION/bin"
-echo "$(command -v "$NODE_BIN_PATH/node")"
+if [[ -z "$EXPECTED_NODE_VERSION" ]]; then
+  EXPECTED_NODE_VERSION="$(cat "$SCRIPT_DIR/.nvmrc")"
+fi
+
+EXPECTED_NODE_VERSION="v$(echo $EXPECTED_NODE_VERSION | grep -o '[0-9.]\+$')"
+
+for v in "$NVM_DIR"/versions/node/*; do
+
+  CANDIDATE_VERSION="$(echo $(basename $v) | grep "$EXPECTED_NODE_VERSION")"
+  if [[ -n "$CANDIDATE_VERSION" ]]; then
+    CHOSEN_VERSION="$CANDIDATE_VERSION"
+  fi
+done
+
+NODE_BIN_PATH="$NVM_DIR/versions/node/$CHOSEN_VERSION/bin"
+
 
 if [[ $(command -v "$NODE_BIN_PATH/node") ]]; then
+  echo "Using node: $CHOSEN_VERSION ($(command -v "$NODE_BIN_PATH/node"))"
   export PATH="$NODE_BIN_PATH:$PATH"
 else
   [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
