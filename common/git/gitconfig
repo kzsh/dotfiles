@@ -7,6 +7,7 @@
 	cp = !git cherry-pick
 	edit = !~/src/scripts/bash/git/git-edit.sh
 	browse-pulls = !hub browse -- pulls
+	pulls = !hub browse -- pulls
 
 	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
 	ln = log --graph --pretty=format:'%Cgreen%h%Creset%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
