@@ -194,6 +194,12 @@ fd-widget() {
 
 bind -x '"\C-n": "fd-widget"'
 
+inject-into-command-line() {
+  command="$@"
+  READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}$command${READLINE_LINE:$READLINE_POINT}"
+  READLINE_POINT=$(( READLINE_POINT + ${#command} ))
+}
+
 
 function given_path_or_default() {
   if [[ -z "$1" ]]; then
