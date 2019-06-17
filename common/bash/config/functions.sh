@@ -3,7 +3,9 @@ function f() {
   local path
   path="${2%/}"
   path="${path:-.}"
-  find "$path" -iname "*$1*" | rg --color=always "$1"
+  /usr/local/bin/rg --files -g "$1" | rg --color=always $(echo "$1" | sed 's/\*/.*/g; s/^\.\*//g; s/\.\*$//g')
+
+  # find "$path" -iname "*$1*" | rg --color=always "$1"
 }
 
 function via() {
