@@ -1,10 +1,10 @@
 #!/bin/bash
 function f() {
   local path
-  path="${2%/}"
-  path="${path:-./}"
-  rg --smart-case --files "$path"** -g $1
-  # | fzf -f "$1" --preview="cat"
+  path="${2:-./}"
+  match=$(echo $1 | sed 's/\*/.*/g')
+  rg --smart-case --files "$path" -g $1 \
+    | rg "$match"
 }
 
 function via() {
