@@ -146,7 +146,7 @@ persist_completions() {
   | xargs cat \
   | awk '{xit=$3;$2=$3=""; print xit$0 }' \
   | LANG=C sed '/^[^0]/d' \
-  | LANG=C sed 's/ +[ 0-9.]+/	/g' \
+  | LANG=C sed 's/ +[ 0-9.]+/	/' \
   | LANG=C cut -c 2- \
   | LANG=C sort -k2 -u \
   | LANG=C sort -ru \
