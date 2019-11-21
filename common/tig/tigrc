@@ -80,6 +80,9 @@ bind generic cri !git rebase -i --autosquash %(commit)
 bind generic crr !git rebase --continue
 bind generic crs !git rebase --skip
 
+bind generic cpc !git cherry-pick --continue
+bind generic cps !git cherry-pick --skip
+
 bind generic <F1> view-help
 bind generic <C-w><C-w> view-next
 

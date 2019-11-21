@@ -4,6 +4,7 @@
 	st  = status
 	co = !git checkout
 	cm = !git checkout master
+	cd = !git checkout develop
 	cp = !git cherry-pick
 	edit = !~/src/scripts/bash/git/git-edit.sh
 	browse-pulls = !hub browse -- pulls
@@ -38,6 +39,7 @@
 	untracked = cyan
 [diff]
 	renames = true
+	tool = vimdiff
 [mergetool]
 	keepBackup = true
 [http]
@@ -53,3 +55,7 @@
 	defaults = --two-initials --abbrev=8
 [pull]
 	rebase = true
+[interactive]
+	diffFilter = diff-highlight
+[difftool]
+	prompt = false
