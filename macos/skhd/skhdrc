@@ -34,10 +34,10 @@ ctrl + alt + cmd - k : if ! [[ "$(yabai -m query --window owner)" == "iTerm2" ]]
 ctrl + alt + cmd - j : open -na /Applications/Google\ Chrome.app && sleep 1 && osascript -e 'tell application "Google Chrome" to activate'
 
 # focus window
-ctrl - h : if [[ "$(yabai -m query --windows | jq -r 'map(select(."focused" == 1)) | .[0].title')" == "nvim" ]]; then skhd -k "ctrl + alt - h"; else yabai -m window --focus west; fi
-ctrl - j : if [[ "$(yabai -m query --windows | jq -r 'map(select(."focused" == 1)) | .[0].title')" == "nvim" ]]; then skhd -k "ctrl + alt - j"; else yabai -m window --focus south; fi
-ctrl - k : if [[ "$(yabai -m query --windows | jq -r 'map(select(."focused" == 1)) | .[0].title')" == "nvim" ]]; then skhd -k "ctrl + alt - k"; else yabai -m window --focus north; fi
-ctrl - l : if [[ "$(yabai -m query --windows | jq -r 'map(select(."focused" == 1)) | .[0].title')" == "nvim" ]]; then skhd -k "ctrl + alt - l"; else yabai -m window --focus east; fi
+ctrl - h : if [[ "$(yabai -m query --windows | jq -r 'map(select(."focused" == 1)) | .[0].title')" == *"NVIM"* ]]; then skhd -k "ctrl + alt - h"; else yabai -m window --focus west; fi
+ctrl - j : if [[ "$(yabai -m query --windows | jq -r 'map(select(."focused" == 1)) | .[0].title')" == *"NVIM"* ]]; then skhd -k "ctrl + alt - j"; else yabai -m window --focus south; fi
+ctrl - k : if [[ "$(yabai -m query --windows | jq -r 'map(select(."focused" == 1)) | .[0].title')" == *"NVIM"* ]]; then skhd -k "ctrl + alt - k"; else yabai -m window --focus north; fi
+ctrl - l : if [[ "$(yabai -m query --windows | jq -r 'map(select(."focused" == 1)) | .[0].title')" == *"NVIM"* ]]; then skhd -k "ctrl + alt - l"; else yabai -m window --focus east; fi
 
 # swap window
 ctrl + lcmd - h : yabai -m window --swap west
