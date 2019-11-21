@@ -18,9 +18,6 @@ alias ls='ls -G'
 alias ll='ls -al'
 alias l='ls -l'
 
-
-alias sed='sed -E'
-
 # open current dir in Finder
 alias oo='open -a Finder ./'
 alias aa='open -a'
