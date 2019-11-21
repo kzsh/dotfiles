@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
+
 set -e
 
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 BASE_DIR="$(pwd)"
+
+. "$SCRIPT_DIR/utils.sh"
 
 print_dependencies() {
   local depkey
@@ -43,9 +47,7 @@ name_only() {
 }
 
 for x in $@; do
-  echo ""
-  echo $x
-  echo "========================"
+  BANNER "$x"
   cd "$(dirname "$x")"
   echo ""
   echo "DEPS"
