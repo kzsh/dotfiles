@@ -1,6 +1,7 @@
 # git aliases (completion is handled in git-completion)
 
 alias gcm='git checkout master'
+alias gcd='git checkout develop'
 alias gco='git checkout'
 alias gb='git branch'
 
