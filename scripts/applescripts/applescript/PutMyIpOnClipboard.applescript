@@ -1,0 +1,1 @@
+set the clipboard to do shell script "ifconfig en0 | grep 'inet\\s' | awk '{print $2}'"

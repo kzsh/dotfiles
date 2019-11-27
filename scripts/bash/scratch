@@ -1,0 +1,14 @@
+#!/bin/bash
+
+SCRATCH_PATH="$HOME/.scratch_pad"
+
+if [[ "$1" == "list" ]]; then
+  ls "$SCRATCH_PATH"
+  exit
+fi
+
+raw_string="$(printf '%s' $@)"
+name="$(echo "$raw_string" | tr '[:upper:]' '[:lower:]' | sed 's/-$//g')"
+# | tr -cd '[[:alnum:]]_-')
+mkdir -p "$SCRATCH_PATH"
+nvim "$SCRATCH_PATH/$name"

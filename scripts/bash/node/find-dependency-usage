@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e
+
+
+. "$HOME/src/scripts/bash/node/utils.sh" 
+
+main() {
+  list_dependencies "peerDependencies"
+
+  list_dependencies "devDependencies"
+
+  list_dependencies "dependencies"
+}
+
+list_dependencies() {
+  local deps_key="$1"
+
+  BANNER "Listing Usage: $deps_key"
+  for x in $(jq -r ".$deps_key | keys | .[]" < "$PWD/package.json"); do 
+    echo "$x: $(grep -r "import.*$x" src | wc -l | sed 's/ //g')"; 
+  done
+}
+
+main "$@"

@@ -1,0 +1,95 @@
+#!/bin/bash
+
+ACCESS_TOKEN='[ADD ACCESS TOKEN HERE]'
+BASE_URL='ADD BASE URL HERE'
+API_VERSION='api/v3'
+
+request() {
+  if [[ -n "$DRY_RUN" ]]; then
+    echo "$BASE_URL/$API_VERSION/$1?access_token=$ACCESS_TOKEN"
+  else
+    curl -s "$BASE_URL/$API_VERSION/$1?access_token=$ACCESS_TOKEN"
+  fi
+}
+
+get_repos() {
+  request "orgs/$2/repos"
+}
+
+get_pull_requests() {
+  request "repos/$1/$2/pulls"
+}
+
+usage() {
+  cat <<EOM
+gh repos
+EOM
+}
+
+main() {
+  ## Gather Arguments
+  PARAMS=""
+  while (( "$#" )); do
+
+    [[ $1 == --*=* ]] && set -- "${1%%=*}" "${1#*=}" "${@:2}"
+
+    case "$1" in
+      --dry-run)
+        DRY_RUN=1
+        shift
+        ;;
+      -f|--format)
+        FORMAT="$2"
+        shift 2
+        ;;
+      -w|--watch)
+        WATCH=1
+        shift
+        ;;
+      -h|--help)
+        usage
+        exit 0
+        ;;
+      --) # end argument parsing
+        shift
+        break
+        ;;
+      -*|--*=) # unsupported flags
+        echo "Error: Unsupported flag $1" >&2
+        exit 1
+        ;;
+      *) # preserve positional arguments
+        PARAMS="$PARAMS $1"
+        shift
+        ;;
+    esac
+  done
+
+  ## set positional arguments in their proper place
+  eval set -- "$PARAMS"
+
+  ## Set Defaults
+
+  ## Set derived vars
+  OPERATION=$(echo "$PARAMS" | awk '{ print $1 }')
+  TARGET=$(echo "$PARAMS" | awk '{ $1=""; print $0 }')
+
+  case $OPERATION in
+    repos*)
+      get_repos "$TARGET"
+      return;;
+    prs*|pulls*)
+      get_pull_requests $(echo "$TARGET" | xargs)
+      return;;
+       *) # unsupported operation
+        echo "Error: Unsupported flag $1" >&2
+        exit 1
+        ;;
+    *)
+  esac
+
+  ## Operation
+
+}
+
+main "$@"

@@ -1,0 +1,44 @@
+#!/bin/bash
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+DIRENV_DIR=$SCRIPT_DIR
+PYTHON_VERSION="$(cat "$DIRENV_DIR/.python-version")"
+VIRTUAL_ENVIRONMENT="$(cat "$DIRENV_DIR/.virtual-environment")"
+
+function main() {
+  export PYENV_ROOT=$HOME/.pyenv
+  export PATH="$PYENV_ROOT/bin:$PATH"
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+  if ! virtual_env_exists; then
+    echo "RUN: Install $PYTHON_VERSION"
+    create_missing_virtual_environment
+    echo "RUN COMPLETE: Install $PYTHON_VERSION"
+  else
+    echo "SKIP: install.  pyenv virtualenv $VIRTUAL_ENVIRONMENT is already installed"
+  fi
+
+  pyenv activate "$VIRTUAL_ENVIRONMENT"
+}
+
+function virtual_env_exists() {
+  pyenv versions | grep -q full_virtualenv_path
+}
+
+function create_missing_virtual_environment() {
+  pyenv virtualenv $PYTHON_VERSION $VIRTUAL_ENVIRONMENT
+}
+
+function full_virtualenv_path() {
+ echo "$PYTHON_VERSION/env/$VIRTUAL_ENVIRONMENT"
+}
+
+function is_python_version_installed() {
+  pyenv versions | grep -q "^$PYTHON_VERSION\$"
+}
+
+function install_missing_python_version() {
+  pyenv install "$PYTHON_VERSION"
+}
+
+main "$@"
