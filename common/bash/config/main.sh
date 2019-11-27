@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # https://github.com/koalman/shellcheck/wiki/SC1090
-BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-export CONFIG_DIR="$BASE_DIR"
+export CONFIG_DIR="$SCRIPT_DIR"
 
 export DEBUG_STARTUP=
 
@@ -38,14 +38,14 @@ if [ -f "$BREW_PATH/etc/bash_completion" ]; then
   . "$BREW_PATH/etc/bash_completion"
 fi
 
-[[ -n "$DEBUG_STARTUP" ]] && . "$BASE_DIR/debug_functions.sh"
+[[ -n "$DEBUG_STARTUP" ]] && . "$SCRIPT_DIR/debug_functions.sh"
 
 sources=(
-  "$BASE_DIR/prompt.sh"
-  "$BASE_DIR/configure_history.sh"
-  "$BASE_DIR/aliases.sh"
-  "$BASE_DIR/functions.sh"
-  "$BASE_DIR/load_program_configs.sh"
+  "$SCRIPT_DIR/prompt.sh"
+  "$SCRIPT_DIR/configure_history.sh"
+  "$SCRIPT_DIR/aliases.sh"
+  "$SCRIPT_DIR/functions.sh"
+  "$SCRIPT_DIR/load_program_configs.sh"
 )
 
 for src in "${sources[@]}"; do
