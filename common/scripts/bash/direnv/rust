@@ -1,1 +1,2 @@
-export PATH="/Users/ahunt/.cargo/bin:$PATH"
+. $HOME/.cargo/env
+PATH="$HOME/.cargo/bin:$PATH"
