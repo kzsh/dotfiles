@@ -35,10 +35,24 @@ function yaml_lint() {
     "./"
   )
 
+  eval "$(pyenv init -)" 
+
+  PYENV_VIRTUALENV_DISABLE_PROMPT=1 pyenv activate yamllint
+
+  yaml_executable="$(which yamllint)"
+
+  config_path=""
   for path in "${paths[@]}"; do
-    config_path="$path/.yamllint"
-    [[ -f "$config_path" ]] && "$(which yamllint)" -c "$config_path" $@
+    tmp_path="$path/.yamllint"
+    [[ -f "$tmp_path" ]] && config_path="$tmp_path"
   done
+
+  if [[ -n "$config_path" ]]; then
+    "$yaml_executable" -c "$config_path" ${@}
+  else 
+    "$yaml_executable" ${@}
+  fi
+  pyenv deactivate
 }
 
 alias yamllint='yaml_lint'
