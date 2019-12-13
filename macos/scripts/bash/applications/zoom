@@ -1,0 +1,49 @@
+#!/bin/bash
+
+usage() {
+  cat <<-EOS
+
+USAGE: 
+
+    zoom [meetingid | meetingAlias]
+
+ARGS:
+  
+
+meetingId: the id will be parsed out of whatever argument string is given
+meetingAlias: if ~/.zoomrc exists, it will be searched for a space delimited mapping of aliases to meeting numbers
+e.g.
+
+\`\`\`
+myroomalias 1234567890
+\`\`\`
+
+EOS
+}
+
+program_name="zoom"
+
+. "$COMMON_SCRIPTS/bash/utils/load_config.sh"
+
+
+CONFIG="$(locate_config $program_name)"
+
+ACTION="${2:-join}"
+MEETING_ALIAS="$1"
+MEETING_NUMBER="$(echo "$1" | grep -o "[0-9-]\\{10,12\\}" | tr -d '-' | grep -o "^[0-9]\\{9,10\\}$")"
+if [[ -n "$MEETING_ALIAS" ]]; then
+ALIAS_NUMBER=$(grep "$MEETING_ALIAS" $CONFIG | awk '{ print $2}' | tr -d '-' | grep -o '^[0-9]\{9,10\}$')
+fi
+
+if [[ -n "$MEETING_NUMBER" ]]; then
+  echo "Opening number: $MEETING_NUMBER"
+  open "zoommtg://zoom.us/join?action=$ACTION&confno=$MEETING_NUMBER"
+elif [[ -n "$ALIAS_NUMBER" ]]; then
+  echo "Opening alias: $MEETING_ALIAS ($ALIAS_NUMBER)"
+  open "zoommtg://zoom.us/join?action=$ACTION&confno=$ALIAS_NUMBER"
+else
+  MEETING_NUMBER="$MEETING_ALIAS"
+  echo "ERROR: could not parse meeting number/alias '$MEETING_NUMBER'" >&2
+  echo
+  usage
+fi
