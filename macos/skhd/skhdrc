@@ -58,48 +58,30 @@ ctrl + lcmd - l : yabai -m window --swap east
 # rcmd + shift + alt - 9 : yabai -m space --focus 9
 # rcmd + shift + alt - 0 : yabai -m space --focus 10
 
-shift + ctrl - 1 : yabai -m space --focus 11
-shift + ctrl - 2 : yabai -m space --focus 12
-shift + ctrl - 3 : yabai -m space --focus 13
-shift + ctrl - 4 : yabai -m space --focus 14
-shift + ctrl - 5 : yabai -m space --focus 15
+# shift + ctrl - 1 : yabai -m space --focus 11
+# shift + ctrl - 2 : yabai -m space --focus 12
+# shift + ctrl - 3 : yabai -m space --focus 13
+# shift + ctrl - 4 : yabai -m space --focus 14
+# shift + ctrl - 5 : yabai -m space --focus 15
 
 # send window to desktop
-rcmd + shift - q : yabai -m window --space 1
-rcmd + shift - w : yabai -m window --space 2
-rcmd + shift - e : yabai -m window --space 3
-rcmd + shift - r : yabai -m window --space 4
-rcmd + shift - t : yabai -m window --space 5
+rcmd + shift - q : yabai -m window --space $((15 * $(cat ~/.config/karabiner-workspaces/current) + 1))
+rcmd + shift - w : yabai -m window --space $((15 * $(cat ~/.config/karabiner-workspaces/current) + 2))
+rcmd + shift - e : yabai -m window --space $((15 * $(cat ~/.config/karabiner-workspaces/current) + 3))
+rcmd + shift - r : yabai -m window --space $((15 * $(cat ~/.config/karabiner-workspaces/current) + 4))
+rcmd + shift - t : yabai -m window --space $((15 * $(cat ~/.config/karabiner-workspaces/current) + 5))
 
-rcmd + shift - a : yabai -m window --space 6
-rcmd + shift - s : yabai -m window --space 7
-rcmd + shift - d : yabai -m window --space 8
-rcmd + shift - f : yabai -m window --space 9
-rcmd + shift - g : yabai -m window --space 10
+rcmd + shift - a : yabai -m window --space $((15 * $(cat ~/.config/karabiner-workspaces/current) + 6))
+rcmd + shift - s : yabai -m window --space $((15 * $(cat ~/.config/karabiner-workspaces/current) + 7))
+rcmd + shift - d : yabai -m window --space $((15 * $(cat ~/.config/karabiner-workspaces/current) + 8))
+rcmd + shift - f : yabai -m window --space $((15 * $(cat ~/.config/karabiner-workspaces/current) + 9))
+rcmd + shift - g : yabai -m window --space $((15 * $(cat ~/.config/karabiner-workspaces/current) + 10))
 
-rcmd + shift - z : yabai -m window --space 11
-rcmd + shift - x : yabai -m window --space 12
-rcmd + shift - c : yabai -m window --space 13
-rcmd + shift - v : yabai -m window --space 14
-rcmd + shift - b : yabai -m windoww --space 15
-
-shift + alt + cmd - 1 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "q" &
-shift + alt + cmd - 2 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "w" &
-shift + alt + cmd - 3 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "e" &
-shift + alt + cmd - 4 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "r" &
-shift + alt + cmd - 5 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "t" &
-
-shift + alt + cmd - 6 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "a" &
-shift + alt + cmd - 7 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "s" &
-shift + alt + cmd - 8 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "d" &
-shift + alt + cmd - 9 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "f" &
-shift + alt + cmd - 0 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "g" &
-
-ctrl + shift + cmd - 1 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "z" &
-ctrl + shift + cmd - 2 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "x" &
-ctrl + shift + cmd - 3 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "c" &
-ctrl + shift + cmd - 4 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "v" &
-ctrl + shift + cmd - 5 -> : ~/src/scripts/bash/chunkwm-integrations/make_changes_for_space.sh "b" &
+rcmd + shift - z : yabai -m window --space $((15 * $(cat ~/.config/karabiner-workspaces/current) + 11))
+rcmd + shift - x : yabai -m window --space $((15 * $(cat ~/.config/karabiner-workspaces/current) + 12))
+rcmd + shift - c : yabai -m window --space $((15 * $(cat ~/.config/karabiner-workspaces/current) + 13))
+rcmd + shift - v : yabai -m window --space $((15 * $(cat ~/.config/karabiner-workspaces/current) + 14))
+rcmd + shift - b : yabai -m window --space $((15 * $(cat ~/.config/karabiner-workspaces/current) + 15))
 
 # shrink/extend width/height
 ralt - h : yabai -m window --use-temporary-ratio -0.05 --adjust-window-edge west --adjust-window-edge east
