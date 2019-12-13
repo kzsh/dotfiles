@@ -60,7 +60,7 @@
 				<dict>
 					<key>COMMAND_STRING</key>
 					<string># space=$(basename $1)
-# ~/src/scripts/bash/chunkwm-integrations/brightness_for_space.sh "$1"</string>
+            # ~/.dotfiles/macos/scripts/bash/chunkwm-integrations/brightness_for_space.sh "$1"</string>
 					<key>CheckedForUserDefaultShell</key>
 					<true/>
 					<key>inputMethod</key>

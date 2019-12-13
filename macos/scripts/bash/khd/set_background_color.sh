@@ -2,7 +2,7 @@
 
 # shellcheck source=./libraries/khd-keystroke-automation.sh
 if [[ -z "$KHD_KEYSTROKE_AUTOMATION_SOURCED" ]]; then
-  . "$HOME/src/scripts/bash/libraries/khd-keystroke-automation.sh"
+  . "$HOME/.dotfiles/macos/scripts/bash/khd/libraries/khd-keystroke-automation.sh"
 fi
 
 send "cmd - $HK_SPACE"

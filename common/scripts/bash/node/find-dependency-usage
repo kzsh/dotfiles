@@ -3,7 +3,7 @@
 set -e
 
 
-. "$HOME/src/scripts/bash/node/utils.sh" 
+. "$COMMON_SCRIPTS/bash/node/utils.sh" 
 
 main() {
   list_dependencies "peerDependencies"

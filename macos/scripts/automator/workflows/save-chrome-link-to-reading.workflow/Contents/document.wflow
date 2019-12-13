@@ -59,7 +59,7 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>NOTIFY_COMMAND="$HOME/src/scripts/bash/macOS/notify.sh" "$HOME/src/scripts/bash/add-to-reading.sh" "$@" &amp;&amp; $NOTIFY_COMMAND "Saved: $@" || $NOTIFY_COMMAND "Failed to save: $@"</string>
+          <string>NOTIFY_COMMAND="$HOME/.dotfiles/macos/scripts/bash/notify.sh" "$HOME/.dotfiles/common/scripts/bash/add-to-reading.sh" "$@" &amp;&amp; $NOTIFY_COMMAND "Saved: $@" || $NOTIFY_COMMAND "Failed to save: $@"</string>
 					<key>CheckedForUserDefaultShell</key>
 					<true/>
 					<key>inputMethod</key>

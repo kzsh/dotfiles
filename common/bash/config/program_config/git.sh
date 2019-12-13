@@ -10,7 +10,7 @@
 eval "$(hub alias -s)"
 
 #   # shellcheck disable=SC1090
-#   . "$HOME/src/scripts/bash/completions/git/git-completion.sh"
+#   . "$HOME/.dotfiles/common/bash/completions/git/git-completion.sh"
 
 #   # shellcheck disable=SC2086
 #   "$original_command" $args

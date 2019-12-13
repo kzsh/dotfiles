@@ -59,7 +59,7 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>osascript -l JavaScript "$HOME/src/scripts/applescripts/dist/ChromeTabSave.js.scpt"</string>
+          <string>osascript -l JavaScript "$HOME/.dotfiles/macos/scripts/applescripts/dist/ChromeTabSave.js.scpt"</string>
 					<key>CheckedForUserDefaultShell</key>
 					<true/>
 					<key>inputMethod</key>

@@ -132,7 +132,7 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>"$HOME/src/scripts/bash/add-to-reading.sh" "${@"</string>
+          <string>"$HOME/.dotfiles/macos/scripts/bash/add-to-reading.sh" "${@"</string>
 					<key>CheckedForUserDefaultShell</key>
 					<true/>
 					<key>inputMethod</key>
