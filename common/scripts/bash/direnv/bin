@@ -1,6 +1,10 @@
+#!/usr/bin/env bash
+
+set -eu
+
 BIN_DIR=".direnv_bin"
 BIN_PATH="$(pwd)/$BIN_DIR"
 PATH="$BIN_PATH:$PATH"
 echo "Available scripts:"
-ls $BIN_PATH
+ls "$BIN_PATH"/
 echo ""

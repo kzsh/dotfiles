@@ -18,6 +18,7 @@ sync() {
 
 activate_environment() {
   eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
   pyenv activate aws
 }
 

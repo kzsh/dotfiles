@@ -1,0 +1,7 @@
+{
+  "devDependencies": {
+    "eslint": "^6.7.2",
+    "prettier": "^1.19.1",
+    "web-ext": "^3.2.1"
+  }
+}
