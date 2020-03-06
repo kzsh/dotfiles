@@ -1,7 +1,5 @@
 #!/bin/bash
 
-echo first: $1
-echo second: $2
 DRY_RUN="$2"
 TYPE="$1"
 
