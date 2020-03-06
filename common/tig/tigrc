@@ -93,4 +93,7 @@ bind generic aa !@bash -c "echo \"%(commit)\" >> /tmp/tig-quick-list"
 bind generic ac !@bash -c "echo "" > /tmp/tig-quick-list"
 bind generic ay !@bash -c "cat /tmp/tig-quick-list | pbcopy"
 
+bind stash D !?git stash drop %(stash)
+bind stash A !?git stash apply %(stash)
+
 color cursor white	green	bold
