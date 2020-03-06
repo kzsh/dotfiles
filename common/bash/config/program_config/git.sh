@@ -7,6 +7,7 @@
 #   args=${*:2}
 #   debug_log "Lazy loading: git"
 #   unalias "git"
+. "$COMMON_SCRIPTS/bash/completions/hub/hub.bash_completion.sh"
 eval "$(hub alias -s)"
 
 #   # shellcheck disable=SC1090

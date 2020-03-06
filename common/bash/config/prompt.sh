@@ -44,6 +44,8 @@ __set_prompt() {
 }
 export PROMPT_COMMAND=__set_prompt
 
+export PROMPT_COMMAND=__set_prompt
+
 build_ps1() {
   # Build the prompt
   PS1="\033]0;\a"
@@ -55,6 +57,7 @@ build_ps1() {
   PS1+="\$(has_jobs)"
   PS1+="${style_chars}:: ${style_path}\w" # : directory
 
+  # If not an ssh tty
   if [[ -z "$SSH_TTY" ]]; then
     PS1+="\$(prompt_git)" # Git details
     PS1+="\$(prompt_virtualenv)" # Virtualenv details
@@ -92,8 +95,8 @@ function prompt_git() {
   [[ $? != 0 ]] && return;
 
   output="$(echo "$status" | awk '/# Initial commit/ {print "(init)"}')"
-  [[ "$output" ]] || output="$(echo "$status" | awk '/# On branch/ {print $4}')"
-  [[ "$output" ]] || output="$(git branch | perl -ne '/^\* (.*)/ && print $1')"
+  [[ "$output" ]] || output="$(git rev-parse --abbrev-ref HEAD)"
+  [[ "$output" == "HEAD" ]] && output="$(git rev-parse --short HEAD)"
 
   flags="$(
   echo "$status" | awk 'BEGIN {r=""}
