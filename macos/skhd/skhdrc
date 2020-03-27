@@ -30,7 +30,7 @@
 #                                  an EOL character signifies the end of the bind.
 
 
-ctrl + alt + cmd - k : if ! [[ "$(yabai -m query --window owner)" == "iTerm2" ]]; then osascript -e 'tell application "iTerm2" to activate'; fi && khd -p "cmd - n";
+ctrl + alt + cmd - k : if ! [[ "$(yabai -m query --window owner)" == "iTerm2" ]]; then osascript -e 'tell application "iTerm2" to activate'; fi && skhd -k "cmd - n";
 ctrl + alt + cmd - j : open -na /Applications/Google\ Chrome.app && sleep 1 && osascript -e 'tell application "Google Chrome" to activate'
 
 # focus window
