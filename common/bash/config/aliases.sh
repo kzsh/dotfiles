@@ -23,13 +23,6 @@ alias oo='open -a Finder ./'
 alias aa='open -a'
 alias chrome='open -a Google\ Chrome'
 
-# Ruby Bundle
-alias be="bundle exec"
-
-# Docker
-alias dm='docker-machine'
-alias dc='docker-compose'
-
 alias rg="rg --colors path:fg:red --colors line:style:bold"
 
 # Keep convenient command but use rg
