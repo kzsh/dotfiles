@@ -9,6 +9,8 @@ export COMMON_SCRIPTS="$REPO_ROOT/common/scripts"
 export MAC_SCRIPTS="$REPO_ROOT/macos/scripts"
 export LINUX_SCRIPTS="$REPO_ROOT/linux/scripts"
 
+export DIRENV="$COMMON_SCRIPTS/bash/direnv"
+
 export DEBUG_STARTUP=
 
 export EDITOR=/usr/local/bin/nvim
