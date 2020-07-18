@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 f() {
   local path
@@ -7,7 +7,7 @@ f() {
   rg --smart-case --files "$path" -g $1 | rg "$match"
 }
 
-function via() {
+via() {
   local most_recent_grep
   most_recent_grep=$(tail -r -10 ~/.bash_history | grep "^\(ag\|rg\|grep\)\s\+.\+" | grep -v " -l " | head -1)
   normalized_grep_value="$(echo "$most_recent_grep" | awk '{$1=""; print $0}' | cut -d';' -f1 | sed -E -e "s#'#\\'#g" -e 's#"#\"#g' -e "s/^ ['\"]*(.+)['\"] *$/\1/")"
@@ -22,13 +22,23 @@ function via() {
 
 alias vima="via"
 
-function ff() {
+ff() {
   vim -c "execute \"vimgrep '$1' %\" | execute \"normal \\/$1\<CR>\"" -- $(ag "$1" -l);
+}
+
+oo() {
+if [[ "$#" == 0 ]]; then
+    open -a Finder ./
+elif [[ -d "$@" ]]; then
+    open -a Finder "$@"
+ else
+   open "$@"
+ fi
 }
 
 
 # Run yamllint, looking for config files in a series of logical directories
-function yaml_lint() {
+yaml_lint() {
   paths=(
     "$HOME/.yamllint"
     "$(git_root)"
@@ -57,11 +67,11 @@ function yaml_lint() {
 
 alias yamllint='yaml_lint'
 
-function logs() {
+logs() {
   ag $@ "$HOME/.logs"
 }
 
-function reuse_tig() {
+reuse_tig() {
   tig_job=$(jobs | grep -v grep | grep "\[\d\+\][+-]\s*Stopped.*tig\s\?.*" | tail -1 | grep -o "\[\(.\+\)\]" | tr -d "[]")
 
   echo $tig_job
@@ -215,7 +225,7 @@ inject-into-command-line() {
 }
 
 
-function given_path_or_default() {
+given_path_or_default() {
   if [[ -z "$1" ]]; then
     root=$(git_root)
 
