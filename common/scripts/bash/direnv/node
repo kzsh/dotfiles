@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 . $COMMON_SCRIPTS/bash/utils/script_dir.sh
 
 SCRIPT_DIR="$EXEC_DIR"
