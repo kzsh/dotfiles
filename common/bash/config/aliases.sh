@@ -21,6 +21,7 @@ alias l='ls -l'
 # open current dir in Finder
 alias aa='open -a'
 alias chrome='open -a Google\ Chrome'
+alias firefox='open -a Firefox\ Developer\ Edition.app'
 
 alias rg="rg --colors path:fg:red --colors line:style:bold"
 
