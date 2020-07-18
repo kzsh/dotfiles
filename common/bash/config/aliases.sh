@@ -19,7 +19,6 @@ alias ll='ls -al'
 alias l='ls -l'
 
 # open current dir in Finder
-alias oo='open -a Finder ./'
 alias aa='open -a'
 alias chrome='open -a Google\ Chrome'
 
