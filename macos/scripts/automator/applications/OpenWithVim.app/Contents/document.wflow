@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>AMApplicationBuild</key>
-	<string>428</string>
+	<string>444.7</string>
 	<key>AMApplicationVersion</key>
-	<string>2.7</string>
+	<string>2.8</string>
 	<key>AMDocumentVersion</key>
 	<string>2</string>
 	<key>actions</key>
@@ -51,7 +51,7 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>source</key>
-					<string>on run {input, parameters}	set filePath to POSIX path of input	set open_command to "/usr/local/bin/bash -c '. /etc/profile &amp;&amp; . $HOME/.bash_profile &amp;&amp; FILE_PATH=\"" &amp; filePath &amp; "\" &amp;&amp; cd ${FILE_PATH%/*} &amp;&amp; nvim  \"${FILE_PATH##*/}\"'"	tell application "iTerm"		activate		set myterm to (create window with profile "Scripting Default Dark" command open_command)	end tell	return inputend run</string>
+					<string>on run {input, parameters}	set filePath to POSIX path of input	set open_command to "/usr/local/bin/bash -c '. /etc/profile &amp;&amp; . $HOME/.bash_profile &amp;&amp; FILE_PATH=\"" &amp; filePath &amp; "\" &amp;&amp; cd ${FILE_PATH%/*} &amp;&amp; nvim  \"${FILE_PATH##*/}\"'"	tell application "iTerm"		activate		set myterm to (create window with default profile  command open_command)	end tell	return inputend run</string>
 				</dict>
 				<key>BundleIdentifier</key>
 				<string>com.apple.Automator.RunScript</string>
@@ -105,7 +105,7 @@ end run</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>529.000000:316.000000</string>
+				<string>1089.000000:316.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run AppleScript.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
