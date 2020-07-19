@@ -1,19 +1,13 @@
 #!/bin/bash
 
-ACCESS_TOKEN='[ADD ACCESS TOKEN HERE]'
-BASE_URL='ADD BASE URL HERE'
 API_VERSION='api/v3'
 
-request() {
-  if [[ -n "$DRY_RUN" ]]; then
-    echo "$BASE_URL/$API_VERSION/$1?access_token=$ACCESS_TOKEN"
-  else
-    curl -s "$BASE_URL/$API_VERSION/$1?access_token=$ACCESS_TOKEN"
-  fi
-}
+CONFIG_DIR="$HOME/.config/gh"
+DEFAULT_CONFIG="$CONFIG_DIR/config"
+mkdir -p "$CONFIG_DIR"
 
 get_repos() {
-  request "orgs/$2/repos"
+  request "orgs/$1/repos"
 }
 
 get_pull_requests() {
@@ -26,70 +20,118 @@ gh repos
 EOM
 }
 
-main() {
-  ## Gather Arguments
-  PARAMS=""
-  while (( "$#" )); do
+## Gather Arguments
+PARAMS=""
+while (( "$#" )); do
 
-    [[ $1 == --*=* ]] && set -- "${1%%=*}" "${1#*=}" "${@:2}"
+  [[ $1 == --*=* ]] && set -- "${1%%=*}" "${1#*=}" "${@:2}"
 
-    case "$1" in
-      --dry-run)
-        DRY_RUN=1
-        shift
-        ;;
-      -f|--format)
-        FORMAT="$2"
-        shift 2
-        ;;
-      -w|--watch)
-        WATCH=1
-        shift
-        ;;
-      -h|--help)
-        usage
-        exit 0
-        ;;
-      --) # end argument parsing
-        shift
-        break
-        ;;
-      -*|--*=) # unsupported flags
-        echo "Error: Unsupported flag $1" >&2
-        exit 1
-        ;;
-      *) # preserve positional arguments
-        PARAMS="$PARAMS $1"
-        shift
-        ;;
-    esac
-  done
-
-  ## set positional arguments in their proper place
-  eval set -- "$PARAMS"
-
-  ## Set Defaults
-
-  ## Set derived vars
-  OPERATION=$(echo "$PARAMS" | awk '{ print $1 }')
-  TARGET=$(echo "$PARAMS" | awk '{ $1=""; print $0 }')
-
-  case $OPERATION in
-    repos*)
-      get_repos "$TARGET"
-      return;;
-    prs*|pulls*)
-      get_pull_requests $(echo "$TARGET" | xargs)
-      return;;
-       *) # unsupported operation
-        echo "Error: Unsupported flag $1" >&2
-        exit 1
-        ;;
-    *)
+  case "$1" in
+    --dry-run)
+      DRY_RUN=1
+      shift
+      ;;
+    -f|--format)
+      FORMAT="$2"
+      shift 2
+      ;;
+    -p|--page)
+      PAGE="$2"
+      shift 2
+      ;;
+    -l|--limit)
+      PER_PAGE_LIMIT="$2"
+      shift 2
+      ;;
+    -u|--base-url)
+      BASE_URL="$2"
+      shift 2
+      ;;
+    -c|--config)
+      CONFIG="$2"
+      shift 2
+      ;;
+    -t|--access-token)
+      ACCESS_TOKEN="$2"
+      shift 2
+      ;;
+    -w|--watch)
+      WATCH=1
+      shift
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    --) # end argument parsing
+      shift
+      break
+      ;;
+    -*|--*=) # unsupported flags
+      echo "Error: Unsupported flag $1" >&2
+      exit 1
+      ;;
+    *) # preserve positional arguments
+      PARAMS="$PARAMS $1"
+      shift
+      ;;
   esac
+done
 
-  ## Operation
+## set positional arguments in their proper place
+PARAMS="$(echo "$PARAMS $*" | xargs)"
 
+eval set -- "$PARAMS"
+
+
+## Set derived vars
+OPERATION=$1
+shift
+
+TARGET=$1
+shift
+
+
+
+: "${CONFIG:=$DEFAULT_CONFIG}"
+: "${PER_PAGE_LIMIT:=20}"
+: "${PAGE:=1}"
+
+get_config_value() {
+  grep "$1" "$CONFIG" | awk '{ print $2 }'
 }
 
-main "$@"
+CONFIG_ACCESS_TOKEN=$(get_config_value 'access_token')
+CONFIG_BASE_URL=$(get_config_value 'base_url')
+CONFIG_DEFAULT_TARGET=$(get_config_value 'default_target')
+
+## Set Defaults
+: "${ACCESS_TOKEN:=$CONFIG_ACCESS_TOKEN}"
+: "${BASE_URL:=$CONFIG_BASE_URL}"
+: "${TARGET:=$CONFIG_DEFAULT_TARGET}"
+
+
+request() {
+  if [[ -n "$DRY_RUN" ]]; then
+    echo "$BASE_URL/$API_VERSION/$*?access_token=$ACCESS_TOKEN&page=$PAGE&per_page=$PER_PAGE_LIMIT"
+  else
+    curl -s "$BASE_URL/$API_VERSION/$*?access_token=$ACCESS_TOKEN&page=$PAGE&per_page=$PER_PAGE_LIMIT"
+  fi
+}
+
+## Operation
+case $OPERATION in
+  repos)
+    get_repos "$TARGET"
+    ;;
+  prs|pulls)
+    get_pull_requests "$TARGET" 
+    ;;
+  comments)
+    get_pull_requests "$TARGET" 
+    ;;
+  *) 
+    request "$PARAMS"
+    ;;
+esac
+
