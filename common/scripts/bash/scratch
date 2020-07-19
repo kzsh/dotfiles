@@ -1,14 +1,80 @@
 #!/bin/bash
 
 SCRATCH_PATH="$HOME/.scratch_pad"
+## Gather Arguments
+PARAMS=""
 
-if [[ "$1" == "list" ]]; then
+usage() {
+  cat <<-EOS
+  scratch [-p|--print] [scratch pad name]
+
+
+  Options:
+
+  -p|--print) cat the contents of the file
+EOS
+}
+
+while (( "$#" )); do
+
+  [[ $1 == --*=* ]] && set -- "${1%%=*}" "${1#*=}" "${@:2}"
+
+  case "$1" in
+    -p|--print)
+      PRINT=1
+      shift
+      ;;
+    -P|--path)
+      SHOW_PATH=1
+      shift
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    --) # end argument parsing
+      shift
+      break
+      ;;
+    -*|--*=) # unsupported flags
+      echo "Error: Unsupported flag $1" >&2
+      exit 1
+      ;;
+    *) # preserve positional arguments
+      PARAMS="$PARAMS $1"
+      shift
+      ;;
+  esac
+done
+
+
+## set positional arguments in their proper place
+PARAMS="$(echo "$PARAMS $@" | xargs)"
+
+eval set -- "$PARAMS"
+
+if [[ "$#" == 0 ]]; then
+  echo ""
   ls "$SCRATCH_PATH"
   exit
 fi
 
+
+
 raw_string="$(printf '%s' $@)"
 name="$(echo "$raw_string" | tr '[:upper:]' '[:lower:]' | sed 's/-$//g')"
 # | tr -cd '[[:alnum:]]_-')
+
 mkdir -p "$SCRATCH_PATH"
-nvim "$SCRATCH_PATH/$name"
+
+if [[ -n $PRINT ]]; then
+  cat "$SCRATCH_PATH/$name"
+fi
+
+if [[ -n $SHOW_PATH ]]; then
+  echo "$SCRATCH_PATH/$name"
+fi
+
+if [[ -z $PRINT ]] && [[ -z $SHOW_PATH ]]; then
+  nvim "$SCRATCH_PATH/$name"
+fi
