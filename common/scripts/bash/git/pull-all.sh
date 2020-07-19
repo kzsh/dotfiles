@@ -7,8 +7,6 @@ operation() {
   if [[ "$branch_match" == "develop" || "$branch_match" == "master" ]]; then
     if [[ "$is_dirty" == "0"  ]]; then
       git checkout master && \
-      git pull && \
-      git checkout develop && \
       git pull
     else
       echo "Skipping: there are uncommitted changes"

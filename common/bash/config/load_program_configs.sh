@@ -8,7 +8,7 @@ build_aliases() {
 
   for target in "${aliased_functions[@]}"; do
     # -s == if file exists and has size > 0
-    debug_log "Configuring lazy load for: $target_function ($target)"
+    [[ -n "$DEBUG_STARTUP" ]] && debug_log "Configuring lazy load for: $target_function ($target)"
     alias $target="$target_function $target"
   done
 }
@@ -17,7 +17,8 @@ programs_dir="$DIR/program_config"
 
 programs=(
   "$programs_dir/pyenv.sh"
-  # "$programs_dir/nvm.sh"
+  "$programs_dir/notes.sh"
+  "$programs_dir/nvm.sh"
   "$programs_dir/git.sh"
   #"$programs_dir/pass.sh"
   "$programs_dir/vim.sh"
@@ -25,7 +26,11 @@ programs=(
   "$programs_dir/ripgrep.sh"
   "$programs_dir/fzf.sh"
   "$programs_dir/direnv.sh"
-  "$programs_dir/gcp.sh"
+  # "$programs_dir/gcp.sh"
+  "$programs_dir/nnn.sh"
+  "$programs_dir/kubectl.sh"
+  "$programs_dir/minishift.sh"
+  "$programs_dir/aws.sh"
 )
 
 for program in "${programs[@]}"; do

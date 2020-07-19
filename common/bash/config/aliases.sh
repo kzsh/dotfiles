@@ -23,10 +23,17 @@ alias aa='open -a'
 alias chrome='open -a Google\ Chrome'
 alias firefox='open -a Firefox\ Developer\ Edition.app'
 
-alias rg="rg --colors path:fg:yellow --colors line:style:bold"
+alias kcl='kubectl'
+alias kcx='kubectx'
+alias kns='kubens'
+
+complete -F __start_kubectl kcl
+complete -F __start_kubectx kcx
+complete -F __start_kubens kns
 
 # Keep convenient command but use rg
-alias ag="rg"
+alias rg="rg --colors path:fg:yellow --colors line:style:bold"
+alias ag="rg --colors path:fg:yellow --colors line:style:bold"
 
 # use neovim
 alias vi="nvim"

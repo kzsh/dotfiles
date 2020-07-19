@@ -23,10 +23,8 @@ test_available_vim() {
 
 test_available_vim &
 
-shopt -s globstar
-shopt -s extglob
-
-PATH="$PATH:$HOME/bin"
+# shopt -s globstar
+# shopt -s extglob
 
 # Assume brew prefix to avoid costly `brew --prefix` operation but verify it
 # out-of-band and notify if it's not right.
@@ -62,3 +60,5 @@ for src in "${sources[@]}"; do
     [[ -n "$DEBUG_STARTUP" ]] && debug_log "Loaded: $src"
   fi
 done
+
+PATH="$HOME/bin:$PATH"

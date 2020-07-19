@@ -1,7 +1,7 @@
 #!/bin/bash
 TODAY=$(date +"%Y-%m-%d")
 PWD=$(pwd)
-cd $HOME/TODO
+cd "$NOTES_DIR" || exit 1
 
 if [ "$(git log -1 --pretty=%B)" == "$TODAY" ]; then
   git add .
@@ -11,4 +11,4 @@ else
   git commit -m "$TODAY"
 fi
 
-cd $(PWD)
+cd "$PWD"

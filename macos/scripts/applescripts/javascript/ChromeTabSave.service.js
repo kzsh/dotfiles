@@ -10,10 +10,10 @@ try {
 
     var tab = chrome.windows.at(chrome.activeWindow).activeTab
     try {
-      result = app.doShellScript('grep "' + tab.url() + '" ~/TODO/Reading.md')
+      result = app.doShellScript('grep "' + tab.url() + '" $NOTES_DIR/Reading.md')
       notify("Already stored.");
     } catch(e) {
-      currentApp.doShellScript('echo "- [ ' + tab.title() + ' ](' + tab.url() + ')" >> ~/TODO/Reading.md')
+      currentApp.doShellScript('echo "- [ ' + tab.title() + ' ](' + tab.url() + ')" >> $NOTES_DIR/Reading.md')
       notify(tab.title() + " saved.");
     }
   }

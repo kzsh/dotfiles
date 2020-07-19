@@ -1,20 +1,23 @@
 #!/usr/bin/env bash
 
-f() {
-  local path
-  path="${2:-./}"
-  match=$(echo $1 | sed 's/\*/.*/g' | sed 's/?/./g')
-  rg --smart-case --files "$path" -g $1 | rg "$match"
+function f() {
+  rg --smart-case --files "$@"
+  # local path
+  # path="${2:-./}"
+  # match=$(echo $1 | sed 's/\*/.*/g' | sed 's/?/./g')
+  # rg --smart-case --files "$path" -g $1 ${@:2} \
+  #   | rg "$match"
 }
 
 via() {
   local most_recent_grep
-  most_recent_grep=$(tail -r -10 ~/.bash_history | grep "^\(ag\|rg\|grep\)\s\+.\+" | grep -v " -l " | head -1)
-  normalized_grep_value="$(echo "$most_recent_grep" | awk '{$1=""; print $0}' | cut -d';' -f1 | sed -E -e "s#'#\\'#g" -e 's#"#\"#g' -e "s/^ ['\"]*(.+)['\"] *$/\1/")"
+
+  most_recent_grep=$(history | tail -10 | grep "\(\d\+\)\s*\(ag.\?\|rg\|grep\)\s\+.\+" | awk '{$1=""; print $0}' | tail -1)
+
   echo $most_recent_grep
-  echo $normalized_grep_value
-  if [[ -n $normalized_grep_value ]]; then
-    nvim -- $(rg -l "$normalized_grep_value" | xargs)
+  if [[ -n $most_recent_grep ]]; then
+    most_recent_grep="$most_recent_grep -l"
+    nvim -- $(eval $most_recent_grep | xargs)
   else
     echo "no searches recent enough."
   fi
@@ -83,81 +86,79 @@ reuse_tig() {
 
 }
 REMOVE_MATCH=$(cat <<-'EOS' | paste -sd '%' - | sed 's/%/\\|/g'
-nvim
-vim
-vi
-vo
-mv
-echo
+!
+"
+#
+'
+-
+:
+;
+=
+\$
+\*
+\/
+\?
+\~
+andrew
+arn
+at$
+bash
 cd
-rm
-j
-f
-ag
-exit
 clear
-yarn
-npm
-ln
-ls
+echo
+exit
+fg
 gb
 gb -D
-fg
-tig
-ocker
-git st
 git push
+git st
 git wip
+j 
+ln
+ls
+mv
+npm
+nvim
+ocker
 qgit
-:
-\/
-\~
-|
-{
-yarb
-yuarn
-yar
-arn
-yanr
-yurn
+rm
+t\s
+tig
+tree
 uarn
 uyarn
-vfg
-vf
-v\s
 v$
-y$
-zs$
+v\s
+vf
+vfg
+vi
+vim
+vo
+wgit
+whence
+which
+whoami
 why
 wip
-which
-whence
-wgit
-whoami
-tree
-zz
-✅
-🎯
-🔍
 xe
-t\s
 xeit
 xirt
 xit
 xo
+y$
+yanr
+yar
+yarb
+yuarn
+yurn
+zs$
 zsh
-bash
-\$
-!
--
-=
-\?
-;
-'
-"
-\*
-at$
-#
+zz
+{
+|
+✅
+🎯
+🔍
 EOS
 )
 
@@ -166,16 +167,17 @@ remove_common_history() {
 }
 
 persist_completions() {
-  find ~/.logs/* \
+  LANG=C find ~/.logs/* \
   | xargs cat \
-  | awk '{xit=$3;$2=$3=""; print xit$0 }' \
-  | LANG=C sed '/^[^0]/d' \
-  | LANG=C sed 's/ +[ 0-9.]+/	/' \
-  | LANG=C cut -c 2- \
-  | LANG=C sort -k2 -u \
-  | LANG=C sort -ru \
-  | awk '{$1=""; print $0}' \
-  | fzf +m \
+  | awk '{xit=$3;$2=$3=""; print xit "	" $0 }' \
+  | sed '/^[^0]/d' \
+  | cut -d'	' -f2- \
+  | sort -k2,1000 -u \
+  | sort \
+  | cut -d' ' -f2- \
+  | sed 's/^ *//' \
+  | remove_common_history \
+  | fzf +m --tac \
   | while read -r item; do
     printf '%s ' "$item"
   done
@@ -232,7 +234,7 @@ given_path_or_default() {
     if [[ "$?" == "0" ]]; then
       dir="$root"
     else
-      dir='./'
+      dir="./"
     fi
   else
     dir="$1"

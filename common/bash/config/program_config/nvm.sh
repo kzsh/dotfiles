@@ -1,24 +1,27 @@
 #!/bin/bash
-function lazy_load_nvm() {
-  local original_command
-  local args
-  original_command="$1"
-  args=${*:2}
-  debug_log "Lazy loading: nvm"
+
+export NVM_DIR="$HOME/.nvm"
+
+nvm() {
+  # local original_command
+  # local args
+  # original_command="$1"
+  # args=${*:2}
+  [[ -n $DEBUG_STARTUP ]] && debug_log "Lazy loading: nvm"
   unalias "nvm"
 
   NVM_DIR=~/.nvm
-  export NVM_DIR
-  . /usr/local/opt/nvm/nvm.sh
-
 
   # shellcheck disable=SC1090
-  . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"
+  . "$NVM_DIR/nvm.sh"
+
 
   # shellcheck disable=SC2086
-  "$original_command" $args
+  "$@"
+  # "$original_command" $args
 }
 
-PATH=$PATH:$HOME/.nvm/versions/node/v9.8.0/bin
+# shellcheck disable=SC1090
+. "$NVM_DIR/bash_completion"
 
-build_aliases "lazy_load_nvm" "nvm"
+build_aliases "nvm" "nvm"
