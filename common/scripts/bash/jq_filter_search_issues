@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+BOLD=$(tput bold)
+RESET=$(tput sgr0)
+RED=$(tput setaf 1)
+YELLOW=$(tput setaf 3)
+MAGENTA=$(tput setaf 13)
+ORANGE=$(tput setaf 9)
+BLUE=$(tput setaf 4)
+CYAN=$(tput setaf 6)
+GREEN=$(tput setaf 2)
+WHITE=$(tput setaf 7)
+
+EMPHASIZE="${RESET}${BOLD}"
+USER="${RESET}${YELLOW}"
+LINK="${RESET}${BLUE}"
+LABELS="${RESET}${WHITE}${BOLD}"
+SUMMARY="${RESET}${WHITE}"
+
+
+jq -r ".issues | .[] | \"${LINK}\(.key);${SUMMARY}\(.fields.summary);${LABELS}\(.fields.labels | join(\" \"))\"" | column -t -s';' | sort

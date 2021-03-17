@@ -1,0 +1,229 @@
+#!/usr/bin/env bash
+
+CONFIG_DIR="$HOME/.config/jira-cli"
+DEFAULT_CONFIG="$CONFIG_DIR/config"
+mkdir -p "$CONFIG_DIR"
+
+usage() {
+  cat <<EOM
+usage: jira [arguments] 
+
+    --dry-run) not implemented
+      print the command to be run instead of running it
+
+    -p|--project) not implemented
+      Override default target project (top-level job)
+
+    -j|--jql)
+      Specify jql query paramter without encoding
+
+    -q|--query) not implemented
+      Specify query parameters
+
+    -f|--format) not implemented
+      Specify output format default: json
+
+    -U|--user) not implemented
+      override the config user
+
+    -y|--copy-link|--yank-link) not implemented
+      copy the resulting api call instead of executing it
+
+    -u|--base-url) not implemented
+      override the jira instance to contact
+
+    -c|--config) not implemented
+      specify alternate config (defaults to $DEFAULT_CONFIG)
+
+    -t|--token) not implemented
+      override config token
+
+    -h|--help) 
+      show this help page
+EOM
+}
+
+## Gather Arguments
+PARAMS=""
+while (( "$#" )); do
+
+  [[ $1 == --*=* ]] && set -- "${1%%=*}" "${1#*=}" "${@:2}"
+
+  case "$1" in
+    --dry-run)
+      DRY_RUN=1
+      shift
+      ;;
+    -p|--project)
+      PROJECT="$2"
+      shift 2
+      ;;
+    -j|--jql)
+      JQL="$2"
+      shift 2
+      ;;
+    -q|--query)
+      QUERY="$2"
+      shift 2
+      ;;
+    -f|--format)
+      FORMAT="$2"
+      shift 2
+      ;;
+    -U|--user)
+      USERNAME="$2"
+      shift 2
+      ;;
+    -y|--copy-link|--yank-link)
+      COPY_LINK=1
+      shift
+      ;;
+    -u|--base-url)
+      BASE_URL="$2"
+      shift 2
+      ;;
+    -c|--config)
+      CONFIG="$2"
+      shift 2
+      ;;
+    -t|--token)
+      TOKEN="$2"
+      shift 2
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    --) # end argument parsing
+      shift
+      break
+      ;;
+    -*|--*=) # unsupported flags
+      echo "Error: Unsupported flag $1" >&2
+      exit 1
+      ;;
+    *) # preserve positional arguments
+      PARAMS="$PARAMS $1"
+      shift
+      ;;
+  esac
+done
+
+## set positional arguments in their proper place
+
+eval set -- "$PARAMS"
+
+
+## Set Config
+: "${CONFIG:=$DEFAULT_CONFIG}"
+
+get_config_value() {
+  grep -i "$1 *=.*" "$CONFIG" | cut -d'=' -f2-
+}
+
+# Get Config Defaults
+CONFIG_TOKEN=$(get_config_value 'token')
+CONFIG_BASE_URL=$(get_config_value 'base_url')
+CONFIG_USERNAME=$(get_config_value 'user')
+CONFIG_PROJECT="$(get_config_value 'project')"
+CONFIG_FORMAT=$(get_config_value 'format')
+CONFIG_DEFAULT_JQL=$(get_config_value 'default_jql')
+
+## Set Defaults
+: "${TOKEN:=$CONFIG_TOKEN}"
+: "${BASE_URL:=$CONFIG_BASE_URL}"
+: "${USERNAME:=$CONFIG_USERNAME}"
+: "${PROJECT:=$CONFIG_PROJECT}"
+: "${FORMAT:=$CONFIG_FORMAT}"
+
+case $FORMAT in
+  text)
+    USE_JQ_FILTER=1
+    ;;
+  json|*)
+    # json is default
+    ;;
+esac
+
+COMMAND="$1"
+shift
+
+ENTITY_ID="$1"
+shift
+
+: "${COMMAND:=sprint}"
+
+case $1 in
+  *)
+    # passthrough
+    ;;
+esac
+
+
+declare -A BASE_JQL_MAPPING=(
+  ["sprint"]="labels=3D"
+)
+
+DEFAULT_JQL="$CONFIG_DEFAULT_JQL"
+MAPPED_BASE_JQL=${BASE_JQL_MAPPING[$COMMAND]}
+
+if [[ -n "$DEFAULT_JQL" && -n "$MAPPED_BASE_JQL" ]]; then
+  DEFAULT_JQL="$DEFAULT_JQL AND ${BASE_JQL_MAPPING[$COMMAND]}"
+else
+  DEFAULT_JQL="$DEFAULT_JQL${BASE_JQL_MAPPING[$COMMAND]}"
+fi
+
+if [[ -n $DEFAULT_JQL ]]; then
+  if [[ -n "$JQL" ]]; then
+    JQL="$DEFAULT_JQL AND $JQL"
+  else
+    JQL="$DEFAULT_JQL"
+  fi
+fi
+
+echo $DEFAULT_JQL
+
+if [[ -n "$JQL" ]]; then
+  MAYBE_QUERY_STRING="jql=$(url_encode "$JQL")"
+  if [[ -n "$QUERY" ]]; then
+    MAYBE_QUERY_STRING="$MAYBE_QUERY_STRING&$(url_encode "$QUERY")"
+  fi
+elif [[ -n "$QUERY" ]]; then
+  MAYBE_QUERY_STRING="$(url_encode "$QUERY")"
+else 
+  MAYBE_QUERY_STRING=""
+fi
+
+declare -A FILTER_MAPPING=(
+  ["sprint"]="jq_filter_sprint_issues"
+  ["epic"]="jq_filter_sprint_issues"
+  ["search"]="jq_filter_sprint_issues"
+  ["issue"]="jq_filter_for_issue"
+)
+
+declare -A URL_MAPPING=(
+   ["sprint"]="agile/1.0/board/986/sprint/3268/issue?$MAYBE_QUERY_STRING"
+   ["search"]="api/latest/search?$MAYBE_QUERY_STRING"
+    ["issue"]="api/latest/issue/${ENTITY_ID}"
+)
+
+FILTER=${FILTER_MAPPING[$COMMAND]}
+if [[ -n "$USE_JQ_FILTER" && -n "$FILTER" ]]; then
+  URL=${URL_MAPPING[$COMMAND]}
+  curl "$BASE_URL/rest/$URL" \
+    --silent \
+    --header 'Connection: keep-alive' \
+    -H 'Cache-Control: max-age=0' \
+    -H 'Accept: application/json' \
+    -H "Cookie: JSESSIONID=${TOKEN};" \
+    --compressed | $FILTER
+else
+  URL=${URL_MAPPING[$COMMAND]}
+  curl "$BASE_URL/rest/$URL" \
+    --silent \
+    --header 'Connection: keep-alive' \
+    -H 'Cache-Control: max-age=0' \
+    -H 'Accept: application/json' \
+    -H "Cookie: JSESSIONID=${TOKEN};" \
+    --compressed
+fi

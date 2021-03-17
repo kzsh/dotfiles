@@ -1,0 +1,17 @@
+#!/bin/bash
+. ~/bin/pyenv-init
+
+CURRENT_ENV="$PYENV_VERSION"
+if [[ -n $CURRENT_ENV ]]; then
+  pyenv deactivate
+fi
+
+pyenv activate yq
+
+yq "$@"
+
+pyenv deactivate
+
+if [[ -n $CURRENT_ENV ]]; then
+  pyenv activate "$CURRENT_ENV"
+fi

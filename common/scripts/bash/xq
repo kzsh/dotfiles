@@ -1,0 +1,8 @@
+#!/bin/bash
+. ~/bin/pyenv-init
+
+pyenv activate yq
+
+xq "$@"
+
+pyenv deactivate

@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+CONFIG_DIR="$HOME/.config/cpulimit"
+PID_FILE="$CONFIG_DIR/pids"
+mkdir -p "$CONFIG_DIR" 
+
+clean_up_orphaned() {
+  for pid in $(cat $PID_FILE); do
+    kill "$pid";
+  done
+  rm "$PID_FILE"
+}
+CPU_LIMIT_PIDS=""
+
+throttle() {
+  PID="$1"
+  PERCENTAGE="$2"
+  : ${PERCENTAGE:=10}
+  sudo cpulimit -l "$PERCENTAGE" -p "$PID" &
+  NEW_ID="$!"
+  CPU_LIMIT_PIDS="$(printf "%s %s\n" "$CPU_LIMIT_PIDS" "$NEW_ID")"
+}
+
+cleanup() {
+  clean_up_orphaned
+}
+
+trap cleanup EXIT
+
+de_prioritize_match() {
+  matcher="$1"
+  for x in $(pgrep -f "$matcher"); do 
+    sudo renice -4 "$x"; 
+  done
+}
+
+throttle_match() {
+  matcher="$1"
+  for x in $(pgrep -f "$matcher"); do 
+    throttle "$x"
+  done
+}
+
+echo "$PIDS" > "$CONFIG_DIR/pids"
+
+while true; do
+  read
+done

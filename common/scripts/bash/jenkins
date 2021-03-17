@@ -1,0 +1,202 @@
+#!/usr/bin/env bash
+
+CONFIG_DIR="$HOME/.config/jenkins-cli"
+DEFAULT_CONFIG="$CONFIG_DIR/config"
+mkdir -p "$CONFIG_DIR"
+
+usage() {
+  cat <<EOM
+usage: jenkins [arguments] [job path]
+
+    --dry-run)
+      print the command to be run instead of running it 
+
+    -p|--project)
+      Override default target project (top-level job)
+
+    -q|--query)
+      Specify query parameters
+    -f|--format)
+      Specify output format default: json
+
+    -U|--user)
+      override the config user
+
+    -y|--copy-link|--yank-link)
+      copy the resulting api call instead of executing it
+
+    -u|--base-url)
+      override the jenkins instance to contact
+
+    -c|--config)
+      specify alternate config (defaults to $DEFAULT_CONFIG)
+
+    -t|--token)
+      override config token
+
+    -h|--help)
+      show this help page
+EOM
+}
+
+## Gather Arguments
+PARAMS=""
+while (( "$#" )); do
+
+  [[ $1 == --*=* ]] && set -- "${1%%=*}" "${1#*=}" "${@:2}"
+
+  case "$1" in
+    --dry-run)
+      DRY_RUN=1
+      shift
+      ;;
+    -p|--project)
+      PROJECT="$2"
+      shift 2
+      ;;
+    -q|--query)
+      QUERY="$2"
+      shift 2
+      ;;
+    -f|--format)
+      FORMAT="$2"
+      shift 2
+      ;;
+    -U|--user)
+      USERNAME="$2"
+      shift 2
+      ;;
+    -y|--copy-link|--yank-link)
+      COPY_LINK=1
+      shift
+      ;;
+    -u|--base-url)
+      BASE_URL="$2"
+      shift 2
+      ;;
+    -c|--config)
+      CONFIG="$2"
+      shift 2
+      ;;
+    -t|--token)
+      TOKEN="$2"
+      shift 2
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    --) # end argument parsing
+      shift
+      break
+      ;;
+    -*|--*=) # unsupported flags
+      echo "Error: Unsupported flag $1" >&2
+      exit 1
+      ;;
+    *) # preserve positional arguments
+      PARAMS="$PARAMS $1"
+      shift
+      ;;
+  esac
+done
+
+## set positional arguments in their proper place
+
+eval set -- "$PARAMS"
+
+
+## Set Defaults
+PROJECT=${PROJECT:-Velocity%20SE}
+
+: "${CONFIG:=$DEFAULT_CONFIG}"
+
+get_config_value() {
+  grep -i "$1" "$CONFIG" | awk '{ print $2 }'
+}
+
+CONFIG_TOKEN=$(get_config_value 'token')
+CONFIG_BASE_URL=$(get_config_value 'base_url')
+CONFIG_USERNAME=$(get_config_value 'user')
+CONFIG_PROJECT="$(get_config_value 'project')"
+CONFIG_FORMAT=$(get_config_value 'format')
+
+## Set Defaults
+: "${TOKEN:=$CONFIG_TOKEN}"
+: "${BASE_URL:=$CONFIG_BASE_URL}"
+: "${USERNAME:=$CONFIG_USERNAME}"
+: "${PROJECT:=$CONFIG_PROJECT}"
+: "${FORMAT:=$CONFIG_FORMAT}"
+
+if [[ -n "$QUERY" ]]; then
+  QUERY="?$QUERY"
+fi
+
+case $FORMAT in
+  json)
+    FORMATTING_PATH="/api/json"
+    ;;
+  xml)
+    FORMATTING_PATH="/api/xml"
+    ;;
+  *)
+    FORMATTING_PATH=""
+    ;;
+esac
+
+
+case $1 in
+  get)
+    shift
+    case $1 in
+      logs)
+        COMMAND_PATH="lastBuild/consoleText"
+        FORMATTING_PATH=""
+        shift
+      ;;
+    esac
+    ;;
+  *)
+    # passthrough
+    ;;
+esac
+
+JOB_SPEC="$@"
+shift
+
+JOB_PATH="$JOB_SPEC"
+DATA_PATH=""
+
+IFS='/' read -a URL_PARTS <<< "$JOB_PATH"
+
+for u in "${URL_PARTS[@]}"; do
+  ENCODED_URL_PARTS="$ENCODED_URL_PARTS/$(url_encode "$u")"
+done 
+
+REQUEST_PATH="$BASE_URL/job/$ENCODED_URL_PARTS/$COMMAND_PATH"
+
+REQUEST_PATH_WITH_QUERY="$REQUEST_PATH$FORMATTING_PATH$QUERY"
+
+request() {
+  local url
+  url=$1
+  curl -s \
+    -X POST \
+    -L \
+    --user "$USERNAME:$TOKEN" \
+    "$url"
+}
+
+execute() {
+  if [[ -n "$DRY_RUN" ]]; then
+    echo "$REQUEST_PATH_WITH_QUERY" 
+  elif [[ -n "$COPY_LINK" ]]; then
+    echo "copying url..."
+    echo "$REQUEST_PATH" | pbcopy
+  else
+    request "$REQUEST_PATH_WITH_QUERY"
+    exit $?
+  fi
+}
+
+execute

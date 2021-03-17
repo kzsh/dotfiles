@@ -1,0 +1,11 @@
+#!/bin/bash
+DNSMASQ_CONF_DIR=/usr/local/etc/dnsmasq.d/
+ASSIGNED_IP="$(ip -4 addr show en0 | rg -o 'inet ([\d.]+)' -r '$1')"
+
+echo "address=/k8s/$ASSIGNED_IP" > "$DNSMASQ_CONF_DIR/01-k8s.conf"
+
+sudo brew services restart dnsmasq
+
+sudo killall -HUP mDNSResponder
+sudo killall mDNSResponderHelper
+sudo dscacheutil -flushcache

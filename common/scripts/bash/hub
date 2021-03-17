@@ -1,0 +1,19 @@
+#!/bin/bash
+case "$1" in
+  pr)
+    case "$2" in
+      create)
+        /usr/local/bin/hub pull-request "${@:3}"
+        ;;
+      *)
+        /usr/local/bin/hub "$@"
+        ;;
+    esac
+    ;;
+  *)
+    /usr/local/bin/hub "$@"
+    ;;
+esac
+
+
+

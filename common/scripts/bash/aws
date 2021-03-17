@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+case "$1" in
+  mfa)
+    shift
+    "$HOME/bin/aws-mfa" $@
+    ;;
+  *)
+  /usr/local/bin/aws $@
+esac
+
