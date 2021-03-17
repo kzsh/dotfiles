@@ -22,7 +22,9 @@ alias l='ls -l'
 alias aa='open -a'
 alias chrome='open -a Google\ Chrome'
 alias firefox='open -a Firefox\ Developer\ Edition.app'
+alias dcc='docker-compose'
 
+complete -F _docker_compose dcc
 alias kcl='kubectl'
 alias kcx='kubectx'
 alias kns='kubens'
@@ -31,16 +33,20 @@ complete -F __start_kubectl kcl
 complete -F __start_kubectx kcx
 complete -F __start_kubens kns
 
+alias rg="rg --colors path:fg:red --colors line:style:bold"
+
+alias fd="fd -H --glob" 
+
+alias f="ag --files -g "
+
 # Keep convenient command but use rg
-alias rg="rg --colors path:fg:yellow --colors line:style:bold"
-alias ag="rg --colors path:fg:yellow --colors line:style:bold"
+alias ag="rg --colors path:fg:red --colors line:style:bold"
+
 
 # use neovim
 alias vi="nvim"
 alias vim="nvim"
 
-alias vir="nvim -S $VIM_DIR/.vimsession.vim"
-alias vimr="nvim -S $VIM_DIR/.vimsession.vim"
 
 # Allow vi-mode bindings for node repl
 if [ $(command -v rlwrap) ] ; then
