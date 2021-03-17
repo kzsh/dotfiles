@@ -9,8 +9,6 @@ export COMMON_SCRIPTS="$REPO_ROOT/common/scripts"
 export MAC_SCRIPTS="$REPO_ROOT/macos/scripts"
 export LINUX_SCRIPTS="$REPO_ROOT/linux/scripts"
 
-export DIRENV="$COMMON_SCRIPTS/bash/direnv"
-
 export DEBUG_STARTUP=
 
 export EDITOR=/usr/local/bin/nvim
@@ -25,6 +23,7 @@ test_available_vim &
 
 # shopt -s globstar
 # shopt -s extglob
+shopt -s direxpand
 
 # Assume brew prefix to avoid costly `brew --prefix` operation but verify it
 # out-of-band and notify if it's not right.

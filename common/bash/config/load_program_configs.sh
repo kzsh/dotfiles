@@ -26,11 +26,12 @@ programs=(
   "$programs_dir/ripgrep.sh"
   "$programs_dir/fzf.sh"
   "$programs_dir/direnv.sh"
-  # "$programs_dir/gcp.sh"
-  "$programs_dir/nnn.sh"
   "$programs_dir/scratch.sh"
+  "$programs_dir/gcp.sh"
+  # "$programs_dir/nnn.sh"
   "$programs_dir/kubectl.sh"
-  "$programs_dir/minishift.sh"
+  # "$programs_dir/minishift.sh"
+  "$programs_dir/codeready-containers.sh"
   "$programs_dir/aws.sh"
 )
 

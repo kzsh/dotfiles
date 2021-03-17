@@ -1,14 +1,21 @@
 #!/usr/bin/env bash
-. $COMMON_SCRIPTS/bash/utils/script_dir.sh
 
-SCRIPT_DIR="$EXEC_DIR"
+. "$COMMON_SCRIPTS/bash/utils/script_dir.sh"
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+SOURCED_IN_DIR="$EXEC_DIR"
+
+if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
+  SOURCING=1 
+else
+  SOURCING=
+fi
 
 NVM_DIR="$HOME/.nvm"
 
 EXPECTED_NODE_VERSION="$(echo "$1" | grep '^v\?[0-9.]\+$')"
 
 if [[ -z "$EXPECTED_NODE_VERSION" ]]; then
-  EXPECTED_NODE_VERSION="$(cat "$SCRIPT_DIR/.nvmrc")"
+  EXPECTED_NODE_VERSION="$(cat "$SOURCED_IN_DIR/.nvmrc")"
 fi
 
 EXPECTED_NODE_VERSION="v$(echo $EXPECTED_NODE_VERSION | grep -o '[0-9.]\+$')"
@@ -36,5 +43,11 @@ else
   if ! command -v node || [[ "$(node --version)" != "$EXPECTED_NODE_VERSION" ]]; then
     nvm install "$EXPECTED_NODE_VERSION"
   fi
-  nvm use
+
+  if [[ -z "$SOURCING" ]]; then
+    echo "$SCRIPT_DIR"
+    "$SCRIPT_DIR/init.sh" "node" "$"
+  else
+    nvm use
+  fi
 fi

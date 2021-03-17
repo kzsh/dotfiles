@@ -43,13 +43,13 @@ bind generic w view-stash
 # bind generic vp view-pager
 # bind generic vh view-help
 
-# bind generic o  none
-# bind generic oo :toggle sort-order
-# bind generic os :toggle sort-field
-# bind generic on :toggle line-number
-# bind generic od :toggle date
-# bind generic oa :toggle author
-# bind generic og :toggle line-graphics
+bind generic o  none
+bind generic oo :toggle sort-order
+bind generic os :toggle sort-field
+bind generic on :toggle line-number
+bind generic od :toggle date
+
+bind generic og :toggle line-graphics
 # bind generic of :toggle file-name
 # bind generic op :toggle ignore-space
 # bind generic oi :toggle id
@@ -67,7 +67,7 @@ bind status  u  none
 bind stage   u  none
 bind generic uu status-update
 bind generic ur status-revert
-bind generic um status-merge
+# bind generic um status-merge
 bind generic ul stage-update-line
 bind generic us stage-split-chunk
 
@@ -75,11 +75,11 @@ bind generic c  none
 bind generic cc !git commit
 bind generic ca !git commit --amend
 bind generic cf !git commit --fixup=%(commit)
-bind generic cpp !git cherry-pick %(commit)
 bind generic cri !git rebase -i --autosquash %(commit)
 bind generic crr !git rebase --continue
 bind generic crs !git rebase --skip
 
+bind generic cpp !git cherry-pick %(commit)
 bind generic cpc !git cherry-pick --continue
 bind generic cps !git cherry-pick --skip
 

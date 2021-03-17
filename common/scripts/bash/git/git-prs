@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -e
+
+printf "$(hub pr list --color -f '%pC%>(8)%i%Creset  %t%  l | %rs%n' | sed "s/andrew-h/$(tput setaf 10)andrew-h$(tput sgr0)/")"

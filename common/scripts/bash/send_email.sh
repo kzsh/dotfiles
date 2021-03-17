@@ -1,26 +1,28 @@
 #!/bin/bash
 function main() {
-  if [[ $# -eq 0 ]] ; then
-    usage
-    exit 0
-  fi
+  local recipient subject body
+  recipient="$1"
+  shift
+  subject="$1"
+  shift
+  body="$*"
 
-  if [[ -z "$1" ]]; then echo "  Error: Must specify a recipient."
-    usage
-  fi
-
-  if [[ -z "$2" ]]; then
-    echo "  Error: Must specify a subject."
+  if [[ -z "$recipient" ]]; then 
+    echo "Error: Must specify a recipient."
     usage
   fi
 
-  HEADER="To: $1\nSubject: $2\nContent-Type: text/plain; charset=UTF-8"
+  if [[ -z "$subject" ]]; then
+    echo "Error: Must specify a subject."
+    usage
+  fi
 
-  BODY="${*:3}"
-  echo -e "${HEADER}\n\n${BODY}" | sendmail -t
+  HEADER="To: $recipient\nSubject: $subject\nContent-Type: text/plain; charset=UTF-8"
+
+  echo -e "${HEADER}\n\n${body}" | sendmail -t
 }
 
-function usage() {
+usage() {
   cat <<-EOS
 
   Usage: send_email <recipient> <subject> [body]

@@ -1,2 +1,6 @@
 set editing-mode vi
 set keymap vi-command
+
+$if node
+   "\C-c": rlwrap-direct-keypress
+$endif

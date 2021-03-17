@@ -4,9 +4,11 @@ PWD=$(pwd)
 cd "$NOTES_DIR" || exit 1
 
 if [ "$(git log -1 --pretty=%B)" == "$TODAY" ]; then
+  make docs
   git add .
   git commit --amend --no-edit
 else
+  make docs
   git add .
   git commit -m "$TODAY"
 fi

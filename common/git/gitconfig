@@ -1,11 +1,11 @@
 [include]
 	path = ~/.gitconfig-work
 [alias]
-	st  = status
-	co = !git checkout
-	cm = !git checkout master
-	cd = !git checkout develop
-	cp = !git cherry-pick
+	st = status
+	co = checkout
+	cm = checkout master
+	cd = checkout develop
+	cp = cherry-pick
 	edit = !~/.dotfiles/common/scripts/bash/git/git-edit.sh
 	browse-pulls = !hub browse -- pulls
 	pulls = !hub browse -- pulls
@@ -13,6 +13,7 @@
 	ln = log --graph --pretty=format:'%Cgreen%h%Creset%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 	lc = log-compact
 	wip = !"$COMMON_SCRIPTS"/bash/git/wip.sh
+	prs = !~/.dotfiles/common/scripts/bash/git/git-prs 
 [branch]
 	autosetuprebase = always
 [core]

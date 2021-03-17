@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+case "$1" in
+  recreate)
+      shift
+      docker-compose up -d --no-deps --force-recreate "$@"
+    ;;
+  watch)
+      shift
+      docker-compose up -d --no-deps --force-recreate "$1" && docker-compose logs -f "$1"
+    ;;
+  *)
+      docker-compose $@
+    ;;
+esac

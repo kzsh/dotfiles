@@ -4,32 +4,33 @@
 BOLD=$(tput bold)
 RESET=$(tput sgr0)
 RED=$(tput setaf 1)
-SOLAR_YELLOW=$(tput setaf 3)
-PURPLE=$(tput setaf 13)
-SOLAR_ORANGE=$(tput setaf 9)
-SOLAR_BLUE=$(tput setaf 4)
-SOLAR_CYAN=$(tput setaf 6)
-SOLAR_GREEN=$(tput setaf 2)
-SOLAR_WHITE=$(tput setaf 7)
+YELLOW=$(tput setaf 3)
+MAGENTA=$(tput setaf 13)
+ORANGE=$(tput setaf 9)
+BLUE=$(tput setaf 4)
+CYAN=$(tput setaf 6)
+GREEN=$(tput setaf 2)
+WHITE=$(tput setaf 7)
 
 # Prompt styles
-style_user="\[${RESET}${SOLAR_YELLOW}\]"
-style_host="\[${RESET}${SOLAR_YELLOW}\]"
-style_path="\[${RESET}${BOLD}${SOLAR_YELLOW}\]"
-style_chars="\[${RESET}${SOLAR_BLUE}\]"
-style_important="\[${RESET}${BOLD}${SOLAR_BLUE}\]"
-style_branch="${SOLAR_YELLOW}"
-style_group="${SOLAR_YELLOW}"
-style_virtualenv="${BOLD}${RESET}"
-style_kubernetes="${BOLD}${RESET}"
-style_has_jobs="${SOLAR_YELLOW}"
-style_job_count="${PURPLE}"
-style_last_exit_code_bad="${RED}"
-style_last_exit_code_base="${SOLAR_YELLOW}"
+style_user="\[${RESET}${YELLOW}\]"
+style_host="\[${RESET}${YELLOW}\]"
+style_path="\[${RESET}${BOLD}${YELLOW}\]"
+style_chars="\[${RESET}${BLUE}\]"
+style_important="\[${RESET}${BOLD}${BLUE}\]"
+style_group="${RESET}${YELLOW}"
+style_branch="${RESET}${MAGENTA}"
+style_virtualenv="${RESET}${MAGENTA}"
+style_kubernetes="${RESET}${MAGENTA}"
+style_has_jobs="${RESET}${YELLOW}"
+style_job_count="${RESET}${MAGENTA}"
+style_last_exit_code_bad="${RESET}${RED}"
+style_last_exit_code_base="${RESET}${YELLOW}"
 
-style_git_unstaged="${RESET}${SOLAR_GREEN}"
-style_git_staged="${RESET}${SOLAR_YELLOW}"
-style_git_untracked="${RESET}${SOLAR_CYAN}"
+style_git_unstaged="${RESET}${GREEN}"
+style_git_staged="${RESET}${YELLOW}"
+style_git_untracked="${RESET}${CYAN}"
+style_git_deleted="${RESET}${RED}"
 
 # Misc config
 
@@ -55,14 +56,11 @@ build_ps1() {
     PS1+="${style_important}[SSH] " # [SSH]
   fi
 
-  PS1+="\$(has_jobs)"
-  PS1+="${style_chars}:: ${style_path}\w " # : directory
-
   # If not an ssh tty
   if [[ -z "$SSH_TTY" ]]; then
-    PS1+="\$(prompt_git)" # Git details
-    PS1+="\$(prompt_kubernetes)" # Git details
-    PS1+="\$(prompt_virtualenv)" # Virtualenv details
+    PS1+="\$(has_jobs) "
+    PS1+="${style_path}\w" 
+    PS1+=" \$(prompt_git)\$(prompt_kubernetes)\$(prompt_virtualenv)" 
   fi
 
   if [[ "$__KZSH__LAST_EXIT_CODE" != "0" ]]; then
@@ -86,47 +84,71 @@ last_exit() {
 # Local methods
 has_jobs() {
   job_count=$(jobs -l | awk '{ print $3 }' | grep -vc "Done")
-  prompt_jobs="[${style_job_count}$job_count${style_has_jobs}] "
+  prompt_jobs="[${style_job_count}$job_count${style_has_jobs}]"
   echo -ne "${style_has_jobs}${prompt_jobs}"
+}
+
+build_flags() {
+  local status flags s us ut
+  status="$(git status --porcelain)"
+  [[ $? != 0 ]] && return;
+
+  while IFS=  read -r line ; do
+    case $line in
+      ' M '* |' D '*) 
+        us=1
+        ;;
+      # order matters here
+      'M '*|'D '*)
+        s=1
+        ;;
+      '??'*)
+        ut=1
+        ;;
+    esac
+  done <<< "$status"
+
+  [[ -n $s ]] && flags+="${style_git_staged}${GIT_DIFF_CHAR}"
+  [[ -n $us ]] && flags+="${style_git_unstaged}${GIT_DIFF_CHAR}"
+  [[ -n $ut ]] && flags+="${style_git_untracked}${GIT_DIFF_CHAR}"
+
+  echo "$flags"
 }
 
 # Show the name and status of the current git repo
 prompt_git() {
-  local status output flags
-  status="$(git status 2>/dev/null)"
-  [[ $? != 0 ]] && return;
+  local output flags
 
-  output="$(echo "$status" | awk '/# Initial commit/ {print "(init)"}')"
+  if ! git rev-parse HEAD > /dev/null 2>&1; then
+    return
+  fi
+
   [[ "$output" ]] || output="$(git rev-parse --abbrev-ref HEAD)"
   [[ "$output" == "HEAD" ]] && output="$(git rev-parse --short HEAD)"
 
-  flags="$(
-  echo "$status" | awk 'BEGIN {r=""}
-    /^Changes to be committed:$/        {r=r "'${style_git_staged}${GIT_DIFF_CHAR}'"}
-    /^Changes not staged for commit:$/  {r=r "'${style_git_unstaged}${GIT_DIFF_CHAR}'"}
-    /^Untracked files:$/                {r=r "'${style_git_untracked}${GIT_DIFF_CHAR}'"}
-    END {print r}'
-  )"
+  # flags=$(build_flags)
+  # [[ "$flags" ]] && output+=" ${flags}"
 
-  if [[ "$flags" ]]; then
-    output="$output[${flags}${style_branch}]"
-  fi
-
-  echo -ne " ${RESET}${SOLAR_BLUE}on ${style_branch}${output}"
+  echo -ne "${style_group}git[${style_branch}${output}${style_group}]"
 }
 
 # Show the name and status of the current k8s context
 prompt_kubernetes() {
   local context
   context=$(kubectl config current-context 2>/dev/null)
+  namespace="$(kcl config view --minify --output 'jsonpath={..namespace}' 2>/dev/null)"
+  : "${namespace:=default}"
+
   [[ "$?" != 0 ]] && return;
-  echo -ne " ${style_group}k8s[${style_kubernetes}${context}${style_group}]"
+  echo -ne " ${style_group}k8s[${style_kubernetes}${context}:${namespace}${style_group}]"
 }
 
 # Show the name of the current virtualenv
 prompt_virtualenv() {
   local env_name
   env_name=$(basename "$VIRTUAL_ENV")
+
+  PIPENV_ACTIVE=1
 
   if [[ -n "$env_name" ]]; then
     echo -ne " ${style_group}venv[${style_virtualenv}${env_name}${style_group}]"

@@ -1,0 +1,24 @@
+{
+  "title": "Application Shortcuts",
+  "rules": [
+    {
+      "description": "Open modal iterm with ctrl + opt + cmd - k",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "k",
+            "modifiers": {
+              "mandatory": ["control", "option", "command"]
+            }
+          },
+          "to": [
+            {
+              "shell_command": "~/.dotfiles/macos/scripts/applescripts/applescript/OpenNewModalITermWindow"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

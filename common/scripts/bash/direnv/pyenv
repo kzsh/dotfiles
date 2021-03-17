@@ -5,11 +5,12 @@
 SCRIPT_DIR="$EXEC_DIR"
 DIRENV_DIR="$SCRIPT_DIR"
 PYTHON_VERSION="$(cat "$DIRENV_DIR/.python-version")"
-VIRTUAL_ENVIRONMENT="$(cat "$DIRENV_DIR/.virtual-environment")"
-
-virtual_env_exists() {
-  pyenv versions | grep -q full_virtualenv_path
-}
+VIRTUAL_ENV_FILE="$DIRENV_DIR/.virtual-environment"
+if [ -f "$VIRTUAL_ENV_FILE" ]; then
+  VIRTUAL_ENVIRONMENT="$(cat "$DIRENV_DIR/.virtual-environment")"
+else
+  VIRTUAL_ENVIRONMENT=
+fi
 
 create_missing_virtual_environment() {
   pyenv virtualenv $PYTHON_VERSION $VIRTUAL_ENVIRONMENT
@@ -19,12 +20,31 @@ full_virtualenv_path() {
  echo "$PYTHON_VERSION/env/$VIRTUAL_ENVIRONMENT"
 }
 
+virtual_env_exists() {
+  pyenv versions --bare | grep -q full_virtualenv_path
+}
+
 is_python_version_installed() {
-  pyenv versions | grep -q "^$PYTHON_VERSION\$"
+  pyenv versions --bare | grep -q "^$PYTHON_VERSION\$"
 }
 
 install_missing_python_version() {
   pyenv install "$PYTHON_VERSION"
+}
+
+configure_python_environment() {
+  pyenv local "$PYTHON_VERSION"
+}
+
+configure_venv_environment() {
+  if virtual_env_exists; then
+    echo "SKIP: install.  pyenv virtualenv $VIRTUAL_ENVIRONMENT is already installed"
+  else
+    echo "RUN: Install $PYTHON_VERSION"
+    create_missing_virtual_environment
+    echo "RUN COMPLETE: Install $PYTHON_VERSION"
+  fi
+  pyenv activate "$VIRTUAL_ENVIRONMENT"
 }
 
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
@@ -33,12 +53,14 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 
 eval "$(pyenv init -)"
 
-if ! virtual_env_exists; then
-  echo "RUN: Install $PYTHON_VERSION"
-  create_missing_virtual_environment
-  echo "RUN COMPLETE: Install $PYTHON_VERSION"
+if is_python_version_installed; then
+  echo "SKIP: install.  python version $PYTHON_VERSION is already installed"
 else
-  echo "SKIP: install.  pyenv virtualenv $VIRTUAL_ENVIRONMENT is already installed"
+  install_missing_python_version
 fi
 
-pyenv activate "$VIRTUAL_ENVIRONMENT"
+if [ -n "$VIRTUAL_ENVIRONMENT" ]; then
+  configure_venv_environment
+else
+  configure_python_environment
+fi

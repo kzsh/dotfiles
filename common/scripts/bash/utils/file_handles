@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+directory() {
+  dirname -- "$1"
+}
+
+filename() {
+  basename -- "$1"
+}
+
+extension() {
+  local name
+  name=$(filename "$1")
+  echo "${name##*.}"
+}
+
+filename_no_extension() {
+  local name
+  name=$(filename "$1")
+  echo "${name%.*}"
+}
