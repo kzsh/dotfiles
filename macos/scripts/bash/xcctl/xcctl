@@ -1,0 +1,86 @@
+#!/usr/bin/env bash
+set -e
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+usage() {
+  cat <<EOM
+
+usage: xcctl <sub-command> [--help]
+
+Synopsis:
+  A collection of commands to interact with ios simulators
+
+Sub-Commands:
+  General:
+    init)    -> initialize the config directory
+
+    find)    -> find a device and print associated data
+    find-id) -> find a device id by text and print it
+    start)   -> start a device simulator
+    stop)    -> stop a device simulator
+
+  Contextual:
+    build)     -> build the current project
+    install)   -> install the current app on simulator
+    uninstall) -> uninstall the current app on simulator
+    logs)      -> [unimplemented]
+    run)       -> start the app on the simulator
+
+Arguments:
+  -h | --help   -> display this help text
+
+EOM
+}
+
+
+log() {
+  if [[ -n "$VERBOSE" ]]; then
+    echo "$@"
+  fi
+}
+
+## Gather Arguments
+PARAMS=""
+while (( "$#" )); do
+
+  [[ $1 == --*=* ]] && set -- "${1%%=*}" "${1#*=}" "${@:2}"
+
+  case "$1" in
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    --) # end argument parsing
+      shift
+      break
+      ;;
+    -*|--*=) # unsupported flags
+      echo "Error: Unsupported flag $1" >&2
+      exit 1
+      ;;
+    *) # preserve positional arguments
+      PARAMS="$PARAMS $1"
+      shift
+      ;;
+  esac
+done
+
+## set positional arguments in their proper place
+PARAMS="$(echo "$PARAMS $*" | xargs)"
+
+eval set -- "$PARAMS"
+
+if [[ $# == 0 ]]; then
+  usage
+  exit 1
+fi
+
+COMMAND="$1"
+shift
+
+case "$COMMAND" in
+  *)
+  "$SCRIPT_DIR/$COMMAND" "$@"
+  ;;
+esac

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -e 
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+. "$SCRIPT_DIR/utils.sh"
+
+usage() {
+  cat <<EOM
+usage: find <search terms>
+
+Synopsis:
+  find running ios 14.4 simulators by <search terms>
+EOM
+}
+
+OS_VERSION=$(get_config_value "version")
+xcrun simctl list devices --json "$@" \
+  | jq -r ".devices | .[\"com.apple.CoreSimulator.SimRuntime.iOS-14-4\"]  | .[0]"

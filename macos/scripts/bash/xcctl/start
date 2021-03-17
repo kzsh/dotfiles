@@ -1,0 +1,15 @@
+#!/bin/bash
+set -e 
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+. $SCRIPT_DIR/utils.sh
+
+if [[ $# == 0 ]]; then
+  DEVICE=$(get_config_value "device")
+else
+  DEVICE="$*"
+fi
+
+echo $("$SCRIPT_DIR/find" "$DEVICE" | jq -r '.name')
+ID=$("$SCRIPT_DIR/find-id" "$DEVICE")
+xcrun simctl boot "$ID"

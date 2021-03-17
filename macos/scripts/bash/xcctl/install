@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -e 
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+. "$SCRIPT_DIR/utils.sh"
+
+BUILD_TYPE='Debug-iphonesimulator'
+BUILD_LOCATION="$(get_build_setting "SYMROOT")"
+APP_NAME="$(get_build_setting "WRAPPER_NAME")"
+
+APP_PATH="$BUILD_LOCATION/$BUILD_TYPE/$APP_NAME"
+
+xcrun simctl install booted "$APP_PATH"
+
