@@ -1,3 +1,4 @@
 export CONFIG_DIR=$HOME/.dotfiles
 
+export DOCKER_SCAN_SUGGEST=false
 . $CONFIG_DIR/common/bash/config/main.sh
