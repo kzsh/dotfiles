@@ -1,0 +1,6 @@
+#!/bin/bash
+
+WORKSPACE="$(short-name "$1")"
+shift
+
+yarn workspace "$WORKSPACE" "$@"

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo "restarting docker..."
+SVC="$(launchctl list | grep -o 'com.docker.docker.\+')"
+
+launchctl stop "$SVC" && launchctl start "$SVC"
+sleep 1
+
+open -a "/Applications/Docker.app" 1> /dev/null
+echo "done"

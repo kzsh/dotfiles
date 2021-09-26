@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 case "$1" in
   pr)
     case "$2" in

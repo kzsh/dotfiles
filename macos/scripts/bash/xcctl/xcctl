@@ -13,19 +13,19 @@ Synopsis:
 
 Sub-Commands:
   General:
-    init)    -> initialize the config directory
+    init)       -> initialize the config directory
 
-    find)    -> find a device and print associated data
-    find-id) -> find a device id by text and print it
-    start)   -> start a device simulator
-    stop)    -> stop a device simulator
+    find)       -> find a device and print associated data
+    find-id)    -> find a device id by text and print it
+    start)      -> start a device simulator
+    stop)       -> stop a device simulator
 
   Contextual:
-    build)     -> build the current project
-    install)   -> install the current app on simulator
-    uninstall) -> uninstall the current app on simulator
-    logs)      -> [unimplemented]
-    run)       -> start the app on the simulator
+    build)      -> build the current project
+    install)    -> install the current app on simulator
+    uninstall)  -> uninstall the current app on simulator
+    logs)       -> [unimplemented]
+    run)        -> start the app on the simulator
 
 Arguments:
   -h | --help   -> display this help text

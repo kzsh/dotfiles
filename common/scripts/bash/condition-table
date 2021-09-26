@@ -1,0 +1,79 @@
+#!/bin/bash
+# by Dennis Williamson
+# 2010-10-06, revised 2010-11-10
+# for http://stackoverflow.com/q/3869072
+# designed to fit an 80 character terminal
+# Modified by Andrew Hunt
+# 2020-06-02
+
+dw=5    # description column width
+w=6     # table column width
+
+BOLD=$(tput bold)
+RESET=$(tput sgr0)
+RED=$(tput setaf 1)
+ORANGE=$(tput setaf 9)
+GREEN=$(tput setaf 2)
+
+TRUE_STYLE="${RESET}${ORANGE}"
+FALSE_STYLE="${RESET}${GREEN}"
+ERR_STYLE="${RESET}${RED}"
+
+t () { printf '%s%-*s' "$TRUE_STYLE" "$w" " T"; }
+f () { [[ $? == 1 ]] && printf '%s%-*s' "$FALSE_STYLE" "$w" " T" || printf '%s%-*s' "$ERR_STYLE" "$w" " -err-"; }
+
+o=/dev/null
+
+INTERSECT="\xE2\x95\x8B"
+V_LINE="\xE2\x94\x83"
+H_LINE="\xE2\x94\x81"
+
+printf '%s\n' '      ┃ 1a    2a    3a    4a    5a    6a   ┃ 1b    2b    3b    4b    5b    6b'
+printf '%s\n' '      ┃ [     ["    [-n   [-n"  [-z   [-z" ┃ [[    [["   [[-n  [[-n" [[-z  [[-z"'
+printf '%s\n' '━━━━━━╋━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+
+while read -r d t
+do
+    printf '%-*s%s ┃' "$dw" "$d" "$RESET"
+
+    case $d in
+        unset) unset t  ;;
+        space) t=' '    ;;
+    esac
+
+    [ $t ]        2>$o  && t || f
+    [ "$t" ]            && t || f
+    [ -n $t ]     2>$o  && t || f
+    [ -n "$t" ]         && t || f
+    [ -z $t ]     2>$o  && t || f
+    [ -z "$t" ]         && t || f
+    echo -n "${RESET}┃"
+    [[ $t ]]            && t || f
+    [[ "$t" ]]          && t || f
+    [[ -n $t ]]         && t || f
+    [[ -n "$t" ]]       && t || f
+    [[ -z $t ]]         && t || f
+    [[ -z "$t" ]]       && t || f
+    echo
+
+done <<'EOF'
+unset
+null
+space
+zero    0
+digit   1
+char    c
+hyphn   -z
+two     a b
+part    a -a
+Tstr    -n a
+Fsym    -h .
+T=      1 = 1
+F=      1 = 2
+T!=     1 != 2
+F!=     1 != 1
+Teq     1 -eq 1
+Feq     1 -eq 2
+Tne     1 -ne 2
+Fne     1 -ne 1
+EOF

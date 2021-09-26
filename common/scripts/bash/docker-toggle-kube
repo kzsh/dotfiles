@@ -1,0 +1,15 @@
+#!/bin/bash
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+SETTINGS_FILE="$HOME/Library/Group Containers/group.com.docker/settings.json"
+KUBE_ENABLED=$(grep "kubernetesEnabled" "$SETTINGS_FILE" | grep -q "true" && echo yes || echo no)
+if [[ "$KUBE_ENABLED" == yes ]]; then
+  echo "disabling kubernetes"
+  sed -i '' 's/"kubernetesEnabled" : true,/"kubernetesEnabled" : false,/' "$SETTINGS_FILE"
+else
+  echo "enabling kubernetes"
+  sed -i '' 's/"kubernetesEnabled" : false,/"kubernetesEnabled" : true,/' "$SETTINGS_FILE"
+fi
+
+"$SCRIPT_DIR/docker-restart"

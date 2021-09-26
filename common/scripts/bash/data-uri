@@ -1,0 +1,4 @@
+$!/bin/bash
+
+path=$1
+echo "data:$(file --mime-type -b "$path");base64,$(base64 "$path")"

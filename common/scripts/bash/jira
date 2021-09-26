@@ -8,7 +8,10 @@ usage() {
   cat <<EOM
 usage: jira [arguments] 
 
-    --dry-run) not implemented
+    --edit|--edit-config) 
+      open the config in \$EDITOR
+
+    --dry-run) 
       print the command to be run instead of running it
 
     -p|--project) not implemented
@@ -19,6 +22,9 @@ usage: jira [arguments]
 
     -q|--query) not implemented
       Specify query parameters
+
+    -J|--no-jq) 
+      skip piping output through jq (useful for debugging)
 
     -f|--format) not implemented
       Specify output format default: json
@@ -50,49 +56,57 @@ while (( "$#" )); do
   [[ $1 == --*=* ]] && set -- "${1%%=*}" "${1#*=}" "${@:2}"
 
   case "$1" in
+    -c|--config)
+      CONFIG="$2"
+      shift 2
+      ;;
     --dry-run)
       DRY_RUN=1
       shift
       ;;
-    -p|--project)
-      PROJECT="$2"
+    --edit|--edit-config)
+      EDIT_CONFIG=1
+      shift
+      ;;
+    -f|--format)
+      FORMAT="$2"
       shift 2
+      ;;
+    -h|--help)
+      usage
+      exit 0
       ;;
     -j|--jql)
       JQL="$2"
+      shift 2
+      ;;
+    -J|--no-jq)
+      NO_JQ=1
+      shift 1
+      ;;
+    -p|--project)
+      PROJECT="$2"
       shift 2
       ;;
     -q|--query)
       QUERY="$2"
       shift 2
       ;;
-    -f|--format)
-      FORMAT="$2"
+    -t|--token)
+      TOKEN="$2"
       shift 2
       ;;
     -U|--user)
       USERNAME="$2"
       shift 2
       ;;
-    -y|--copy-link|--yank-link)
-      COPY_LINK=1
-      shift
-      ;;
     -u|--base-url)
       BASE_URL="$2"
       shift 2
       ;;
-    -c|--config)
-      CONFIG="$2"
-      shift 2
-      ;;
-    -t|--token)
-      TOKEN="$2"
-      shift 2
-      ;;
-    -h|--help)
-      usage
-      exit 0
+    -y|--copy-link|--yank-link)
+      COPY_LINK=1
+      shift
       ;;
     --) # end argument parsing
       shift
@@ -117,6 +131,11 @@ eval set -- "$PARAMS"
 ## Set Config
 : "${CONFIG:=$DEFAULT_CONFIG}"
 
+if [[ -n $EDIT_CONFIG ]]; then
+  "$EDITOR" "$CONFIG"
+  exit 0
+fi
+
 get_config_value() {
   grep -i "$1 *=.*" "$CONFIG" | cut -d'=' -f2-
 }
@@ -127,6 +146,7 @@ CONFIG_BASE_URL=$(get_config_value 'base_url')
 CONFIG_USERNAME=$(get_config_value 'user')
 CONFIG_PROJECT="$(get_config_value 'project')"
 CONFIG_FORMAT=$(get_config_value 'format')
+CONFIG_CURRENT_SPRINT=$(get_config_value 'current_sprint')
 CONFIG_DEFAULT_JQL=$(get_config_value 'default_jql')
 
 ## Set Defaults
@@ -135,6 +155,7 @@ CONFIG_DEFAULT_JQL=$(get_config_value 'default_jql')
 : "${USERNAME:=$CONFIG_USERNAME}"
 : "${PROJECT:=$CONFIG_PROJECT}"
 : "${FORMAT:=$CONFIG_FORMAT}"
+: "${CURRENT_SPRINT:=$CONFIG_CURRENT_SPRINT}"
 
 case $FORMAT in
   text)
@@ -161,7 +182,7 @@ esac
 
 
 declare -A BASE_JQL_MAPPING=(
-  ["sprint"]="labels=3D"
+  ["sprint"]="labels=my-label-here"
 )
 
 DEFAULT_JQL="$CONFIG_DEFAULT_JQL"
@@ -180,8 +201,6 @@ if [[ -n $DEFAULT_JQL ]]; then
     JQL="$DEFAULT_JQL"
   fi
 fi
-
-echo $DEFAULT_JQL
 
 if [[ -n "$JQL" ]]; then
   MAYBE_QUERY_STRING="jql=$(url_encode "$JQL")"
@@ -202,14 +221,24 @@ declare -A FILTER_MAPPING=(
 )
 
 declare -A URL_MAPPING=(
-   ["sprint"]="agile/1.0/board/986/sprint/3268/issue?$MAYBE_QUERY_STRING"
+   ["sprint"]="agile/1.0/board/986/sprint/${CURRENT_SPRINT}/issue?$MAYBE_QUERY_STRING"
    ["search"]="api/latest/search?$MAYBE_QUERY_STRING"
     ["issue"]="api/latest/issue/${ENTITY_ID}"
 )
+if [[ -z $NO_JQ ]]; then
+  FILTER=${FILTER_MAPPING[$COMMAND]}
+else
+  FILTER="no-op"
+fi
 
-FILTER=${FILTER_MAPPING[$COMMAND]}
 if [[ -n "$USE_JQ_FILTER" && -n "$FILTER" ]]; then
   URL=${URL_MAPPING[$COMMAND]}
+  if [[ -n $DRY_RUN  ]]; then
+    echo "woul query: $URL"
+    echo "with filter: $FILTER"
+
+    exit 0
+  fi
   curl "$BASE_URL/rest/$URL" \
     --silent \
     --header 'Connection: keep-alive' \
