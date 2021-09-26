@@ -30,9 +30,8 @@
 #                                  an EOL character signifies the end of the bind.
 
 
-ctrl + alt + cmd - j : if ! [[ "$(yabai -m query --window owner)" == "iTerm2" ]]; then osascript -e 'tell application "iTerm2" to activate'; fi && skhd -k "cmd - n";
-ctrl + alt + cmd - l : open -na /Applications/Firefox\ Developer\ Edition.app && sleep 1 && osascript -e 'tell application "Firfox Developer Edition" to activate'
-
+ctrl + alt + cmd - k : if ! [[ "$(yabai -m query --window owner)" == "iTerm2" ]]; then osascript -e 'tell application "iTerm2" to activate'; fi && skhd -k "cmd - n";
+ctrl + alt + cmd - j : open -na /Applications/Google\ Chrome.app && sleep 1 && osascript -e 'tell application "Google Chrome" to activate'
 
 # focus window
 ctrl - h : if [[ "$(yabai -m query --windows | jq -r 'map(select(."focused" == 1)) | .[0].title')" == *"NVIM"* ]]; then skhd -k "ctrl + alt - h"; else yabai -m window --focus west; fi

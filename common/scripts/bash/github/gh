@@ -38,6 +38,10 @@ while (( "$#" )); do
       FORMAT="$2"
       shift 2
       ;;
+    --owner)
+      OWNER=$2
+      shift 2
+      ;;
     -r|--repo)
       REPO=$2
       shift 2
@@ -165,12 +169,14 @@ case $OPERATION in
   st|status)
     DEFAULT_SHA="$(git rev-parse HEAD)"
     DEFAULT_IDENTIFIER="$(hub pr show -f '%I')"
+    DEFAULT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
     : "${SHA:=$DEFAULT_SHA}"
     : "${IDENTIFIER:=$DEFAULT_IDENTIFIER}"
 
     # request "repos/$OWNER/$REPO/commits/$SHA/status" | jq -r '.state'
 
     request "repos/$OWNER/$REPO/pulls/$IDENTIFIER/reviews" | jq -r '.[] | "\(.user | .login);\(.state);\(.submitted_at)"' | column -t -s';'
+    request "repos/$OWNER/$REPO/branches/$DEFAULT_BRANCH/protection/required_status_checks"
     ;;
   sts|statuses)
     request "repos/$OWNER/$REPO/pulls" | jq -r '.[] | .number' \

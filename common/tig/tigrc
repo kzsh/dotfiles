@@ -73,6 +73,7 @@ bind generic us stage-split-chunk
 
 bind generic c  none
 bind generic cc !git commit
+bind generic cn !git commit --no-verify
 bind generic ca !git commit --amend
 bind generic cf !git commit --fixup=%(commit)
 bind generic cri !git rebase -i --autosquash %(commit)
