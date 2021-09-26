@@ -1,5 +1,3 @@
-#!/bin/bash
-
 export NVM_DIR="$HOME/.nvm"
 
 nvm() {

@@ -48,23 +48,24 @@ alias vi="nvim"
 alias vim="nvim"
 
 
-# Allow vi-mode bindings for node repl
-if [ $(command -v rlwrap) ] ; then
-  alias node='NODE_NO_READLINE=1 rlwrap node';
+# if [ -f "$HOME/bin/aws" ]; then
+#   alias aws="$HOME/bin/aws"
+# fi
+
+# if [ -f "$HOME/bin/aws_completer" ]; then
+#   alias aws_completer="$HOME/bin/aws_completer"
+# fi
+
+if [ -f "$HOME/bin/yq" ]; then
+  alias yq="$HOME/bin/yq"
 fi
 
-# edit all modified files in and out of the index
-vimm() {
-  nvim -- "$(git st --porcelain | awk '{ print $2}')"
-}
-
-alias todo='CURR=`pwd` && cd ~/TODO && vim TODO.md; cd $CURR'
-
-# Brightness control
-if [ -f /usr/local/bin/screen-backlight ]; then
-  alias sb="sudo /usr/local/bin/screen-backlight"
+if [ -f "$HOME/bin/xq" ]; then
+  alias yq="$HOME/bin/xq"
 fi
 
-if [ -f /usr/local/bin/keyboard-backlight ]; then
-  alias kb="sudo /usr/local/bin/keyboard-backlight"
+# Allow vi-mode bindings for node repl, mongo
+if command -v rlwrap > /dev/null 2>&1; then
+  alias node='rlwrap --polling --always-readline node';
+  alias mongo='rlwrap --polling --always-readline mongo';
 fi

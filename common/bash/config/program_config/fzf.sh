@@ -1,5 +1,3 @@
-#!/bin/bash
-
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 # export FZF_DEFAULT_OPTS='--bind=ctrl-alt-j:down,ctrl-alt-k:up,ctrl-d:page-down,ctrl-u:page-up'
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow -g "!{.git,node_modules}" 2> /dev/null'
