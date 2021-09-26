@@ -11,6 +11,7 @@ BLUE=$(tput setaf 4)
 CYAN=$(tput setaf 6)
 GREEN=$(tput setaf 2)
 WHITE=$(tput setaf 7)
+GRAY=$(tput setaf 240)
 
 # Prompt styles
 style_user="\[${RESET}${YELLOW}\]"
@@ -19,6 +20,7 @@ style_path="\[${RESET}${BOLD}${YELLOW}\]"
 style_chars="\[${RESET}${BLUE}\]"
 style_important="\[${RESET}${BOLD}${BLUE}\]"
 style_group="${RESET}${YELLOW}"
+style_timestamp="${RESET}${GRAY}"
 style_branch="${RESET}${MAGENTA}"
 style_virtualenv="${RESET}${MAGENTA}"
 style_kubernetes="${RESET}${MAGENTA}"
@@ -58,13 +60,14 @@ build_ps1() {
 
   # If not an ssh tty
   if [[ -z "$SSH_TTY" ]]; then
-    PS1+="\$(has_jobs) "
-    PS1+="${style_path}\w" 
-    PS1+=" \$(prompt_git)\$(prompt_kubernetes)\$(prompt_virtualenv)" 
+    PS1+="\$(prompt_git)\$(prompt_kubernetes)\$(prompt_virtualenv)\n" 
+    PS1+="\$(has_jobs)"
+    PS1+="${style_path}\w"
+    PS1+=" ${style_timestamp}[\$(date "+%Y-%m-%dT%H:%M:%S")]"
   fi
 
   if [[ "$__KZSH__LAST_EXIT_CODE" != "0" ]]; then
-    PS1+=" (${style_last_exit_code_base}\$(last_exit)${style_last_exit_code_base})"
+    PS1+=" ${style_last_exit_code_base}(\$(last_exit)${style_last_exit_code_base})"
   fi
 
   PS1+="\n"
@@ -84,8 +87,12 @@ last_exit() {
 # Local methods
 has_jobs() {
   job_count=$(jobs -l | awk '{ print $3 }' | grep -vc "Done")
-  prompt_jobs="[${style_job_count}$job_count${style_has_jobs}]"
-  echo -ne "${style_has_jobs}${prompt_jobs}"
+  if [ $job_count -gt 0 ]; then
+    prompt_jobs="[${style_job_count}$job_count${style_has_jobs}]"
+    echo -ne "${style_has_jobs}${prompt_jobs} "
+  else
+    echo -ne ""
+  fi
 }
 
 build_flags() {
