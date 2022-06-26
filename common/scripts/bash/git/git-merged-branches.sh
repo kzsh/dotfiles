@@ -2,13 +2,13 @@
 
 usage() {
   cat <<EOM
-usage: merged-branches [arguments] [upstream]
+usage: merged-branches [arguments] [upstream] [remote]
 
 upstream defaults to "master"
 
 Arguments:
     --dry-run)
-      print the command to be run instead of running it 
+      print the command to be run instead of running it
     -h|--help)
       show this help page
 EOM
@@ -45,19 +45,25 @@ PARAMS="$(echo $PARAMS $@ | xargs)"
 
 eval set -- "$PARAMS"
 
-EXTRA_ARGS=""
-if [[ $DRY_RUN ]]; then
-  EXTRA_ARGS="$EXTRA_ARGS --dry-run"
-fi
+UPSTREAM=${1:-integration}
+REMOTE=${2:-origin}
 
-UPSTREAM=${1:-master}
-echo "Checking branches against $UPSTREAM"
+echo "Checking branches against $UPSTREAM on $REMOTE"
 sleep 1
 
-git checkout -q "$UPSTREAM" && git for-each-ref refs/heads/ "--format=%(refname:short)" | while read branch; do 
-  MERGEBASE=$(git merge-base "$UPSTREAM" "$branch") \
-    && [[ "$(git cherry "$UPSTREAM" "$(git commit-tree "$(git rev-parse "$branch"'^{tree}')" -p "$MERGEBASE" -m _)")" == "-"* ]] \
-    && echo "$branch is squash-merged into $UPSTREAM and can be deleted"
-  done
+git checkout -q "$UPSTREAM" && git for-each-ref refs/heads/ "--format=%(refname:short)" | while read branch; do
+  MERGEBASE=$(git merge-base "$UPSTREAM" "$branch")
+  if [[ "$(git cherry "$UPSTREAM" "$(git commit-tree "$(git rev-parse "$branch"'^{tree}')" -p "$MERGEBASE" -m _)")" == "-"* ]]; then
+    if [[ -n $DRY_RUN ]]; then
+      echo "$branch is squash-merged into $UPSTREAM and can be deleted"
+    else
+      git branch -D "$branch"
+    fi
+  fi
+done
+if [[ -n $DRY_RUN ]]; then
+  git remote prune "$REMOTE" --dry-run
+else
+  git remote prune "$REMOTE"
+fi
 
-git remote prune origin $EXTRA_ARGS
