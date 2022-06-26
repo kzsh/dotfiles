@@ -6,7 +6,6 @@ SCRIPT_DIR="$EXEC_DIR"
 DIRENV_DIR="$SCRIPT_DIR"
 PYTHON_VERSION="$(cat "$DIRENV_DIR/.python-version")"
 PYTHON_VERSION_FILE="$DIRENV_DIR/.python-version"
-fi
 
 create_missing_virtual_environment() {
   pyenv virtualenv $PYTHON_VERSION $VIRTUAL_ENVIRONMENT
