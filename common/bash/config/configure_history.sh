@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # export HISTCONTROL=ignoreboth
 export HISTSIZE=100
 export HISTFILESIZE=1000000               # big big history
