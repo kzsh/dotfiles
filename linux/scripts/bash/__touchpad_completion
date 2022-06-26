@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+__touchpad_completions() {
+  local reply=""
+
+  while read -r cmd; do
+    reply="$reply $cmd"
+  done <<< "$(sed -n -e '/^Sub Commands:/,/^$/p' "$SCRIPT_DIR/touchpad" | tail +2 ) "
+
+ if [ "${#COMP_WORDS[@]}" != "2" ]; then
+    return
+  fi
+
+  COMPREPLY=($(compgen -W "$reply" "${COMP_WORDS[1]}"))
+}
+
+complete -F __touchpad_completions touchpad

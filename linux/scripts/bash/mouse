@@ -1,0 +1,46 @@
+#!/bin/bash
+COMMAND="$1"
+#synclient AreaLeftEdge=50 AreaRightEdge=1100 AreaBottomEdge=670
+#synclient AccelFactor=0.538985
+#synclient MaxSpeed=10
+
+
+usage() {
+  cat <<EOM
+usage: mouse <[arguments] | subcommand>
+
+
+Sub Commands:
+  hide
+  show
+  toggle
+  sensitivity
+
+EOM
+}
+
+case "$COMMAND" in
+  hide)
+    xdotool mousemove $(xrandr --current | grep '*' | awk '{print $1}' | sed 's/x/ /g')
+    synclient TouchpadOff=1
+    echo "hidden" > ~/.config/mouse-cli/state
+    ;;
+
+  show)
+    synclient TouchpadOff=0
+    xdotool mousemove 1000 500
+    echo "visible" > ~/.config/mouse-cli/state
+    ;;
+  toggle)
+    if [[ "$(cat ~/.config/mouse-cli/state)" == "visible"* ]]; then
+      mouse hide
+    else
+      mouse show
+    fi
+    ;;
+  sensitivity)
+    xinput --set-prop "Microsoft Microsoft 3-Button Mouse with IntelliEye(TM)" "Coordinate Transformation Matrix" 3.000000, 0.000000, 0.000000, 0.000000, 3.000000, 0.000000, 0.000000, 0.000000, 1.000000
+    ;;
+  *)
+    usage
+esac

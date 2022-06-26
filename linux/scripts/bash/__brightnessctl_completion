@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+__brightnessctl_completions() {
+  read -ra reply <<< "$(brightnessctl -h 2>&1 | sed '/Options:/,/Valid values:/!d;/Valid values:/q; /^ /!d;' | awk '{print $1 $2}' | sed 's/,/\n/; s/\(\[\|=\).*$//g' | head -n -1 | xargs)"
+
+  if [ "${#COMP_WORDS[@]}" != "2" ]; then
+    return
+  fi
+
+  matcher="${COMP_WORDS[1]}"
+  COMPREPLY=()
+  for x in "${reply[@]}"; do
+    if echo "$x" | grep -q '^'"$matcher"; then
+      COMPREPLY+=("$x")
+    fi
+  done
+
+}
+
+complete -F __brightnessctl_completions brightnessctl
+complete -F __brightnessctl_completions bcl
