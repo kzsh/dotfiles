@@ -137,11 +137,14 @@ bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 # bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
-bindsym $mod+Shift+e mode "exit_mode"
-
-mode "exit_mode" {
+bindsym $mod+Shift+e mode "exit? y/n";
+mode "exit? y/n" {
   bindsym Return exec "i3-msg exit"
+  bindsym y exec "i3-msg exit"
+  bindsym Shift+y exec "i3-msg exit"
   bindsym Escape mode "default"
+  bindsym n mode "default"
+  bindsym Shift+n mode "default"
 }
 
 # bindsym $mod1+l exec "xte 'keydown Control_L' 'key a' 'keyup Control_L'"
