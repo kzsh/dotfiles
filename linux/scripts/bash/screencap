@@ -1,0 +1,25 @@
+#!/bin/bash
+if [[ "$1" == "-h" ]]; then
+  echo "usage: screencap [delay | -h]"
+  echo ""
+  echo "Arguments:"
+  echo "  delay) The number of seconds to delay before entering screencap mode"
+  echo ""
+  echo "Options:"
+  echo "  -h) show this help screen"
+  echo ""
+  exit 0
+fi
+if [[ "$1" ]]; then
+  sleep "$1"
+fi
+
+COMPAT_COMMAND="/usr/local/bin/cap-compatibility"
+
+mkdir -p ~/screen-captures
+import ~/screen-captures/"$(date -u --iso-8601=seconds)".png
+
+# make a second copy of the file without ':' for jira
+if [[ -f "$COMPAT_COMMAND" ]]; then
+  "$COMPAT_COMMAND"
+fi

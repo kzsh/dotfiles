@@ -1,0 +1,101 @@
+#!/bin/bash
+
+case "$1" in
+
+a|attach)
+  shift
+  docker attach "$@"
+  ;;
+b|build)
+  shift
+  docker build "$@"
+  ;;
+c|container)
+  shift
+  if [[ "$1" == "rm" && "$2" == '*' ]]; then
+    docker container rm $(docker container ls --format '{{.ID}}')
+  else
+    docker container "$@"
+  fi
+  ;;
+d|diff)
+  shift
+  docker diff "$@"
+  ;;
+e|exec)
+  shift
+  docker exec "$@"
+  ;;
+h|history)
+  shift
+  docker history "$@"
+  ;;
+i|image)
+  shift
+  docker image "$@"
+  ;;
+\?|inspect)
+  shift
+  docker inspect "$@"
+  ;;
+k|kill)
+  shift
+  docker kill "$@"
+  ;;
+l|logs)
+  shift
+  docker logs "$@"
+  ;;
+m|manifest)
+  shift
+  docker manifest "$@"
+  ;;
+n|network)
+  shift
+  docker network "$@"
+  ;;
+p|port)
+  shift
+  docker port "$@"
+  ;;
+r|restart)
+  shift
+  if [[ "$1" == '*' ]]; then
+    docker restart $(docker container ls --format '{{.ID}}')
+  else
+    docker restart "$@"
+  fi
+  ;;
+s|stop|start)
+  shift
+  if [[ "$1" == '*' ]]; then
+    docker stop $(docker ps -q)
+  else
+    if [[ $(Docker inspect -f '{{.State.Status}}' "$1") == 'running' ]]; then
+      docker stop "$@"
+    else
+      docker start "$@"
+    fi
+  fi
+  ;;
+sys|system)
+  shift
+  docker system "$@"
+  ;;
+u|update)
+  shift
+  docker update "$@"
+  ;;
+v|volume)
+  shift
+  docker volume "$@"
+  ;;
+w|wait)
+  shift
+  docker wait "$@"
+  ;;
+*)
+  docker "$@"
+  ;;
+
+esac
