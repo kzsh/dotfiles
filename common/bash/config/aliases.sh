@@ -3,9 +3,11 @@
 alias gcm='git checkout master'
 alias gco='git checkout'
 alias gb='git branch'
+alias gcp='git cherry-pick'
 
 __git_complete gco _git_checkout
 __git_complete gb _git_branch
+__git_complete gcp _git_cherry_pick
 
 # cd to top level of the current git repo
 alias git_root='git rev-parse --show-toplevel'
