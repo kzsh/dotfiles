@@ -5,7 +5,7 @@
 # Executed by startx (run your window manager from here)
 
 # Show i3 info at a reasonable font size
-xrandr --dpi 150x150
+# xrandr --dpi 100
 
 if [ -d /etc/X11/xinit/xinitrc.d ]; then
   for f in /etc/X11/xinit/xinitrc.d/*; do
@@ -14,15 +14,20 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
   unset f
 fi
 
-exec i3
+exec bspwm
 
 # Cause screen to lock after 10 minutes
-xautolock -time 10 -locker "i3exit lock" &
+# xautolock -time 5 -locker "i3exit lock" &
 
 # Increase key repeat times
-xset r rate 150 18
+xset r rate 250 50
 
 # Ignore trackpad input when typing
-syndaemon -dt
+#syndaemon -dt
+
+# configure SXHKD
+# [ -e "$SXHKD_FIFO" ] && rm "$SXHKD_FIFO"
+# mkfifo "$SXHKD_FIFO"
+# sxhkd -s "$SXHKD_FIFO" &
 
 [[ -f ~/.Xresources ]] && xrdb -load ~/.Xresources
