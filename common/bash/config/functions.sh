@@ -1,14 +1,23 @@
 #!/usr/bin/env bash
 
+is_interactive() {
+  test -n "$PS1";
+}
+
 function via() {
-  local most_recent_grep
+  local most_recent_search
 
-  most_recent_grep=$(history | tail -10 | grep "\(\d\+\)\s*\(ag.\?\|rg\|grep\)\s\+.\+" | awk '{$1=""; print $0}' | tail -1)
+  most_recent_search=$(history | tail -10 | grep '^ *[0-9]\+ * \(fd\|rg\|ag\|grep\) \+.\+' | tail -1 | awk '{$1=""; print $0}')
 
-  echo $most_recent_grep
-  if [[ -n $most_recent_grep ]]; then
-    most_recent_grep="$most_recent_grep -l"
-    nvim -- $(eval $most_recent_grep | xargs)
+  if [[ -n $most_recent_search ]]; then
+
+    # If the previous search was not fd, we convert
+    # it to list the matched files
+    if [[ "$most_recent_search" != *'fd '* ]]; then
+      most_recent_search="$most_recent_search -l"
+    fi
+
+    nvim -- $(eval $most_recent_search | xargs)
   else
     echo "no searches recent enough."
   fi
@@ -44,11 +53,10 @@ gb -D
 git push
 git st
 git wip
-j 
+j
 ln
 ls
 mv
-npm
 nvim
 ocker
 qgit
@@ -94,10 +102,27 @@ EOS
 )
 
 remove_common_history() {
-  grep -v "^ *\($REMOVE_MATCH\) *"
+  grep -v "^ *\($REMOVE_MATCH\)[^a-zA-Z0-9] *"
 }
 
 persist_completions() {
+  LANG=C find ~/.logs/* \
+  | xargs cat \
+  | awk '{xit=$3;$2=$3=""; print xit "	" $0 }' \
+  | cut -d'	' -f2- \
+  | sort -k2,1000 -u \
+  | sort \
+  | cut -d' ' -f2- \
+  | sed 's/^ *//' \
+  | remove_common_history \
+  | fzf +m --tac \
+  | while read -r item; do
+    printf '%s ' "$item"
+  done
+  echo
+}
+
+persist_successful_completions() {
   LANG=C find ~/.logs/* \
   | xargs cat \
   | awk '{xit=$3;$2=$3=""; print xit "	" $0 }' \
@@ -115,6 +140,24 @@ persist_completions() {
   echo
 }
 
+dir_specific_completions() {
+  LANG=C find ~/.logs/* \
+  | xargs cat \
+  | grep "$(pwd)[^/]" \
+  | awk '{xit=$3;$2=$3=""; print xit "	" $0 }' \
+  | sed '/^[^0]/d' \
+  | cut -d'	' -f2- \
+  | sort -k2,1000 -u \
+  | sort \
+  | cut -d' ' -f2- \
+  | sed 's/^ *//' \
+  | remove_common_history \
+  | fzf +m --tac \
+  | while read -r item; do
+    printf '%s ' "$item"
+  done
+  echo
+}
 
 hist() {
   cmd="cat $HOME/.custom-history-completions/completions 2> /dev/null"
@@ -128,15 +171,32 @@ hist() {
 }
 
 hist-widget() {
-  local selected="$(persist_completions)"
+  local selected
+  selected="$(persist_completions)"
   READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}$selected${READLINE_LINE:$READLINE_POINT}"
   READLINE_POINT=$(( READLINE_POINT + ${#selected} ))
 }
 
-bind -x '"\C-f": "hist-widget"'
+non-zero-hist-widget() {
+  local selected
+  selected="$(persist_successful_completions)"
+  READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}$selected${READLINE_LINE:$READLINE_POINT}"
+  READLINE_POINT=$(( READLINE_POINT + ${#selected} ))
+}
+
+dir-specific-hist-widget() {
+  local selected
+  selected="$(dir_specific_completions)"
+  READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}$selected${READLINE_LINE:$READLINE_POINT}"
+  READLINE_POINT=$(( READLINE_POINT + ${#selected} ))
+}
+
+is_interactive && bind -x '"\C-g": "dir-specific-hist-widget"'
+is_interactive && bind -x '"\C-f": "non-zero-hist-widget"'
+is_interactive && bind -x '"\C-e": "hist-widget"'
 
 find-directory() {
-  find ${1:-.} -path '*/\.*' -prune \
+  find ${1:-~} -path '*/\.*' -prune \
                   -o -type d -print 2> /dev/null | fzf +m \
     | while read -r item; do
     printf '%s ' "$item"
@@ -144,15 +204,31 @@ find-directory() {
 }
 
 fd-widget() {
-  local selected="$(find-directory)"
+  local selected
+  selected="$(find-directory)"
   READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}$selected${READLINE_LINE:$READLINE_POINT}"
   READLINE_POINT=$(( READLINE_POINT + ${#selected} - 1 ))
 }
 
-bind -x '"\C-n": "fd-widget"'
+is_interactive && bind -x '"\C-n": "fd-widget"'
+
+if command -v unicodeemoji > /dev/null 2>&1; then
+  uni-widget() {
+    local selected
+    selected="$(unicodeemoji)"
+    READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}$selected${READLINE_LINE:$READLINE_POINT}"
+    READLINE_POINT=$(( READLINE_POINT + ${#selected} ))
+  }
+
+  if is_interactive; then
+    stty kill undef
+    bind -x '"\C-y": "uni-widget"'
+  fi
+fi
 
 inject-into-command-line() {
-  command="$@"
+  local command
+  command="$*"
   READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}$command${READLINE_LINE:$READLINE_POINT}"
   READLINE_POINT=$(( READLINE_POINT + ${#command} ))
 }
