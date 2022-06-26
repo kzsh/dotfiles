@@ -77,7 +77,7 @@ bind generic cn !git commit --no-verify
 bind generic ca !git commit --amend
 bind generic cf !git commit --fixup=%(commit)
 bind generic cri !git rebase -i --autosquash %(commit)
-bind generic crr !git rebase --continue
+bind generic crc !git rebase --continue
 bind generic crs !git rebase --skip
 
 bind generic cpp !git cherry-pick %(commit)
