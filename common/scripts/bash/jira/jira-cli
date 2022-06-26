@@ -1,4 +1,12 @@
 #!/usr/bin/env bash
+if command -v greadlink > /dev/null 2>&1; then
+  # Assume MacOS (requires greadlink)
+  SCRIPT_DIR="$(dirname "$(greadlink -f "$0")")"
+else
+  SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+fi
+
+FILTER_DIR="$SCRIPT_DIR/jq_filters"
 
 CONFIG_DIR="$HOME/.config/jira-cli"
 DEFAULT_CONFIG="$CONFIG_DIR/config"
@@ -6,27 +14,33 @@ mkdir -p "$CONFIG_DIR"
 
 usage() {
   cat <<EOM
-usage: jira [arguments] 
+usage: jira [arguments]
 
-    --edit|--edit-config) 
+    --edit|--edit-config)
       open the config in \$EDITOR
 
-    --dry-run) 
+    --dry-run)
       print the command to be run instead of running it
+
+    -v|--verbose)
+      print extra information
 
     -p|--project) not implemented
       Override default target project (top-level job)
 
     -j|--jql)
-      Specify jql query paramter without encoding
+      Specify jql string
 
-    -q|--query) not implemented
+    -q|--query)
       Specify query parameters
 
-    -J|--no-jq) 
+    -J|--no-jq)
       skip piping output through jq (useful for debugging)
 
-    -f|--format) not implemented
+    -f|--filter)
+      apply a custom jq filter to results
+
+    -o|--output-format)
       Specify output format default: json
 
     -U|--user) not implemented
@@ -44,7 +58,7 @@ usage: jira [arguments]
     -t|--token) not implemented
       override config token
 
-    -h|--help) 
+    -h|--help)
       show this help page
 EOM
 }
@@ -64,11 +78,24 @@ while (( "$#" )); do
       DRY_RUN=1
       shift
       ;;
+    -v|--verbose)
+      VERBOSE=1
+      shift
+      ;;
     --edit|--edit-config)
       EDIT_CONFIG=1
       shift
       ;;
-    -f|--format)
+    --list-filters)
+      printf '%s\n' ${PATH//:/\/* } | grep 'jq_filter_' | xargs -n1 basename 2>/dev/null | sed 's/jq_filter_//'
+      printf '%s\n' "$(find "$FILTER_DIR/"*)" | xargs -n1 basename | sed 's/jq_filter_//'
+      exit 0
+      ;;
+    -f|--filter)
+      FILTER="$2"
+      shift 2
+      ;;
+    -o|--output-format)
       FORMAT="$2"
       shift 2
       ;;
@@ -77,7 +104,11 @@ while (( "$#" )); do
       exit 0
       ;;
     -j|--jql)
-      JQL="$2"
+      if [[ -n "$JQL" ]]; then
+        JQL="$JQL AND $2"
+      else
+        JQL="$2"
+      fi
       shift 2
       ;;
     -J|--no-jq)
@@ -97,24 +128,32 @@ while (( "$#" )); do
       shift 2
       ;;
     -U|--user)
-      USERNAME="$2"
+      JIRA_USER_NAME="$2"
       shift 2
       ;;
     -u|--base-url)
       BASE_URL="$2"
       shift 2
       ;;
-    -y|--copy-link|--yank-link)
-      COPY_LINK=1
-      shift
-      ;;
     --) # end argument parsing
       shift
       break
       ;;
-    -*|--*=) # unsupported flags
-      echo "Error: Unsupported flag $1" >&2
-      exit 1
+    -*)
+      # split any batched single character arguments into individual arguments
+      # to be fed back into this loop. This is what allows multiple flags to
+      # be passed as `cl -asdf` instead of `cl -a -s -d -f`
+      grouped_args="$1"
+      shift
+
+      if [[ ${#grouped_args} -gt 2 ]]; then
+        additional_args=""
+        for (( i=1; i<${#grouped_args}; i++ )); do
+         additional_args="$additional_args -${grouped_args:$i:1}"
+        done
+
+        eval set -- "$additional_args" "${*:1}"
+      fi
       ;;
     *) # preserve positional arguments
       PARAMS="$PARAMS $1"
@@ -140,22 +179,31 @@ get_config_value() {
   grep -i "$1 *=.*" "$CONFIG" | cut -d'=' -f2-
 }
 
+vlog() {
+  [[ -n "$VERBOSE" ]] && echo "$*"
+}
+
 # Get Config Defaults
 CONFIG_TOKEN=$(get_config_value 'token')
-CONFIG_BASE_URL=$(get_config_value 'base_url')
 CONFIG_USERNAME=$(get_config_value 'user')
+CONFIG_BASE_URL=$(get_config_value 'base_url')
 CONFIG_PROJECT="$(get_config_value 'project')"
 CONFIG_FORMAT=$(get_config_value 'format')
-CONFIG_CURRENT_SPRINT=$(get_config_value 'current_sprint')
+CONFIG_DEFAULT_BOARD_ID=$(get_config_value 'default_board_id')
 CONFIG_DEFAULT_JQL=$(get_config_value 'default_jql')
 
 ## Set Defaults
 : "${TOKEN:=$CONFIG_TOKEN}"
 : "${BASE_URL:=$CONFIG_BASE_URL}"
-: "${USERNAME:=$CONFIG_USERNAME}"
+: "${JIRA_USER_NAME:=$CONFIG_USERNAME}"
 : "${PROJECT:=$CONFIG_PROJECT}"
 : "${FORMAT:=$CONFIG_FORMAT}"
-: "${CURRENT_SPRINT:=$CONFIG_CURRENT_SPRINT}"
+: "${BOARD_ID:=$CONFIG_DEFAULT_BOARD_ID}"
+
+if [[ "$FORMAT" == 'text' && -n "$NO_JQ" ]]; then
+  echo >&2 "Error: Incompatible flags set.  Cannot set both \`-J|--no-jq\` and \`-o|--output text\`"
+  exit 1
+fi
 
 case $FORMAT in
   text)
@@ -173,16 +221,11 @@ ENTITY_ID="$1"
 shift
 
 : "${COMMAND:=sprint}"
-
-case $1 in
-  *)
-    # passthrough
-    ;;
-esac
-
+vlog "Running command: $COMMAND"
 
 declare -A BASE_JQL_MAPPING=(
-  ["sprint"]="labels=my-label-here"
+  ["squad"]="'Squad Assigned[Dropdown]'='User Experience (Asgardians)'"
+  ["sprint"]="'Squad Assigned[Dropdown]'='User Experience (Asgardians)' AND sprint in openSprints()"
 )
 
 DEFAULT_JQL="$CONFIG_DEFAULT_JQL"
@@ -208,51 +251,63 @@ if [[ -n "$JQL" ]]; then
     MAYBE_QUERY_STRING="$MAYBE_QUERY_STRING&$(url_encode "$QUERY")"
   fi
 elif [[ -n "$QUERY" ]]; then
-  MAYBE_QUERY_STRING="$(url_encode "$QUERY")"
-else 
+  MAYBE_QUERY_STRING="$(url_encode"$QUERY")"
+else
   MAYBE_QUERY_STRING=""
 fi
 
 declare -A FILTER_MAPPING=(
-  ["sprint"]="jq_filter_sprint_issues"
-  ["epic"]="jq_filter_sprint_issues"
-  ["search"]="jq_filter_sprint_issues"
-  ["issue"]="jq_filter_for_issue"
+  ["backlog"]="backlog_issues"
+  ["sprint"]="sprint_issues"
+  ["squad"]="sprint_issues"
+  ["epic"]="sprint_issues"
+  ["search"]="sprint_issues"
+  ["issue"]="issue"
 )
 
 declare -A URL_MAPPING=(
-   ["sprint"]="agile/1.0/board/986/sprint/${CURRENT_SPRINT}/issue?$MAYBE_QUERY_STRING"
+   ["work"]="agile/1.0/board/$BOARD_ID/issue?$MAYBE_QUERY_STRING"
+   ["sprint"]="agile/1.0/board/$BOARD_ID/issue?$MAYBE_QUERY_STRING"
+   ["backlog"]="agile/1.0/board/$BOARD_ID/backlog?$MAYBE_QUERY_STRING"
+   ["squad"]="agile/1.0/board/$BOARD_ID/issue?$MAYBE_QUERY_STRING"
    ["search"]="api/latest/search?$MAYBE_QUERY_STRING"
-    ["issue"]="api/latest/issue/${ENTITY_ID}"
+   ["issue"]="api/latest/issue/${ENTITY_ID}"
 )
-if [[ -z $NO_JQ ]]; then
-  FILTER=${FILTER_MAPPING[$COMMAND]}
-else
-  FILTER="no-op"
+
+if [[ -z "$FILTER" ]]; then
+  default_filter="$FILTER_DIR/${FILTER_MAPPING[$COMMAND]}"
+
+  if [ -f "$default_filter" ]; then
+    FILTER="$default_filter"
+  else
+    FILTER="jq"
+  fi
 fi
 
-if [[ -n "$USE_JQ_FILTER" && -n "$FILTER" ]]; then
-  URL=${URL_MAPPING[$COMMAND]}
-  if [[ -n $DRY_RUN  ]]; then
-    echo "woul query: $URL"
-    echo "with filter: $FILTER"
-
-    exit 0
+if [ -n "$FILTER" ] && ! command -v "$FILTER" > /dev/null 2>&1; then
+  if [ -f "$FILTER_DIR/$FILTER" ]; then
+    FILTER="$FILTER_DIR/$FILTER"
+  else
+    echo "Error:  Could not locate filter \`$FILTER\` in \`$FILTER_DIR\` or on \$PATH" >&2
+    exit 1
   fi
-  curl "$BASE_URL/rest/$URL" \
-    --silent \
+fi
+
+make_request() {
+  curl -s "$BASE_URL/rest/$URL" \
+    --compressed \
+    --header 'Accept: application/json' \
+    --header 'Cache-Control: max-age=0' \
     --header 'Connection: keep-alive' \
-    -H 'Cache-Control: max-age=0' \
-    -H 'Accept: application/json' \
-    -H "Cookie: JSESSIONID=${TOKEN};" \
-    --compressed | $FILTER
+    --silent \
+    --user "$JIRA_USER_NAME:$CONFIG_TOKEN"
+}
+
+URL=${URL_MAPPING[$COMMAND]}
+vlog "$URL"
+
+if [[ -n "$USE_JQ_FILTER" && -n "$FILTER" && -z $NO_JQ ]]; then
+  make_request | $FILTER
 else
-  URL=${URL_MAPPING[$COMMAND]}
-  curl "$BASE_URL/rest/$URL" \
-    --silent \
-    --header 'Connection: keep-alive' \
-    -H 'Cache-Control: max-age=0' \
-    -H 'Accept: application/json' \
-    -H "Cookie: JSESSIONID=${TOKEN};" \
-    --compressed
+  make_request
 fi
