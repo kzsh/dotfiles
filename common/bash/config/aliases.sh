@@ -40,7 +40,7 @@ alias rg="rg --colors path:fg:red --colors line:style:bold"
 
 alias fd="fd -H --glob" 
 
-alias f="ag --files -g "
+alias f="ag --files -g"
 
 # Keep convenient command but use rg
 alias ag="rg --colors path:fg:red --colors line:style:bold"
