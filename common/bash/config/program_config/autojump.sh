@@ -1,4 +1,5 @@
 [[ -s "$BREW_PATH/etc/profile.d/autojump.sh" ]] && . "$BREW_PATH/etc/profile.d/autojump.sh"
+[[ -s /usr/share/autojump/autojump.sh ]] && . /usr/share/autojump/autojump.sh
 
 # _j() {
 #   [[ -n $DEBUG_STARTUP ]] && debug_log "Lazy loading: autojump"

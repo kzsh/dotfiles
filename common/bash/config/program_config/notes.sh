@@ -1,1 +1,1 @@
-export NOTES_DIR="$HOME/NOTES"
+export NOTES_DIR="$HOME/notes"
