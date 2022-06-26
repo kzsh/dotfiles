@@ -34,6 +34,8 @@ complete -F __start_kubectl kcl
 complete -F __start_kubectx kcx
 complete -F __start_kubens kns
 
+alias pcl='playerctl'
+
 alias rg="rg --colors path:fg:red --colors line:style:bold"
 
 alias fd="fd -H --glob" 
