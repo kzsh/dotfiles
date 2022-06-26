@@ -1,0 +1,14 @@
+#!/bin/bash
+
+case "$1" in
+  "ctrl + shift + l")
+      playerctl next
+      ;;
+  "ctrl + shift + h")
+      playerctl previous
+    ;;
+
+  "ctrl + shift + r")
+      playerctl shuffle Toggle
+    ;;
+esac

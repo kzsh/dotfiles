@@ -1,0 +1,11 @@
+#!/bin/bash
+
+HANDLERS_PATH="$HOME/bin"
+WINDOW_NAME="$1"
+shift # we'll pass on the remaining arguments
+
+SUB_COMMAND="$HANDLERS_PATH/key-handler-$WINDOW_NAME"
+
+if [[ -f "$SUB_COMMAND" ]]; then
+  "$SUB_COMMAND" "$@"
+fi

@@ -2,3 +2,7 @@ export CONFIG_DIR=$HOME/.dotfiles
 
 export DOCKER_SCAN_SUGGEST=false
 . $CONFIG_DIR/common/bash/config/main.sh
+
+. $HOME/bin/__mouse_completion
+. $HOME/bin/__touchpad_completion
+. $HOME/bin/_d_completion
