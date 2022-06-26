@@ -24,10 +24,10 @@ make_and_move() {
   mv "$file" "$path/$dest"
 }
 
-find . -type f -depth 1 -print0 | while IFS= read -r -d $'\0' file; do 
+find . -maxdepth 1 -type f -print0 | while IFS= read -r -d $'\0' file; do
   # directory=$(dirname -- "$file")
   filename=$(basename -- "$file")
-  
+
   [[ "$filename" == '.'* ]] && continue
 
   extension="${filename##*.}"
