@@ -38,6 +38,9 @@ style_git_deleted="${RESET}${RED}"
 
 GIT_DIFF_CHAR="•"
 
+# ensure directories
+mkdir -p /tmp/i3
+
 # Main methods
 __set_prompt() {
   export __KZSH__LAST_EXIT_CODE=$?
@@ -60,10 +63,10 @@ build_ps1() {
 
   # If not an ssh tty
   if [[ -z "$SSH_TTY" ]]; then
-    PS1+="\$(prompt_git)\$(prompt_kubernetes)\$(prompt_virtualenv)\n" 
+    PS1+="\$(prompt_git)\$(prompt_kubernetes)\$(prompt_virtualenv)\n"
     PS1+="\$(has_jobs)"
     PS1+="${style_path}\w"
-    PS1+=" ${style_timestamp}[\$(date "+%Y-%m-%dT%H:%M:%S")]"
+    PS1+=" ${style_timestamp}[\$(date -u "+%Y-%m-%dT%H:%M:%S")]"
   fi
 
   if [[ "$__KZSH__LAST_EXIT_CODE" != "0" ]]; then
@@ -102,7 +105,7 @@ build_flags() {
 
   while IFS=  read -r line ; do
     case $line in
-      ' M '* |' D '*) 
+      ' M '* |' D '*)
         us=1
         ;;
       # order matters here
@@ -119,7 +122,9 @@ build_flags() {
   [[ -n $us ]] && flags+="${style_git_unstaged}${GIT_DIFF_CHAR}"
   [[ -n $ut ]] && flags+="${style_git_untracked}${GIT_DIFF_CHAR}"
 
-  echo "$flags"
+  if [[ -n "$flags" ]]; then
+    echo "$flags"
+  fi
 }
 
 # Show the name and status of the current git repo
@@ -144,6 +149,10 @@ prompt_kubernetes() {
   local context
   context=$(kubectl config current-context 2>/dev/null)
   namespace="$(kcl config view --minify --output 'jsonpath={..namespace}' 2>/dev/null)"
+
+  if [[ -z "$namespace" ]]; then
+    return
+  fi
   : "${namespace:=default}"
 
   [[ "$?" != 0 ]] && return;
@@ -164,9 +173,11 @@ prompt_virtualenv() {
 
 log_history() {
   if [[ "$(id -u)" -ne 0 ]]; then
+    CWD="$(pwd)"
+    echo $CWD > /tmp/i3/cwd
     cmd=$(history 1 | awk '{ $1=""; print $0}' | sed 's/^ *//g')
     logfile="$HOME/.logs/bash-history-$(date "+%Y-%m-%d").log"
-    data="$(date "+%Y-%m-%d.%H:%M:%S")	$(pwd)	$(last_exit_code)	$cmd"
+    data="$(date "+%Y-%m-%d.%H:%M:%S")	$CWD	$(last_exit_code)	$cmd"
 
     # Add entry if it isn't a duplicate of the last entry
     if [[ "$(tail -1 "$logfile" | awk '{ $1=""; print $0 }')" != "$(echo "$data" | awk '{ $1=""; print $0 }')" ]]; then
