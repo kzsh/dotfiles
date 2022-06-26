@@ -9,7 +9,10 @@ usage() {
 usage: jenkins [arguments] [job path]
 
     --dry-run)
-      print the command to be run instead of running it 
+      print the command to be run instead of running it
+
+    --verbose)
+      Override default target project (top-level job)
 
     -p|--project)
       Override default target project (top-level job)
@@ -53,6 +56,10 @@ while (( "$#" )); do
     -p|--project)
       PROJECT="$2"
       shift 2
+      ;;
+    --verbose)
+      VERBOSE=1
+      shift 1
       ;;
     -q|--query)
       QUERY="$2"
@@ -105,12 +112,15 @@ done
 
 eval set -- "$PARAMS"
 
-
 ## Set Defaults
 : "${CONFIG:=$DEFAULT_CONFIG}"
 
+vlog() {
+  [[ -n $verbose ]] && echo "$*"
+}
+
 get_config_value() {
-  grep -i "$1" "$CONFIG" | awk '{ print $2 }'
+  grep -i "$1 *=.*" "$CONFIG" | cut -d'=' -f2-
 }
 
 CONFIG_TOKEN=$(get_config_value 'token')
@@ -125,6 +135,8 @@ CONFIG_FORMAT=$(get_config_value 'format')
 : "${USERNAME:=$CONFIG_USERNAME}"
 : "${PROJECT:=$CONFIG_PROJECT}"
 : "${FORMAT:=$CONFIG_FORMAT}"
+
+echo $BASE_URL
 
 if [[ -n "$QUERY" ]]; then
   QUERY="?$QUERY"
@@ -144,44 +156,57 @@ esac
 
 
 case $1 in
-  get)
+  logs)
     shift
-    case $1 in
-      logs)
-        COMMAND_PATH="lastBuild/consoleText"
-        FORMATTING_PATH=""
-        shift
-      ;;
-    esac
-    ;;
+    COMMAND_PATH="lastBuild/consoleText"
+    FORMATTING_PATH=""
+  ;;
   *)
     # passthrough
     ;;
 esac
 
-JOB_SPEC="$@"
+JOB_SPEC=$@
 shift
 
-JOB_PATH="$JOB_SPEC"
-DATA_PATH=""
+JOB_PATH=$JOB_SPEC
 
-IFS='/' read -a URL_PARTS <<< "$JOB_PATH"
+IFS='/' read -ra URL_PARTS <<< "$JOB_PATH"
 
 for u in "${URL_PARTS[@]}"; do
-  echo $u
+  # echo $u
   ENCODED_URL_PARTS="$ENCODED_URL_PARTS/$(url_encode "$u")"
-done 
+done
 
 ENCODED_URL_PARTS=${ENCODED_URL_PARTS:1}
 
-REQUEST_PATH="$BASE_URL/job/$ENCODED_URL_PARTS/$COMMAND_PATH"
+REQUEST_PATH="$BASE_URL/job/$ENCODED_URL_PARTS"
+# echo "$REQUEST_PATH"
+REQUEST_PATH="${REQUEST_PATH/feature\//feature%2F}/$COMMAND_PATH"
+# echo "$REQUEST_PATH"
 
 REQUEST_PATH_WITH_QUERY="$REQUEST_PATH$FORMATTING_PATH$QUERY"
 
+verbose_request() {
+  local url
+  url="$1"
+
+  echo -n "making request to: "
+  echo "$REQUEST_PATH_WITH_QUERY"
+
+  curl \
+    -X POST \
+    -L \
+    --user "$USERNAME:$TOKEN" \
+    "$url"
+}
+
 request() {
   local url
-  url=$1
-  curl -s \
+  url="$1"
+
+  curl \
+    -s \
     -X POST \
     -L \
     --user "$USERNAME:$TOKEN" \
@@ -190,12 +215,16 @@ request() {
 
 execute() {
   if [[ -n "$DRY_RUN" ]]; then
-    echo "$REQUEST_PATH_WITH_QUERY" 
+    echo "$REQUEST_PATH_WITH_QUERY"
   elif [[ -n "$COPY_LINK" ]]; then
     echo "copying url..."
-    echo "$REQUEST_PATH" | pbcopy
+    echo "$REQUEST_PATH" | xclip -select clipboard
   else
-    request "$REQUEST_PATH_WITH_QUERY"
+    if [[ -n $VERBOSE ]]; then
+      verbose_request "$REQUEST_PATH_WITH_QUERY"
+    else
+      request "$REQUEST_PATH_WITH_QUERY"
+    fi
     exit $?
   fi
 }
