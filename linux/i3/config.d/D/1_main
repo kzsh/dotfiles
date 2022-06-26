@@ -1,0 +1,54 @@
+# Define names for default workspaces for which we configure key bindings later on.
+# We use variables to avoid repeating the names in multiple places.
+set $ws1 "106:Q<sub>D</sub>"
+set $ws2 "107:W<sub>D</sub>"
+set $ws3 "108:E<sub>D</sub>"
+set $ws4 "109:R<sub>D</sub>"
+set $ws5 "110:T<sub>D</sub>"
+set $ws6 "111:A<sub>D</sub>"
+set $ws7 "112:S<sub>D</sub>"
+set $ws8 "113:D<sub>D</sub>"
+set $ws9 "114:F<sub>D</sub>"
+set $ws10 "115:G<sub>D</sub>"
+set $ws11 "116:Z<sub>D</sub>"
+set $ws12 "117:X<sub>D</sub>"
+set $ws13 "118:C<sub>D</sub>"
+set $ws14 "119:V<sub>D</sub>"
+set $ws15 "120:B<sub>D</sub>"
+# switch to workspace
+bindsym $mod3+q workspace $ws1
+bindsym $mod3+w workspace $ws2
+bindsym $mod3+e workspace $ws3
+bindsym $mod3+r workspace $ws4
+bindsym $mod3+t workspace $ws5
+
+bindsym $mod3+a workspace $ws6
+bindsym $mod3+s workspace $ws7
+bindsym $mod3+d workspace $ws8
+bindsym $mod3+f workspace $ws9
+bindsym $mod3+g workspace $ws10
+
+bindsym $mod3+z workspace $ws11
+bindsym $mod3+x workspace $ws12
+bindsym $mod3+c workspace $ws13
+bindsym $mod3+v workspace $ws14
+bindsym $mod3+b workspace $ws15
+
+# move focused container to workspace
+bindsym $mod3+Shift+q move container to workspace $ws1
+bindsym $mod3+Shift+w move container to workspace $ws2
+bindsym $mod3+Shift+e move container to workspace $ws3
+bindsym $mod3+Shift+r move container to workspace $ws4
+bindsym $mod3+Shift+t move container to workspace $ws5
+
+bindsym $mod3+Shift+a move container to workspace $ws6
+bindsym $mod3+Shift+s move container to workspace $ws7
+bindsym $mod3+Shift+d move container to workspace $ws8
+bindsym $mod3+Shift+f move container to workspace $ws9
+bindsym $mod3+Shift+g move container to workspace $ws10
+
+bindsym $mod3+Shift+z move container to workspace $ws11
+bindsym $mod3+Shift+x move container to workspace $ws12
+bindsym $mod3+Shift+c move container to workspace $ws13
+bindsym $mod3+Shift+v move container to workspace $ws14
+bindsym $mod3+Shift+b move container to workspace $ws15
