@@ -1,2 +1,2 @@
 #!/bin/bash
-curl -s wttr.in/Cleveland
+curl -s https://wttr.in/Cleveland
