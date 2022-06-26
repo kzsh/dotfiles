@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 function get_time() {
   python -c 'import time; print(time.time())'
