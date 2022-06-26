@@ -1,1 +1,1 @@
-complete -C '$HOME/bin/aws_completer' aws
+complete -C '/usr/bin/aws_completer' aws

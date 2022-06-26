@@ -18,8 +18,9 @@ nvm() {
   "$@"
   # "$original_command" $args
 }
-
-# shellcheck disable=SC1090
-. "$NVM_DIR/bash_completion"
+if [ -d "$NVM_DIR" ]; then
+  # shellcheck disable=SC1090
+  . "$NVM_DIR/bash_completion"
+fi
 
 build_aliases "nvm" "nvm"
