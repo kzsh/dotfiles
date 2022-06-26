@@ -1,0 +1,19 @@
+#!/bin/bash
+
+SEPARATOR='ก'
+
+IFS= read -r -d '' JQ<<-EOF
+  if (.errors != null and .errorMessages[0] != null)
+  then .
+  else
+  "\(.key)
+  $SEPARATOR \(.fields.assignee.displayName)
+  $SEPARATOR \(.fields.status.name)
+  $SEPARATOR \(.fields.issueType)
+  $SEPARATOR \"\(.fields.summary)\""
+  end
+EOF
+
+JQ=${JQ//[[:space:]]/ }
+
+jq -r "$JQ" | column -s "$SEPARATOR" -t
