@@ -1,0 +1,36 @@
+set clipboard+=unnamed
+" set clipboard+=ideaput
+set surround
+
+" In theory ideavim doesn't know what this is
+" set ttimeoutlen=0
+
+set timeoutlen=1000
+" set notimeout
+" set nottimeout
+
+let mapleader = " "
+" nmap <space> <Leader>
+
+nmap <leader>re :source ~/.config/ideavim/ideavimrc<CR>
+
+nmap L :action NextTab<CR>
+nmap H :action PreviousTab<CR>
+
+nmap <Leader>;af :action SearchEverywhere<CR>
+nmap <Leader>;c  :action GotoClass<CR>
+nmap <Leader>;s  :action GotoSymbol<CR>
+nmap <Leader>;f  :action GotoFile<CR>
+nmap <Leader>ff  :action FindInPath<CR>
+nmap <Leader>;;  :action Switcher<CR>
+nmap <Leader>gi  :action GotoImplementation<CR>
+nmap <Leader>gd  :action GotoDeclaration<CR>
+nmap <Leader>gr  :action FindUsages<CR>
+
+nmap <Leader><Leader>b :action ToggleLineBreakpoint<CR>
+nmap <Leader><Leader>l :action StepInto<CR>
+nmap <Leader><Leader>j :action StepOver<CR>
+nmap <Leader><Leader>h :action StepOut<CR>
+nmap <Leader><Leader>c :action Resume<CR>
+
+nmap vv :action Tool_External Tools_nvim<cr>
