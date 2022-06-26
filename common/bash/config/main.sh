@@ -35,10 +35,15 @@ test_brew_prefix() {
   fi
 
 }
-test_brew_prefix &
 
+# test_brew_prefix &
 if [ -f "$BREW_PATH/etc/bash_completion" ]; then
   . "$BREW_PATH/etc/bash_completion"
+fi
+
+# test_brew_prefix &
+if [ -f "/etc/bash_completion" ]; then
+  . "/etc/bash_completion"
 fi
 
 [[ -n "$DEBUG_STARTUP" ]] && . "$SCRIPT_DIR/debug_functions.sh"
@@ -46,9 +51,9 @@ fi
 sources=(
   "$SCRIPT_DIR/prompt.sh"
   "$SCRIPT_DIR/configure_history.sh"
-  "$SCRIPT_DIR/aliases.sh"
   "$SCRIPT_DIR/functions.sh"
   "$SCRIPT_DIR/load_program_configs.sh"
+  "$SCRIPT_DIR/aliases.sh"
 )
 
 for src in "${sources[@]}"; do
