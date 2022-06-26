@@ -1,0 +1,4 @@
+#!/bin/bash
+
+handle="$(xrandr --listmonitors | cut -d' ' -f6- | grep 'eDP-')"
+xrandr --output "$handle" --brightness "$1"
