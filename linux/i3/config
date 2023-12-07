@@ -35,7 +35,10 @@ client.focused #FFA500 #FFA500 #FFA500 #FFA500
 
 for_window [class="^.*"] border pixel 1,
 for_window [title="floating_terminal"] border pixel 3, sticky enabled;
-for_window [title="floating_terminal"] move scratchpad, scratchpad show, resize set width 800, resize set height 200, move absolute position top;
+for_window [title="floating_terminal"] move scratchpad, scratchpad show, resize set width 800, resize set height 200, move top;
+
+for_window [title="pinned_terminal"] border pixel 3, sticky enabled;
+for_window [title="pinned_terminal"] move scratchpad, scratchpad show, resize set width 1000, resize set height 1000, move absolute position top, move absolute position right;
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
