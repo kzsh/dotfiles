@@ -61,3 +61,5 @@
 	diffFilter = diff-highlight
 [difftool]
 	prompt = false
+[init]
+	defaultBranch = main
