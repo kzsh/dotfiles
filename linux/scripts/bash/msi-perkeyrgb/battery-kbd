@@ -1,0 +1,58 @@
+#!/bin/bash
+
+if [[ $1 == '--dry-run' ]]; then
+  DRY_RUN=1
+fi
+COLORS=(
+  'ff0000'
+  'fe4400'
+  'f96600'
+  'ef8200'
+  'e29a00'
+  'd1b100'
+  'bcc700'
+  'a1db00'
+  '7eed00'
+  '42ff00'
+)
+KEY_COUNT=9
+
+STATE=$(upower -i "$(upower -e | grep 'BAT')" | grep 'state:' | sed 's/ \+/ /g' | cut -d ' ' -f 3-)
+if [[ "$STATE" != "discharging" ]]; then
+  msi-perkeyrgb -d
+  exit 0
+fi
+
+echo $STATE
+PERCENTAGE="$(upower -i "$(upower -e | grep 'BAT')" | grep percentage | sed 's/ \+/ /g' | cut -d ' ' -f 3- | tr -d '%')"
+
+# for manual testing
+# PERCENTAGE=90
+
+PERCENTAGE_INDEX=$(( PERCENTAGE / 10 ))
+
+COLOR=${COLORS[$PERCENTAGE_INDEX]}
+
+KEYS_TO_LIGHT=$(( PERCENTAGE * KEY_COUNT / 100 ))
+START_KEY=24
+END_KEY=$(( START_KEY + KEYS_TO_LIGHT ))
+# TOP_KEY=$(( START_KEY + KEY_COUNT ))
+if (( START_KEY == END_KEY )); then
+  KEY_RANGE="$START_KEY"
+else
+  KEY_RANGE="$START_KEY-$END_KEY"
+fi
+
+CONFIG_FILE=$(mktemp)
+
+echo "$KEY_RANGE steady $COLOR" > $CONFIG_FILE
+# echo "$TOP_KEY steady 0011ff" >> $CONFIG_FILE
+
+if [[ -z $DRY_RUN ]]; then
+  msi-perkeyrgb -d
+  msi-perkeyrgb -c "$CONFIG_FILE"
+else
+  cat $CONFIG_FILE
+fi
+
+rm "$CONFIG_FILE"
