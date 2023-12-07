@@ -135,7 +135,6 @@ bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 # bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
-
 bindsym $mod+Shift+e mode "exit? y/n";
 mode "exit? y/n" {
   bindsym Return exec "i3-msg exit"
@@ -236,6 +235,12 @@ mode "switch_space_set" {
   bindcode 56 exec --no-startup-id ~/.config/i3/set_config.sh B #b), same_screen YES,
   bindsym Escape mode "default"
   bindsym $mod3+k mode "default"
+}
+
+mode "switch_output_set" {
+  bindsym k focus output HDMI-0; mode "default"
+  bindsym j focus output eDP-1-1; mode "default"
+  bindsym Escape mode "default"
 }
 
 bindsym $mod3+comma exec --no-startup-id /home/andrew/bin/i3-shell --title "floating_terminal"
