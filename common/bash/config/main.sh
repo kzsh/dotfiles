@@ -11,6 +11,7 @@ export LINUX_SCRIPTS="$REPO_ROOT/linux/scripts"
 
 export DEBUG_STARTUP=
 
+export DOCKER_SCAN_SUGGEST=false
 export EDITOR=/usr/local/bin/nvim
 
 test_available_vim() {

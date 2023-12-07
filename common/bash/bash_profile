@@ -1,6 +1,5 @@
 export DOTFILES_DIR=$HOME/.dotfiles
 
-export DOCKER_SCAN_SUGGEST=false
 . $DOTFILES_DIR/common/bash/config/main.sh
 
 . $HOME/bin/__mouse_completion

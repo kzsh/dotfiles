@@ -1,5 +1,4 @@
 #!/bin/bash
-export DOCKER_SCAN_SUGGEST=false
 . $HOME/.bash_profile
 case $- in
   *i*) ;;
