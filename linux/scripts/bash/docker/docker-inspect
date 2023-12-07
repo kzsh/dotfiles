@@ -1,0 +1,26 @@
+#!/bin/bash
+service="$1"
+json_path="$2"
+filter="$3"
+
+DEFAULT_JSON_PATH='.'
+DEFAULT_JQ_FILTER=''
+
+: "${json_path:=$DEFAULT_JSON_PATH}"
+: "${filter:=$DEFAULT_JQ_FILTER}"
+if [[ "$service" == '*' ]]; then
+  COMMAND=(
+    docker
+    inspect
+    "$service"
+  )
+else
+
+  COMMAND=(
+    docker
+    inspect
+    "$service"
+  )
+
+fi
+${COMMAND[@]} -f "{{json $json_path}}" | jq "$filter"
