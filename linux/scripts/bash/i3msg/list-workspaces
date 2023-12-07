@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-/home/andrew/.pyenv/versions/list-workspaces/bin/python "$HOME/bin/list-workspaces.py" # | \
+"$HOME/.pyenv/versions/list-workspaces/bin/python" "$HOME/bin/list-workspaces.py" # | \
   # fzf --ansi | \
   # cut -d ' ' -f 1 | \
   # sed 's/\([0-9]\+\):\(.\)\(.\)/\1:\2<sub>\3<\/sub>/' | \

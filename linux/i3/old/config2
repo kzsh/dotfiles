@@ -49,7 +49,7 @@ floating_modifier $mod
 # bindsym $mod+Return exec ~/.local/kitty.app/bin/kitty sh -c 'bash -login -c "nvim +term"'
 # bindsym $mod+Return exec /usr/bin/gnome-terminal
 # bindsym $mod+Return exec /usr/bin/gnome-terminal -x nvim +term
-bindsym $mod+Return exec /home/andrew/bin/i3-shell
+bindsym $mod+Return exec ~/bin/i3-shell
 
 # kill focused window
 bindsym $mod+Shift+q kill
