@@ -36,28 +36,28 @@ run_watch VPN {
 # }
 
 volume master {
-  format = "𝅘𝅥𝅯 :%volume"
-  format_muted = "🔇:%volume"
+  format = "VOL: [ %volume ]"
+  format_muted = "MUT:%volume"
 }
 
 
 wireless _first_ {
-        format_up = ":%quality %ip (%essid)"
+        format_up = "WIFI: [%quality %ip (%essid) ]"
         format_down = ""
 }
 
 ethernet _first_ {
-        format_up = ": %ip (%speed)"
+        format_up = "Eth: [ %ip (%speed) ]"
         format_down = ""
 }
 
 battery all {
-        format = "%status%percentage"
+        format = "BAT: [ %status%percentage ]"
         format_down = "No battery"
-        status_chr = " "
-        status_bat = " "
-        status_unk = "?"
-        status_full = " "
+        status_chr = "C "
+        status_bat = "D "
+        status_unk = "? "
+        status_full = "D "
 
 }
 
