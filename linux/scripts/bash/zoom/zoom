@@ -1,0 +1,13 @@
+#!/bin/bash
+set -e
+
+xcompmgr -c -l0 -t0 -r0 -o.00 &
+xc_pid=$!
+
+cleanup() {
+  kill "$xc_pid"
+}
+trap cleanup EXIT
+
+/usr/bin/zoom "$@"
+# firejail --apparmor --private="$HOME/.zoom" /usr/bin/zoom "$@"

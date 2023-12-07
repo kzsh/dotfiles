@@ -1,0 +1,29 @@
+#!/bin/bash
+set -e
+
+exit_error() {
+  echo >&2 "$*"
+  exit 1
+}
+
+TMP="$(mktemp -d)"
+cleanup() {
+  rm -r "$TMP"
+}
+
+trap cleanup EXIT
+
+URL="https://zoom.us/client/latest/zoom_amd64.deb"
+DEB_FILE="$TMP/zoom_amd64.deb"
+
+curl -L "$URL" > "$DEB_FILE"
+
+# gpg key from https://zoom.us/download?os=linux
+# (Direct link: https://zoom.us/linux/download/pubkey?version=5-12-6)
+# gpg --import ~/Downloads/package-signing-key-5-12-6.pub or whatever the key is named after download
+gpg --verify "$DEB_FILE" || exit_error "Could not verify signature"
+
+sudo apt install "$DEB_FILE"
+
+# Fix ownership that zoom breaks over and over
+sudo chown _apt /var/lib/update-notifier/package-data-downloads/partial/
