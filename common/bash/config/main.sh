@@ -11,6 +11,9 @@ export LINUX_SCRIPTS="$REPO_ROOT/linux/scripts"
 
 export DEBUG_STARTUP=
 
+XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CONFIG_HOME
+
 export DOCKER_SCAN_SUGGEST=false
 export EDITOR=/usr/local/bin/nvim
 
