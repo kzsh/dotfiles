@@ -80,6 +80,15 @@ if [[ -n $EDIT_CONFIG ]]; then
 fi
 
 
+TOUCHPAD_INPUT_ID=$( xinput list | grep -i 'Touchpad' | grep -o 'id=[0-9]\+' | cut -d '=' -f2)
+disable() {
+  xinput set-prop $TOUCHPAD_INPUT_ID "Device Enabled" 0
+}
+
+enable() {
+  xinput set-prop $TOUCHPAD_INPUT_ID "Device Enabled" 1
+}
+
 COMMAND="$1"
 shift
 
@@ -88,11 +97,13 @@ case "$COMMAND" in
     mkdir -p "$CONFIG_DIR"
     ;;
   disable)
-    synclient TouchpadOff=1
+    # synclient TouchpadOff=1
+    disable
     echo "disabled" > ~/.config/trackpad-cli/state
     ;;
   enable)
-    synclient TouchpadOff=0
+    # synclient TouchpadOff=0
+    enable
     echo "enabled" > "$STATE_FILE"
     ;;
   toggle)
@@ -103,9 +114,10 @@ case "$COMMAND" in
     fi
     ;;
   sensitivity)
-    synclient AreaLeftEdge=200 AreaRightEdge=950 AreaBottomEdge=670 AreaTopEdge=200
-    synclient AccelFactor=0.738985
-    synclient MaxSpeed=12
+    # synclient AreaLeftEdge=200 AreaRightEdge=950 AreaBottomEdge=670 AreaTopEdge=200
+    # synclient AccelFactor=0.738985
+    # synclient MaxSpeed=12
+    echo "unable to adjust sensitivity"
     ;;
   *)
     usage
