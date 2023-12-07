@@ -201,6 +201,8 @@ bar {
   bindsym button5 nop
 
   strip_workspace_numbers yes
+
+  tray_output none
   colors {
     separator #444444
     background #222222
