@@ -1,0 +1,15 @@
+#!/bin/bash
+# echo "See comments.  Not yet implemented"
+# cvt 3440 1440 60.00
+
+xrandr --newmode "3440x1440_60.00"  419.50  3440 3696 4064 4688  1440 1443 1453 1493 -hsync +vsync
+
+xrandr --newmode "2560x1080_60.00"  230.00  2560 2720 2992 3424  1080 1083 1093 1120 -hsync +vsync
+
+xrandr --addmode eDP-1 "3440x1440_60.00"
+xrandr --addmode eDP-1 "2560x1080_60.00"
+
+# xrandr --output eDP-1 --rate 60 --mode 3440x1440_60.00 --fb 3440x1440 --panning 3440x1440* --output HDMI-1-0 --mode 3440x1440 --same-as eDP-1
+# xrandr --output eDP-1 --rate 60 --mode 3440x1440_60.00 --fb 3440x1440 --panning 3440x1440*
+
+# xrandr --output HDMI-1-0 --mode 3440x1440 --same-as eDP-1

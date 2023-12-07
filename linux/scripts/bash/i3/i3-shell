@@ -1,0 +1,12 @@
+#!/bin/bash
+LAST_DIR=$(cat /tmp/i3/cwd)
+echo "$LAST_DIR"
+
+if [[ -n "$LAST_DIR" ]]; then
+  # i3-sensible-terminal --working-directory="$LAST_DIR"
+  kitty --directory="$LAST_DIR" "$@"
+else
+
+  # i3-sensible-terminal
+  kitty "$@"
+fi

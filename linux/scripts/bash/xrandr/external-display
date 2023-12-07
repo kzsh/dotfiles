@@ -1,0 +1,26 @@
+#!/bin/bash
+
+external_display_name="HDMI-0"
+reference_display_name="eDP-1-1"
+
+external_dimensions=(${1//x/ })
+reference_dimensions=(${2//x/ })
+
+built_in_X="${reference_dimensions[0]:-1920}"
+built_in_Y="${reference_dimensions[1]:-1080}"
+
+ratio_X="$( echo "$(( 100 * built_in_X / external_dimensions[0] ))" | sed -e 's/..$/.&/;t' -e 's/.$/.0&/' )"
+ratio_Y="$( echo "$(( 100 * built_in_Y / external_dimensions[1] ))" | sed -e 's/..$/.&/;t' -e 's/.$/.0&/' )"
+
+echo "$ratio_X"
+echo "$ratio_Y"
+# exit 0
+
+xrandr \
+--output "$reference_display_name" \
+--mode "${reference_dimensions[0]}x${reference_dimensions[1]}" \
+--scale 1x1 \
+--output "$reference_display_name" \
+--same-as "$reference_display_name" \
+--mode "${external_dimensions[0]}x${external_dimensions[1]}" \
+--scale "${ratio_X}x${ratio_Y}"
