@@ -199,6 +199,10 @@ bar {
   bindsym button3 nop
   bindsym button4 nop
   bindsym button5 nop
+  bindsym button6 nop
+  bindsym button7 nop
+  wheel_up_cmd nop
+  wheel_down_cmd nop
 
   strip_workspace_numbers yes
 
