@@ -4,6 +4,11 @@ alt + shift + 4
 ctrl + alt + shift + 4
 	/usr/bin/flameshot gui
 
+ctrl + alt + Escape
+	/usr/local/bin/hibernate
+
+ctrl + alt + shift + q
+	/usr/local/bin/lock
 
 
 #  ctrl + alt + shift + j
@@ -29,11 +34,10 @@ ctrl + shift + r
 
 # terminal emulator
 super + Return
-	/home/andrew/bin/i3-shell
+	~/bin/i3-shell
 
 ctrl + super + alt + r
 	systemctl --user reload sxhkd
-
 
 mod3 + n
 	~/bin/trackpad disable && ~/bin/mouse hide && ~/bin/mouse sensitivity
