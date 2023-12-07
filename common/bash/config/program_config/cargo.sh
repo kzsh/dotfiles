@@ -1,1 +1,1 @@
-PATH="$PATH:$HOME/.cargo/bin"
+[[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
