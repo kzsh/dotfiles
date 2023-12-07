@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+gpg --output "$1.gpg" --encrypt --recipient "$2" "$1"
