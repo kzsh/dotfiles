@@ -245,6 +245,7 @@ mode "switch_output_set" {
 
 bindsym $mod3+comma exec --no-startup-id /home/andrew/bin/i3-shell --title "floating_terminal"
 # bindsym $mod3+k mode "switch_space_set" # handled by sxhkd
+bindsym $mod3+period exec --no-startup-id /home/andrew/bin/i3-shell --title "pinned_terminal"
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "76:Q<sub>A</sub>"
