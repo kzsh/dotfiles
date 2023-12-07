@@ -1,0 +1,17 @@
+#!/bin/bash
+
+SEPARATOR='ก'
+ATLASSIAN_SUBDOMAIN='foo'
+IFS= read -r -d '' JQ<<-EOF
+  if (.errors != null and .errorMessages[0] != null)
+  then .
+  else
+    .issues
+    | .[]
+    | "- \(.fields.status.name) [\(.key)](https://$ATLASSIAN_SUBDOMAIN.atlassian.net/browse/\(.key)) \(.fields.summary)"
+  end
+EOF
+
+JQ=${JQ//[[:space:]]/ }
+
+jq -r "$JQ" | column -s "$SEPARATOR" -t

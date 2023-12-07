@@ -142,7 +142,7 @@ while (( "$#" )); do
     -*)
       # split any batched single character arguments into individual arguments
       # to be fed back into this loop. This is what allows multiple flags to
-      # be passed as `cl -asdf` instead of `cl -a -s -d -f`
+      # be passed as `jira-cli -asdf` instead of `jira-cli -a -s -d -f`
       grouped_args="$1"
       shift
 
