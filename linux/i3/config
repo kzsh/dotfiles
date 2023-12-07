@@ -190,6 +190,9 @@ bindsym $mod+z mode "space_group_3"
 # finds out, if available)
 bar {
 
+  font pango:DejaVu Sans Mono, FontAwesome 10
+  status_command $HOME/src/github/i3status-rust/target/release/i3status-rs $HOME/.config/i3status-rust/config.toml
+
   # prevent scrolling through spaces when hovering over bar
   bindsym button1 nop
   bindsym button2 nop
@@ -197,7 +200,6 @@ bar {
   bindsym button4 nop
   bindsym button5 nop
 
-  status_command i3status
   strip_workspace_numbers yes
   colors {
     separator #444444
