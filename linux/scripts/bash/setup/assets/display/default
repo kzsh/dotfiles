@@ -1,0 +1,6 @@
+#!/bin/bash
+
+xrandr --output DP-0 --off
+xrandr --output DP-2 --off
+xrandr --output HDMI-0 --off
+xrandr --output eDP-1-1 --auto --primary
