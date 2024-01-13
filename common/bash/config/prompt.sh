@@ -63,7 +63,8 @@ build_ps1() {
 
   # If not an ssh tty
   if [[ -z "$SSH_TTY" ]]; then
-    PS1+="\$(prompt_git)\$(prompt_kubernetes)\$(prompt_virtualenv)\n"
+    # PS1+="\$(prompt_git)\$(prompt_kubernetes)\$(prompt_virtualenv)\$(prompt_nvm_env)\n"
+    PS1+="\$(print_envs)\n"
     PS1+="\$(has_jobs)"
     PS1+="${style_path}\w"
     PS1+=" ${style_timestamp}[\$(date -u "+%Y-%m-%dT%H:%M:%S")]"
@@ -156,9 +157,18 @@ prompt_kubernetes() {
   : "${namespace:=default}"
 
   [[ "$?" != 0 ]] && return;
-  echo -ne " ${style_group}k8s[${style_kubernetes}${context}:${namespace}${style_group}]"
+  echo -ne "${style_group}k8s[${style_kubernetes}${context}:${namespace}${style_group}]"
 }
 
+# Show the name of the current nvm version
+prompt_nvm_env() {
+  local env_name
+  env_name="$(nvm version)"
+
+  if [[ -n "$env_name" ]]; then
+    echo -ne "${style_group}nvm[${style_virtualenv}${env_name}${style_group}]"
+  fi
+}
 # Show the name of the current virtualenv
 prompt_virtualenv() {
   local env_name
@@ -167,8 +177,23 @@ prompt_virtualenv() {
   PIPENV_ACTIVE=1
 
   if [[ -n "$env_name" ]]; then
-    echo -ne " ${style_group}venv[${style_virtualenv}${env_name}${style_group}]"
+    echo -ne "${style_group}venv[${style_virtualenv}${env_name}${style_group}]"
   fi
+}
+
+print_envs() {
+  local env_commands output
+  env_commands=(
+    prompt_git
+    prompt_kubernetes
+    prompt_virtualenv
+    # prompt_nvm_env # too slow
+    )
+
+    for c in "${env_commands[@]}"; do
+      output="$output $($c)"
+    done
+    echo "$output" | sed 's/  \+/ /g;s/^ *\(.*\)/\1/;'
 }
 
 log_history() {
