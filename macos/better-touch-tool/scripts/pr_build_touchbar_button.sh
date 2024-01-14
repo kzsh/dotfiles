@@ -7,9 +7,9 @@ sad="244,66,66,255"
 building="244,244,244,255"
 sad_text="255,255,255,255"
 
-jenkins_exec="/Users/kzsh/bin/jenkins"
+jenkins_exec="~/bin/jenkins"
 jq_exec="/usr/local/bin/jq"
-github_exec="/Users/kzsh/bin/gh"
+github_exec="~/bin/gh"
 
 PROJECT="$1"
 REPO="$2"
@@ -20,7 +20,7 @@ jenkins_result="$($jenkins_exec -p $PROJECT get $REPO $BRANCH)"
 
 [[ -n $DEBUG ]] && echo "jenkins_result: $jenkins_result"
 
-build_status="$(echo $jenkins_result | $jq_exec -r '.color')" 
+build_status="$(echo $jenkins_result | $jq_exec -r '.color')"
 
 [[ -n $DEBUG ]] && echo "build_status: $build_status"
 
