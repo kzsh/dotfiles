@@ -1,0 +1,18 @@
+#!/bin/bash
+set -o noglob
+
+for arg in $@; do
+  case $1 in
+    node)
+      shift
+      if [[ -n "$1" ]]; then
+        echo '. "$DIRENV/node" '"$1"'' >> .envrc
+      else
+        echo '. "$DIRENV/node" 18' >> .envrc
+      fi
+      ;;
+    rust)
+        echo '. "$DIRENV/rust" ' >> .envrc
+      ;;
+  esac
+done
