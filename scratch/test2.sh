@@ -15,4 +15,3 @@ do
 	# use $line variable to process line
 	printf '%s' "$line"
 done <&0
-

@@ -1,4 +1,4 @@
-
+#!/usr/bin/env ruby
 lines = File.readlines('preserve.txt').map { |i| i.gsub(/\n/,"") }
 leaves = `brew leaves`.split("\n")
 # puts lines.inspect
