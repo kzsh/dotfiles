@@ -1,0 +1,9 @@
+#!/bin/bash
+
+docker run \
+  --rm \
+  --privileged \
+  --interactive \
+  --tty \
+  -v '.:/src' \
+--name swift-local swift:local /bin/bash -c "make $@"
