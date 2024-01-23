@@ -202,17 +202,13 @@ log_history() {
     echo $CWD > /tmp/i3/cwd
     cmd=$(history 1 | awk '{ $1=""; print $0}' | sed 's/^ *//g')
     logfile="$HOME/.logs/bash-history-$(date "+%Y-%m-%d").log"
-    data="$(date "+%Y-%m-%d.%H:%M:%S")	$CWD	$(last_exit_code)	$cmd"
+    data="$(date "+%Y-%m-%d.%H:%M:%S")	$CWD	$__KZSH__LAST_EXIT_CODE	$cmd"
 
     # Add entry if it isn't a duplicate of the last entry
     if [[ "$(tail -1 "$logfile" | awk '{ $1=""; print $0 }')" != "$(echo "$data" | awk '{ $1=""; print $0 }')" ]]; then
       echo "$data" >> "$logfile"
     fi
   fi
-}
-
-last_exit_code() {
-  echo "$__KZSH__LAST_EXIT_CODE"
 }
 
 __initialization
