@@ -45,11 +45,10 @@ mkdir -p /tmp/i3
 __set_prompt() {
   export __KZSH__LAST_EXIT_CODE=$?
   build_ps1
-  # history -a
-  # history -c
-  # history -r
-  # log_history
-  # ^ replaced by atuin
+  history -a
+  history -c
+  history -r
+  log_history
 }
 export PROMPT_COMMAND=__set_prompt
 
