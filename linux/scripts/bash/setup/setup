@@ -201,13 +201,11 @@ main() {
     "$SCRIPT_DIR/assets/display/$_setup_display_configuration"
   fi
 
+  # re-source keyboard layout in case an external keyboard has been attached.
   if [[ -n "$_setup_map_keys" ]]; then
     vlog "mapping keys"
     xmodmap ~/.Xmodmap
   fi
 }
 
-
-
-# # re-source keyboard layout in case an external keyboard has been attached.
 main "$@"
