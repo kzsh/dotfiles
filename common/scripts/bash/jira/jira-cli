@@ -299,7 +299,7 @@ make_request() {
     --header 'Cache-Control: max-age=0' \
     --header 'Connection: keep-alive' \
     --silent \
-    --user "$JIRA_USER_NAME:$CONFIG_TOKEN"
+    --user "$JIRA_USER_NAME:$TOKEN"
 }
 
 URL=${URL_MAPPING[$COMMAND]}
