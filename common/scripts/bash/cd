@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [[ $# == 0 ]]; then
+  builtin cd . || return
+elif [[ $1 == '-' ]]; then
+  if [[ "$(dirs | wc -l)" == 0 ]]; then
+    builtin cd - || return
+  else
+  popd "$@"  || return
+  fi
+else 
+  pushd "$@" || return 
+fi

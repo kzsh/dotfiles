@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+osascript ~/.dotfiles/macos/scripts/applescripts/applescript/OpenNewModalITermWindow.applescript

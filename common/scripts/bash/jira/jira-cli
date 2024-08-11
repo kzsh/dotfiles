@@ -1,0 +1,312 @@
+#!/usr/bin/env bash
+if command -v greadlink > /dev/null 2>&1; then
+  # Assume MacOS (requires greadlink)
+  SCRIPT_DIR="$(dirname "$(greadlink -f "$0")")"
+else
+  SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+fi
+
+FILTER_DIR="$SCRIPT_DIR/jq_filters"
+
+CONFIG_DIR="$HOME/.config/jira-cli"
+DEFAULT_CONFIG="$CONFIG_DIR/config"
+mkdir -p "$CONFIG_DIR"
+
+usage() {
+  cat <<EOM
+usage: jira [arguments]
+
+    --edit|--edit-config)
+      open the config in \$EDITOR
+
+    --dry-run)
+      print the command to be run instead of running it
+
+    -v|--verbose)
+      print extra information
+
+    -p|--project) not implemented
+      Override default target project (top-level job)
+
+    -j|--jql)
+      Specify jql string
+
+    -q|--query)
+      Specify query parameters
+
+    -J|--no-jq)
+      skip piping output through jq (useful for debugging)
+
+    -f|--filter)
+      apply a custom jq filter to results
+
+    -o|--output-format)
+      Specify output format default: json
+
+    -U|--user) not implemented
+      override the config user
+
+    -y|--copy-link|--yank-link) not implemented
+      copy the resulting api call instead of executing it
+
+    -u|--base-url) not implemented
+      override the jira instance to contact
+
+    -c|--config) not implemented
+      specify alternate config (defaults to $DEFAULT_CONFIG)
+
+    -t|--token) not implemented
+      override config token
+
+    -h|--help)
+      show this help page
+EOM
+}
+
+## Gather Arguments
+PARAMS=""
+while (( "$#" )); do
+
+  [[ $1 == --*=* ]] && set -- "${1%%=*}" "${1#*=}" "${@:2}"
+
+  case "$1" in
+    -c|--config)
+      CONFIG="$2"
+      shift 2
+      ;;
+    --dry-run)
+      DRY_RUN=1
+      shift
+      ;;
+    -v|--verbose)
+      VERBOSE=1
+      shift
+      ;;
+    --edit|--edit-config)
+      EDIT_CONFIG=1
+      shift
+      ;;
+    --list-filters)
+      printf '%s\n' ${PATH//:/\/* } | grep 'jq_filter_' | xargs -n1 basename 2>/dev/null | sed 's/jq_filter_//'
+      printf '%s\n' "$(find "$FILTER_DIR/"*)" | xargs -n1 basename | sed 's/jq_filter_//'
+      exit 0
+      ;;
+    -f|--filter)
+      FILTER="$2"
+      shift 2
+      ;;
+    -o|--output-format)
+      FORMAT="$2"
+      shift 2
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    -j|--jql)
+      if [[ -n "$JQL" ]]; then
+        JQL="$JQL AND $2"
+      else
+        JQL="$2"
+      fi
+      shift 2
+      ;;
+    -J|--no-jq)
+      NO_JQ=1
+      shift 1
+      ;;
+    -p|--project)
+      PROJECT="$2"
+      shift 2
+      ;;
+    -q|--query)
+      QUERY="$2"
+      shift 2
+      ;;
+    -t|--token)
+      TOKEN="$2"
+      shift 2
+      ;;
+    -U|--user)
+      JIRA_USER_NAME="$2"
+      shift 2
+      ;;
+    -u|--base-url)
+      BASE_URL="$2"
+      shift 2
+      ;;
+    --) # end argument parsing
+      shift
+      break
+      ;;
+    -*)
+      # split any batched single character arguments into individual arguments
+      # to be fed back into this loop. This is what allows multiple flags to
+      # be passed as `jira-cli -asdf` instead of `jira-cli -a -s -d -f`
+      grouped_args="$1"
+      shift
+
+      if [[ ${#grouped_args} -gt 2 ]]; then
+        additional_args=""
+        for (( i=1; i<${#grouped_args}; i++ )); do
+         additional_args="$additional_args -${grouped_args:$i:1}"
+        done
+
+        eval set -- "$additional_args" "${*:1}"
+      fi
+      ;;
+    *) # preserve positional arguments
+      PARAMS="$PARAMS $1"
+      shift
+      ;;
+  esac
+done
+
+## set positional arguments in their proper place
+
+eval set -- "$PARAMS"
+
+
+## Set Config
+: "${CONFIG:=$DEFAULT_CONFIG}"
+
+if [[ -n $EDIT_CONFIG ]]; then
+  "$EDITOR" "$CONFIG"
+  exit 0
+fi
+
+get_config_value() {
+  grep -i "$1 *=.*" "$CONFIG" | cut -d'=' -f2-
+}
+
+vlog() {
+  [[ -n "$VERBOSE" ]] && echo "$*"
+}
+
+# Get Config Defaults
+CONFIG_TOKEN=$(get_config_value 'token')
+CONFIG_USERNAME=$(get_config_value 'user')
+CONFIG_BASE_URL=$(get_config_value 'base_url')
+CONFIG_PROJECT="$(get_config_value 'project')"
+CONFIG_FORMAT=$(get_config_value 'format')
+CONFIG_DEFAULT_BOARD_ID=$(get_config_value 'default_board_id')
+CONFIG_DEFAULT_JQL=$(get_config_value 'default_jql')
+
+## Set Defaults
+: "${TOKEN:=$CONFIG_TOKEN}"
+: "${BASE_URL:=$CONFIG_BASE_URL}"
+: "${JIRA_USER_NAME:=$CONFIG_USERNAME}"
+: "${PROJECT:=$CONFIG_PROJECT}"
+: "${FORMAT:=$CONFIG_FORMAT}"
+: "${BOARD_ID:=$CONFIG_DEFAULT_BOARD_ID}"
+
+if [[ "$FORMAT" == 'text' && -n "$NO_JQ" ]]; then
+  echo >&2 "Error: Incompatible flags set.  Cannot set both \`-J|--no-jq\` and \`-o|--output text\`"
+  exit 1
+fi
+
+case $FORMAT in
+  text)
+    USE_JQ_FILTER=1
+    ;;
+  json|*)
+    # json is default
+    ;;
+esac
+
+COMMAND="$1"
+shift
+
+ENTITY_ID="$1"
+shift
+
+: "${COMMAND:=sprint}"
+vlog "Running command: $COMMAND"
+
+declare -A BASE_JQL_MAPPING=(
+  ["sprint"]="sprint in openSprints()"
+)
+
+DEFAULT_JQL="$CONFIG_DEFAULT_JQL"
+MAPPED_BASE_JQL=${BASE_JQL_MAPPING[$COMMAND]}
+
+if [[ -n "$DEFAULT_JQL" && -n "$MAPPED_BASE_JQL" ]]; then
+  DEFAULT_JQL="$DEFAULT_JQL AND ${BASE_JQL_MAPPING[$COMMAND]}"
+else
+  DEFAULT_JQL="$DEFAULT_JQL${BASE_JQL_MAPPING[$COMMAND]}"
+fi
+
+if [[ -n $DEFAULT_JQL ]]; then
+  if [[ -n "$JQL" ]]; then
+    JQL="$DEFAULT_JQL AND $JQL"
+  else
+    JQL="$DEFAULT_JQL"
+  fi
+fi
+
+if [[ -n "$JQL" ]]; then
+  MAYBE_QUERY_STRING="jql=$(url_encode "$JQL")"
+  if [[ -n "$QUERY" ]]; then
+    MAYBE_QUERY_STRING="$MAYBE_QUERY_STRING&$(url_encode "$QUERY")"
+  fi
+elif [[ -n "$QUERY" ]]; then
+  MAYBE_QUERY_STRING="$(url_encode"$QUERY")"
+else
+  MAYBE_QUERY_STRING=""
+fi
+
+declare -A FILTER_MAPPING=(
+  ["backlog"]="backlog_issues"
+  ["sprint"]="sprint_issues"
+  ["squad"]="sprint_issues"
+  ["epic"]="sprint_issues"
+  ["search"]="sprint_issues"
+  ["issue"]="issue"
+)
+
+declare -A URL_MAPPING=(
+   ["work"]="agile/1.0/board/$BOARD_ID/issue?$MAYBE_QUERY_STRING"
+   ["sprint"]="agile/1.0/board/$BOARD_ID/issue?$MAYBE_QUERY_STRING"
+   ["backlog"]="agile/1.0/board/$BOARD_ID/backlog?$MAYBE_QUERY_STRING"
+   ["squad"]="agile/1.0/board/$BOARD_ID/issue?$MAYBE_QUERY_STRING"
+   ["search"]="api/latest/search?$MAYBE_QUERY_STRING"
+   ["issue"]="api/latest/issue/${ENTITY_ID}"
+)
+
+if [[ -z "$FILTER" ]]; then
+  default_filter="$FILTER_DIR/${FILTER_MAPPING[$COMMAND]}"
+
+  if [ -f "$default_filter" ]; then
+    FILTER="$default_filter"
+  else
+    FILTER="jq"
+  fi
+fi
+
+if [ -n "$FILTER" ] && ! command -v "$FILTER" > /dev/null 2>&1; then
+  if [ -f "$FILTER_DIR/$FILTER" ]; then
+    FILTER="$FILTER_DIR/$FILTER"
+  else
+    echo "Error:  Could not locate filter \`$FILTER\` in \`$FILTER_DIR\` or on \$PATH" >&2
+    exit 1
+  fi
+fi
+
+make_request() {
+  curl -s "$BASE_URL/rest/$URL" \
+    --compressed \
+    --header 'Accept: application/json' \
+    --header 'Cache-Control: max-age=0' \
+    --header 'Connection: keep-alive' \
+    --silent \
+    --user "$JIRA_USER_NAME:$TOKEN"
+}
+
+URL=${URL_MAPPING[$COMMAND]}
+vlog "$URL"
+
+if [[ -n "$USE_JQ_FILTER" && -n "$FILTER" && -z $NO_JQ ]]; then
+  make_request | $FILTER
+else
+  make_request
+fi

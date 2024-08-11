@@ -1,0 +1,138 @@
+[
+  {
+    "installDate": 1525357624313,
+    "enabled": false,
+    "updateUrl": null,
+    "md5Url": null,
+    "url": null,
+    "originalMd5": null,
+    "name": "solarized",
+    "sections": [
+      {
+        "code":
+          ":root {\n    --primary-background: #083c4a;\n    --primary-foreground: #839496;\n    --highlight-foreground: hsl(186, 8%, 68%);\n}\n\nhtml, iframe {\n   background-color: var(--primary-background);\n   color: var(--primary-foreground)\n}\n\ninput, select, option {\n   background-color: var(--primary-background);\n   color: var(--primary-foreground)\n}\na {\n   background-color: inherit;\n   color: var(--highlight-foreground);\n   text-decoration: underline; \n   font-weight: bold;\n}\n\na:visited {\n   background-color: var(--primary-background);\n   color: var(--highlight-foreground);\n   text-decoration: underline; \n   font-weight: normal;\n}",
+        "urls": [],
+        "urlPrefixes": [],
+        "domains": [],
+        "regexps": ["^((?!google|chrome-extension).)*$"]
+      },
+      {
+        "code":
+          ":root {\n    --accepted-answer: #719e0711;\n    --highlight-foreground: hsl(186, 8%, 68%);\n}\n\n.accepted-answer {\n   background-color: var(--accepted-answer);\n}\n.answer > * {\n   filter: invert(0);\n    \n}",
+        "urls": [],
+        "urlPrefixes": [],
+        "domains": [],
+        "regexps": []
+      }
+    ],
+    "id": 8
+  },
+  {
+    "installDate": 1525375325751,
+    "enabled": true,
+    "updateUrl": null,
+    "md5Url": null,
+    "url": null,
+    "originalMd5": null,
+    "name": "invert",
+    "sections": [
+      {
+        "code":
+          "body {\n    background: #222;\n    color: #333;\n    filter: invert(0.85);\n    font-size:1.2em\n}\n\nimg,\nsvg,\nvideo {\n    filter: invert(1); \n}\nimg[aria-hidden=\"true\"] {\n    filter:invert(0);\n}\niframe {\n   filter: invert(1);\n}",
+        "regexps": [
+          "^((?!https?:\\/\\/(.*?(devdocs\\.io|www\\.netflix\\.com|localhost\\/camunda|pluralsight))).)*$"
+        ]
+      },
+      {
+        "code":
+          "body {\n    filter: invert(1);\n}\n.blob-num-addition,\n.blob-code-addition {\n    background-color: #76015c44;\n}\n.blob-num-deletion,\n.blob-code-deletion {\n    background-color: #03a99644;\n}\n\n.x, \n.x-first, \n.x-last, \n.discussion-item-icon, \n.State--red,\n.State--green, \n.completeness-indicator,\n.btn-primary {\n    filter: invert(1);\n}\ng-emoji{\n    filter: invert(1);\n}\n",
+        "regexps": ["^https:\\/\\/github.*\\.com.*"]
+      },
+      {
+        "code": ".vote-accepted-on {\n    filter: invert(1);\n}",
+        "urls": ["stackoverflow.com"]
+      },
+      {
+        "code":
+          "body {\n    filter: invert(1);\n}\n\nytd-app {\n    filter: invert(0);\n}\n\n#player {\n    filter: invert(1);\n}\n\n\nvideo {\n    filter: invert(0);\n}\n\n#player-theater-container {\n    filter: invert(1);\n}\n",
+        "domains": ["youtube.com"]
+      },
+      {
+        "code": "body {\n    filter: invert(0);\n}",
+        "domains": ["codepen.io"]
+      },
+      {
+        "code": "body {\n    filter: invert(0);\n}",
+        "domains": ["codesandbox.io"]
+      },
+      {
+        "code":
+          ".bpmn-diagram-container, .bjs-container  {\n    background-color: #212121;\n}",
+        "regexps": [".*(camunda\\.com|localhost\\/camunda).*$"]
+      },
+      {
+        "code":
+          ".info {\n  filter: invert(1);\n}\n\n.info-desc {\n  filter: invert(1);\n}\n\n.info code {\n  filter: invert(1);\n}",
+        "domains": ["caml.inria.fr"]
+      },
+      {
+        "code":
+          "\nbody {\n    filter: invert(0);\n}\n\nimg,\nsvg,\nvideo {\n    filter: invert(0); \n}\n.contents {\n    filter: invert(1); \n}\n.topic-map {\n    filter: invert(1);\n}",
+        "domains": ["reasonml.chat"]
+      },
+      {
+        "code":
+          "video {\n    filter:invert(0);\n}\n.is_fullscreen video {\n    filter:invert(1);\n}",
+        "domains": ["vimeo.com"]
+      }
+    ],
+    "id": 11
+  },
+  {
+    "installDate": 1535999498794,
+    "enabled": true,
+    "updateUrl": null,
+    "md5Url": null,
+    "url": null,
+    "originalMd5": null,
+    "name": "FiraCode",
+    "sections": [
+      {
+        "code": "pre *,\ncode * {\n    font-family: 'Fira Code'\n}",
+        "urls": [],
+        "urlPrefixes": [],
+        "domains": [],
+        "regexps": []
+      },
+      {
+        "code":
+          ".blob-wrapper,\n.blob-code-inner {\n    font-family: 'Fira Code'\n}",
+        "urls": [],
+        "urlPrefixes": [],
+        "domains": [],
+        "regexps": ["^https?:\\/\\/.*github.*\\.com.*"]
+      }
+    ],
+    "id": 12
+  },
+  {
+    "installDate": 1537381928664,
+    "enabled": false,
+    "updateUrl": null,
+    "md5Url": null,
+    "url": null,
+    "originalMd5": null,
+    "name": "Plain Reading",
+    "sections": [
+      {
+        "code":
+          "article,\nmain,\n#content,\n#main {\n    margin: 10%;\n}\nfooter {\ndisplay: none;\n}",
+        "urls": [],
+        "urlPrefixes": [],
+        "domains": [],
+        "regexps": []
+      }
+    ],
+    "id": 13
+  }
+]

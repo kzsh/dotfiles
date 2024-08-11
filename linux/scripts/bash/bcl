@@ -1,0 +1,11 @@
+#!/bin/bash
+# *'[!0-9]'* # <-- has a non-digit in it somewhere
+
+# If there are arguments and the first one is purely digital
+if [[ $# -gt 0  && "$1" != *'[!0-9]'* ]]; then
+  # Then treat that number as a percentage to set brightness
+  brightnessctl s "${1}%"
+else
+  # Otherwise just pass through
+  brightnessctl "$@"
+fi

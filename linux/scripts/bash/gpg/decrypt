@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+gpg --output "$2" --decrypt "$1"

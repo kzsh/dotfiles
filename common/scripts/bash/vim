@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+if [[ -t 0 ]]; then
+  nvim "$@"
+else
+  while read -r line ; do
+    xargs -o vim -u "$VIM_DIR/init.vim"
+  done
+fi

@@ -1,0 +1,10 @@
+#!/bin/bash
+NAME="$(basename "$(pwd)")"
+TAG_NAME="$NAME:local"
+if [[ -f ./Dockerfile ]]; then
+  docker build . -t "$TAG_NAME" && docker run -it "$TAG_NAME" $@
+fi
+
+if [[ -f ./Makefile ]]; then
+  make build
+fi

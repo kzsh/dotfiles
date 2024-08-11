@@ -1,0 +1,65 @@
+[include]
+	path = ~/.gitconfig-work
+[alias]
+	mru = !git reflog show --pretty=format:'%gs ~ %gd' --date=relative | grep 'checkout:' | grep -oE '[^ ]+ ~ .*' | awk -F~ '!seen[$1]++' | head -n 10 | awk -F' ~ HEAD@{' '{printf(\"  \\033[33m%s \\033[37m %s\\033[0m\\n\",$1, substr($2, 1, length($2)-1))}'
+	b = branch
+	st = status
+	co = checkout
+	cm = checkout master
+	cd = checkout develop
+	cp = cherry-pick
+	edit = !~/.dotfiles/common/scripts/bash/git/git-edit.sh
+	browse-pulls = !hub browse -- pulls
+	pulls = !hub browse -- pulls
+	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+	ln = log --graph --pretty=format:'%Cgreen%h%Creset%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	lc = log-compact
+	wip = !"$COMMON_SCRIPTS"/bash/git/wip.sh
+	prs = !~/.dotfiles/common/scripts/bash/git/git-prs 
+[branch]
+	autosetuprebase = always
+[core]
+	autocrlf = false
+	excludesfile = ~/.gitignore_global
+[push]
+	default = simple
+
+# Colorize command outputs
+[color]
+	ui = auto
+	diff = auto
+	status = auto
+	branch = auto
+	ui = auto
+[color "branch"]
+	current = yellow reverse
+	local = yellow
+	remote = green
+[color "status"]
+	added = yellow
+	changed = green
+	untracked = cyan
+[diff]
+	renames = true
+	tool = vimdiff
+[mergetool]
+	keepBackup = true
+[http]
+	sslVerify = true
+[color "diff"]
+	;frag = cyan
+	;new = green
+	; sources my email address and
+	; other [user] config
+[include]
+	path = ~/.gituser
+[log-compact]
+	defaults = --two-initials --abbrev=8
+[pull]
+	rebase = true
+[interactive]
+	diffFilter = diff-highlight
+[difftool]
+	prompt = false
+[init]
+	defaultBranch = main

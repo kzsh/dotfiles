@@ -1,0 +1,124 @@
+#!/bin/bash
+#synclient AreaLeftEdge=50 AreaRightEdge=1100 AreaBottomEdge=670
+#synclient AccelFactor=0.538985
+#synclient MaxSpeed=10
+
+
+CONFIG_DIR="$HOME/.config/trackpad-cli"
+CONFIG_FILE="$CONFIG_DIR/config"
+STATE_FILE="$CONFIG_DIR/state"
+
+usage() {
+  cat <<EOM
+usage: trackpad <[arguments] | subcommand>
+
+Parameters:
+
+    -h|--help)
+      show this help page
+
+    --edit|--edit-config)
+      open the config in \$EDITOR
+
+    -v|--verbose)
+      print extra information
+
+Sub Commands:
+  init
+  enable
+  disable
+  sensitivity
+
+EOM
+}
+
+## Gather Arguments
+PARAMS=""
+while (( "$#" )); do
+
+  [[ $1 == --*=* ]] && set -- "${1%%=*}" "${1#*=}" "${@:2}"
+
+  case "$1" in
+    -c|--config)
+      CONFIG_FILE="$2"
+      shift 2
+      ;;
+    -v|--verbose)
+      VERBOSE=1
+      shift
+      ;;
+    --edit|--edit-config)
+      EDIT_CONFIG=1
+      shift
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    --) # end argument parsing
+      shift
+      break
+      ;;
+    -*|--*=) # unsupported flags
+      echo "Error: Unsupported flag $1" >&2
+      exit 1
+      ;;
+    *) # preserve positional arguments
+      PARAMS="$PARAMS $1"
+      shift
+      ;;
+  esac
+done
+
+## set positional arguments in their proper place
+
+eval set -- "$PARAMS"
+
+if [[ -n $EDIT_CONFIG ]]; then
+  "$EDITOR" "$CONFIG"
+  exit 0
+fi
+
+
+TOUCHPAD_INPUT_ID=$( xinput list | grep -i 'Touchpad' | grep -o 'id=[0-9]\+' | cut -d '=' -f2)
+disable() {
+  xinput set-prop $TOUCHPAD_INPUT_ID "Device Enabled" 0
+}
+
+enable() {
+  xinput set-prop $TOUCHPAD_INPUT_ID "Device Enabled" 1
+}
+
+COMMAND="$1"
+shift
+
+case "$COMMAND" in
+  init)
+    mkdir -p "$CONFIG_DIR"
+    ;;
+  disable)
+    # synclient TouchpadOff=1
+    disable
+    echo "disabled" > ~/.config/trackpad-cli/state
+    ;;
+  enable)
+    # synclient TouchpadOff=0
+    enable
+    echo "enabled" > "$STATE_FILE"
+    ;;
+  toggle)
+    if [[ "$(cat "$STATE_FILE")" == "enabled"* ]]; then
+      trackpad disable
+    else
+      trackpad enable
+    fi
+    ;;
+  sensitivity)
+    # synclient AreaLeftEdge=200 AreaRightEdge=950 AreaBottomEdge=670 AreaTopEdge=200
+    # synclient AccelFactor=0.738985
+    # synclient MaxSpeed=12
+    echo "unable to adjust sensitivity"
+    ;;
+  *)
+    usage
+esac

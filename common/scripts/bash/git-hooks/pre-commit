@@ -1,0 +1,32 @@
+#!/bin/bash
+#
+# grep staged files that will be added or modified for a specific list of
+# blacklisted words and prevent the commit if they are found
+
+ERROR=0
+
+if git rev-parse --verify HEAD >/dev/null 2>&1; then
+  against=HEAD
+else
+  # Initial commit: diff against an empty tree object
+  against=0676e1596e33a931e321ee54b44ef8811fc8f3c0
+fi
+
+BLACKLIST=(
+  "debugger"
+)
+grep "$list"
+
+# Redirect output to stderr.
+exec 1>&2
+
+for matcher in "${BLACKLIST[@]}"; do
+  if [ "$(git diff --cached --staged --diff-filter=AM -z $against | grep -c "$matcher")" != "0" ]; then
+    echo "Error: Attempt to commit with $matcher"
+    ERROR=1
+  fi
+done
+
+if [ $ERROR == 1 ]; then
+  exit 1
+fi

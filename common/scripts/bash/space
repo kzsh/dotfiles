@@ -1,0 +1,10 @@
+#!/bin/bash
+if [[ -z "$1" ]]; then
+  read TARGET_DIR
+else
+  TARGET_DIR="$1"
+fi
+RESULT=$(du -hd1 "$TARGET_DIR")
+echo "$RESULT"
+echo ""
+echo "$RESULT" | grep G | grep -v 'G	*\.$' | cut -d'	' -f2 | space

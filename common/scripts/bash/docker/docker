@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+case "$1" in
+  edit)
+    shift
+    "$HOME/bin/docker-edit" "$@"
+    ;;
+  restart)
+    shift
+    "$HOME/bin/docker-restart" "$@"
+    ;;
+
+  k8s|kubernetes)
+    shift
+    "$HOME/bin/docker-toggle-kube" "$@"
+    ;;
+  start)
+    if [[ $# == 1 ]]; then
+      "$HOME/bin/docker-start"
+    else
+      /usr/local/bin/docker "$@"
+    fi
+    ;;
+  stop)
+    if [[ $# == 1 ]]; then
+      "$HOME/bin/docker-stop"
+    else
+      /usr/local/bin/docker "$@"
+    fi
+    ;;
+  login)
+      "$HOME/bin/docker-login" "$@"
+    ;;
+  *)
+    /usr/local/bin/docker "$@"
+    ;;
+esac
+

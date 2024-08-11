@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+usage() {
+  cat <<EOM
+
+usage: convrt-certificate [arguments]
+
+Synopsis:
+  convert .pem files into .key or .crt files
+
+Arguments:
+  certificate) work with TLS certificates
+
+EOM
+}
+
+## Gather Arguments
+PARAMS=""
+while (( "$#" )); do
+
+  [[ $1 == --*=* ]] && set -- "${1%%=*}" "${1#*=}" "${@:2}"
+
+  case "$1" in
+    -h|--help)
+      HELP=1
+      shift
+      ;;
+    -t|--type)
+      TYPE="$2"
+      shift 2
+      ;;
+    --) # end argument parsing
+      shift
+      break
+      ;;
+    *) # preserve positional arguments
+      PARAMS="$PARAMS $1"
+      shift
+      ;;
+  esac
+done
+
+## set positional arguments in their proper place
+PARAMS="$(echo "$PARAMS $*" | xargs)"
+
+eval set -- "$PARAMS"
+
+if [[ -n "$HELP" && "$*" == "" ]]; then
+  usage
+  exit 0
+fi
+
+if [[ -z "$TYPE" ]]; then
+  TYPE="certificate"
+fi
+
+if [[ "$TYPE" != "certificate" &&  "$TYPE" != "key" ]]; then
+  echo >&2 "--type must be one of 'certificate' or 'key', but received: \`$TYPE\`"
+  exit 1
+fi
+
+CERTIFICATE_INPUT="$1"
+shift
+
+CERTIFICATE_OUTPUT="$1"
+shift
+
+
+if [[ "$TYPE" == "certificate" ]]; then
+  if [[ "$CERTIFICATE_OUTPUT" == *'/' ]]; then
+    CERTIFICATE_OUTPUT="$CERTIFICATE_OUTPUT/server.crt"
+  fi
+  openssl crl2pkcs7 -nocrl -certfile "$CERTIFICATE_INPUT" | openssl pkcs7 -print_certs -out $CERTIFICATE_OUTPUT
+
+elif [[ "$TYPE" == "key" ]]; then
+  if [[ "$CERTIFICATE_OUTPUT" == *'/' ]]; then
+    CERTIFICATE_OUTPUT="$CERTIFICATE_OUTPUT/server.key"
+  fi
+  openssl rsa -in "$CERTIFICATE_INPUT" -out $CERTIFICATE_OUTPUT
+
+fi

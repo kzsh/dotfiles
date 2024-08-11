@@ -1,0 +1,30 @@
+#!/bin/bash
+
+## Gather Arguments
+PARAMS=""
+while (( "$#" )); do
+
+  [[ $1 == --*=* ]] && set -- "${1%%=*}" "${1#*=}" "${@:2}"
+
+  case "$1" in
+    -W)
+      WATCH=1
+      shift 1
+      ;;
+    *) # preserve positional arguments
+      PARAMS="$PARAMS $1"
+      shift
+      ;;
+  esac
+done
+
+## set positional arguments in their proper place
+
+eval set -- "$PARAMS"
+
+## Set Defaults
+if [[ -z $WATCH ]]; then
+  kubectl "$@"
+else
+  watch kubectl "$@"
+fi

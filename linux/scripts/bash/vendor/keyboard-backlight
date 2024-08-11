@@ -1,0 +1,85 @@
+#!/bin/bash
+##############################################################################
+# keyboard-backlight
+# -----------
+# Control keyboard backlight brightness
+#
+# Usage:
+#   keyboard-backlight up|down|total|off|0-100
+#
+# :authors: <Jess Frazelle> @jessfraz
+# :date: 14 May 2017
+# :version: 0.0.2
+
+# Changelog:
+#  0.0.2
+#   - allow backlight to be set as a percentage
+#   - clean up documentation
+#
+##############################################################################
+set -e
+set -o pipefail
+
+BACKLIGHT=$(cat /sys/class/leds/smc::kbd_backlight/brightness)
+INCREMENT=15
+MAX=$(cat /sys/class/leds/smc::kbd_backlight/max_brightness)
+
+if [ $UID -ne 0 ]; then
+	echo "Please run this program as superuser"
+	exit 1
+fi
+
+SET_VALUE=0
+case $1 in
+
+	up)
+		TOTAL=$((BACKLIGHT + INCREMENT))
+		if [ "$TOTAL" -gt "$MAX" ]; then
+			exit 1
+		fi
+		SET_VALUE=1
+		;;
+	down)
+		TOTAL=$((BACKLIGHT - INCREMENT))
+		if [ "$TOTAL" -lt "0" ]; then
+			exit 1
+		fi
+		SET_VALUE=1
+		;;
+	total)
+		TEMP_VALUE=$BACKLIGHT
+		while [ "$TEMP_VALUE" -lt "$MAX" ]; do
+			TEMP_VALUE=$((TEMP_VALUE + 1))
+			if [ $TEMP_VALUE -gt "$MAX" ]; then
+				TEMP_VALUE=$MAX
+			fi
+			echo $TEMP_VALUE > /sys/class/leds/smc::kbd_backlight/brightness
+		done
+		;;
+	off)
+		TEMP_VALUE=$BACKLIGHT
+		while [ "$TEMP_VALUE" -gt "0" ]; do
+			TEMP_VALUE=$((TEMP_VALUE - 1))
+			if [ $TEMP_VALUE -lt "0" ]; then
+				TEMP_VALUE=0
+			fi
+			echo $TEMP_VALUE > /sys/class/leds/smc::kbd_backlight/brightness
+		done
+		;;
+	[0-9]|[0-9][0-9]|100)
+		TOTAL=$(($1 * $MAX / 100))
+
+		if [ "$TOTAL" -gt "$MAX" ] || [ "$TOTAL" -lt "0" ]; then
+			exit 1
+		fi
+		SET_VALUE=1
+		;;
+	*)
+		echo "Use: keyboard-backlight up|down|total|off|0-100"
+		;;
+esac
+
+if [ $SET_VALUE -eq "1" ]; then
+	echo "$TOTAL" > /sys/class/leds/smc::kbd_backlight/brightness
+fi
+

@@ -1,0 +1,124 @@
+#!/bin/bash
+#!/usr/bin/env bash
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+. "$SCRIPT_DIR/utils/logging.sh"
+. "$SCRIPT_DIR/utils/subcommands.sh"
+. "$SCRIPT_DIR/utils/help.sh"
+. "$SCRIPT_DIR/utils/dependencies.sh"
+
+# provides $CONFIG, $DEFAULT_CONFIG, get_config_value
+. "$SCRIPT_DIR/utils/config.sh"
+
+## Gather Arguments
+PARAMS=""
+# ARG_COUNT="$#"
+while (( "$#" )); do
+  [[ $1 == --*=* ]] && set -- "${1%%=*}" "${1#*=}" "${@:2}"
+
+  case "$1" in
+    -c|--config)
+      # meta-parse-summary specify alternate config (defaults to $DEFAULT_CONFIG)
+      CONFIG="$2"
+      shift 2
+      ;;
+    -v|--verbose)
+      # meta-parse-summary run with extra logging
+      export VERBOSE=1
+      shift
+      ;;
+    --dry-run)
+      # meta-parse-summary print the command to be run instead of running it
+      export DRY_RUN=1
+      shift
+      ;;
+    --edit-config)
+      # meta-parse-summary open the config in \$EDITOR
+      edit_config
+      exit 0
+      ;;
+    -h|--help)
+      # meta-parse-summary show this help page
+      export SHOW_HELP=1
+      shift
+      ;;
+    --) # end argument parsing
+      shift
+      PARAMS="$PARAMS $*"
+      break
+      ;;
+    --*)
+      # Add full-name args we don't recognize to PARAMS for
+      # subcommands to parse
+      PARAMS="$PARAMS $1"
+      shift
+      ;;
+    -*)
+      # split any batched single character arguments into individual arguments
+      # to be fed back into this loop. This is what allows multiple flags to
+      # be passed as `envrc -asdf` instead of `envrc -a -s -d -f`
+      grouped_args="$1"
+      shift
+
+      if [[ ${#grouped_args} -gt 2 ]]; then
+        additional_args=""
+        for (( i=1; i<${#grouped_args}; i++ )); do
+          additional_args="$additional_args -${grouped_args:$i:1}"
+        done
+
+        eval set -- "$additional_args" "${*:1}"
+      else
+        # Otherwise we didn't care about the single char
+        # param and we will pass it on to another layer of the script
+        PARAMS="$PARAMS $grouped_args"
+      fi
+      ;;
+    *) # preserve positional arguments
+      PARAMS="$PARAMS $1"
+      shift
+      ;;
+  esac
+done
+
+## set positional arguments in their proper place
+eval set -- "$PARAMS"
+
+COMMAND="envrc"
+
+# Special case to avoid recursively calling envrc if it's invoked alone
+if [[ -z "$1" ]]; then
+  usage "$COMMAND" >&2
+  exit 0
+fi
+
+# While there is a possible next command and that command
+# doesn't correspond to a sub-command
+while [[ -n "$1" ]] && [[ "$1" != '--'* ]] ; do
+  COMMAND="$COMMAND-$1"
+  shift
+  vlog "Looking for command $COMMAND"
+  if [[ -f "$SCRIPT_DIR/$COMMAND" ]]; then
+    vlog "command found: $COMMAND"
+    break
+  fi
+done
+
+vlog "ended command search on: $SCRIPT_DIR/$COMMAND"
+
+if [[ -n $SHOW_HELP ]] || ! [[ -f "$SCRIPT_DIR/$COMMAND" ]]; then
+  vlog "showing help"
+  # prefix general help
+  usage "$COMMAND" >&2
+
+  # append optional command-specific help
+  if [ -f "$SCRIPT_DIR/${COMMAND}_usage" ]; then
+    vlog "showing script-specific help"
+    "$SCRIPT_DIR/${COMMAND}_usage" "$@" >&2
+  fi
+  exit 1
+fi
+
+vlog "Running: $SCRIPT_DIR/$COMMAND $*"
+vlog "environment variables: VERBOSE=$VERBOSE DRY_RUN=$DRY_RUN SHOW_HELP=$SHOW_HELP"
+"$SCRIPT_DIR/$COMMAND" "$@"
+

@@ -1,0 +1,189 @@
+#!/bin/bash
+
+API_VERSION='api/v3'
+
+CONFIG_DIR="$HOME/.config/gh"
+DEFAULT_CONFIG="$CONFIG_DIR/config"
+mkdir -p "$CONFIG_DIR"
+
+usage() {
+  cat <<EOM
+gh repos
+EOM
+}
+
+
+log() {
+  if [[ -n "$VERBOSE" ]]; then
+    echo "$@"
+  fi
+}
+
+## Gather Arguments
+PARAMS=""
+while (( "$#" )); do
+
+  [[ $1 == --*=* ]] && set -- "${1%%=*}" "${1#*=}" "${@:2}"
+
+  case "$1" in
+    --dry-run)
+      DRY_RUN=1
+      shift
+      ;;
+    -q|--query)
+      QUERY="$2"
+      shift 2
+      ;;
+    -f|--format)
+      FORMAT="$2"
+      shift 2
+      ;;
+    --owner)
+      OWNER=$2
+      shift 2
+      ;;
+    -r|--repo)
+      REPO=$2
+      shift 2
+      ;;
+    -p|--page)
+      PAGE="$2"
+      shift 2
+      ;;
+    -l|--limit)
+      PER_PAGE_LIMIT="$2"
+      shift 2
+      ;;
+    -u|--base-url)
+      BASE_URL="$2"
+      shift 2
+      ;;
+    -c|--config)
+      CONFIG="$2"
+      shift 2
+      ;;
+    -t|--access-token)
+      ACCESS_TOKEN="$2"
+      shift 2
+      ;;
+    -w|--watch)
+      WATCH=1
+      shift
+      ;;
+    -v|--verbose)
+      VERBOSE=1
+      shift
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    --) # end argument parsing
+      shift
+      break
+      ;;
+    -*|--*=) # unsupported flags
+      echo "Error: Unsupported flag $1" >&2
+      exit 1
+      ;;
+    *) # preserve positional arguments
+      PARAMS="$PARAMS $1"
+      shift
+      ;;
+  esac
+done
+
+## set positional arguments in their proper place
+PARAMS="$(echo "$PARAMS $*" | xargs)"
+
+eval set -- "$PARAMS"
+
+
+## Set derived vars
+OPERATION=$1
+shift
+
+IDENTIFIER=$1
+shift
+
+
+
+: "${CONFIG:=$DEFAULT_CONFIG}"
+: "${PER_PAGE_LIMIT:=20}"
+: "${PAGE:=1}"
+
+get_config_value() {
+  grep "$1" "$CONFIG" | awk '{ print $2 }'
+}
+
+get_repos() {
+  request "orgs/$1/repos"
+}
+
+get_pull_requests() {
+  if [[ -n "$2" ]]; then
+    request "repos/$OWNER/$1/pulls/$2/commits"
+  else
+    request "repos/$OWNER/$1/pulls"
+  fi
+}
+
+CONFIG_ACCESS_TOKEN=$(get_config_value 'access_token')
+CONFIG_BASE_URL=$(get_config_value 'base_url')
+CONFIG_DEFAULT_REPO=$(get_config_value 'default_repo')
+CONFIG_DEFAULT_OWNER=$(get_config_value 'default_owner')
+
+## Set Defaults
+: "${ACCESS_TOKEN:=$CONFIG_ACCESS_TOKEN}"
+: "${BASE_URL:=$CONFIG_BASE_URL}"
+: "${REPO:=$CONFIG_DEFAULT_REPO}"
+: "${OWNER:=$CONFIG_DEFAULT_OWNER}"
+
+log "ACCESS_TOKEN: $ACCESS_TOKEN"
+log "BASE_URL: $BASE_URL"
+log "REPO: $REPO"
+log "OWNER: $OWNER"
+
+if [[ -n "$QUERY" ]]; then
+  MAYBE_QUERY="&q=$QUERY"
+else
+  MAYBE_QUERY=""
+fi
+
+request() {
+  if [[ -n "$DRY_RUN" ]]; then
+    echo "$BASE_URL/$API_VERSION/$*?access_token=$ACCESS_TOKEN&page=$PAGE&per_page=$PER_PAGE_LIMIT$MAYBE_QUERY"
+  else
+    curl -s "$BASE_URL/$API_VERSION/$*?access_token=$ACCESS_TOKEN&page=$PAGE&per_page=$PER_PAGE_LIMIT$MAYBE_QUERY"
+  fi
+}
+
+## Operation
+case $OPERATION in
+  repos)
+    get_repos "$REPO"
+    ;;
+  pr*|pull*)
+    get_pull_requests "$REPO" "$IDENTIFIER"
+    ;;
+  st|status)
+    DEFAULT_SHA="$(git rev-parse HEAD)"
+    DEFAULT_IDENTIFIER="$(hub pr show -f '%I')"
+    DEFAULT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+    : "${SHA:=$DEFAULT_SHA}"
+    : "${IDENTIFIER:=$DEFAULT_IDENTIFIER}"
+
+    # request "repos/$OWNER/$REPO/commits/$SHA/status" | jq -r '.state'
+
+    request "repos/$OWNER/$REPO/pulls/$IDENTIFIER/reviews" | jq -r '.[] | "\(.user | .login);\(.state);\(.submitted_at)"' | column -t -s';'
+    request "repos/$OWNER/$REPO/branches/$DEFAULT_BRANCH/protection/required_status_checks"
+    ;;
+  sts|statuses)
+    request "repos/$OWNER/$REPO/pulls" | jq -r '.[] | .number' \
+      | xargs -I'{}' gh st '{}'
+    ;;
+  *) 
+    request "$PARAMS"
+    ;;
+esac
+

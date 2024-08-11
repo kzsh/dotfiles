@@ -1,0 +1,20 @@
+#!/bin/bash
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+. "$COMMON_SCRIPTS/bash/git/git-op.sh"
+
+operation() {
+  branch_match=$(git branch | grep \* | sed -E -e 's/\* (.+) */\1/')
+  is_dirty=$(git status --porcelain 2>/dev/null| grep --extended-regexp "^[ \t]*(\?\?|M|D)" | wc -l | tr -d " ")
+  if [[ "$branch_match" == "develop" || "$branch_match" == "master" || "$branch_match" == "integration" || "$branch_match" == "main" ]]; then
+    if [[ "$is_dirty" == "0"  ]]; then
+      git checkout "$branch_match" && \
+      git pull
+    else
+      echo "Skipping: there are uncommitted changes"
+    fi
+  else
+    echo "Skipping: not on 'develop'"
+  fi
+}
+
+forEachGitRepo "operation"

@@ -1,0 +1,7 @@
+export DOTFILES_DIR=$HOME/.dotfiles
+
+. $DOTFILES_DIR/common/bash/config/main.sh
+
+. $HOME/bin/__mouse_completion
+. $HOME/bin/__touchpad_completion
+. $HOME/bin/_d_completion

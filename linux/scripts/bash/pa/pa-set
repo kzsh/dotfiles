@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+SELECTION=$(pactl list sinks short | fzf)
+echo "$SELECTION" | sed 's/[ \t]\+/,/g' | cut -d ',' -f2
+
+pactl set-default-sink "$SELECTION"

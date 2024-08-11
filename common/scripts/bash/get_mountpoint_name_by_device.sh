@@ -1,0 +1,24 @@
+#!/bin/bash
+
+if ! command -v jq > /dev/null 2>&1; then
+  echo "Missing required dependency \`jq\`" >&2 
+  exit 1
+fi
+
+usage() {
+  cat <<-EOS
+usage: device [device name]
+
+Synopsis:
+  Get the mountpoint name for a device
+
+EOS
+}
+
+main () {
+  local device
+  device="$1"
+  diskutil list -plist external physical | plutil -convert json -o - - | jq -r ".AllDisksAndPartitions[] | select(.DeviceIdentifier==\"$device\") | .MountPoint"
+}
+
+main "$@"

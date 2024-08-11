@@ -1,0 +1,8 @@
+#!/bin/bash
+
+OTHER_REPO="$1"
+SHA="$2"
+
+git --git-dir="$OTHER_REPO/.git" \
+  format-patch -k -1 --stdout "$SHA" | \
+    git am -3 -k --ignore-whitespace

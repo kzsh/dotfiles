@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -eu
+
+BIN_DIR=".bin"
+
+if [[ -d "$BIN_DIR" ]]; then
+  BIN_PATH="$(pwd)/$BIN_DIR"
+  PATH="$BIN_PATH:$PATH"
+
+  echo "Available scripts:"
+  ls "$BIN_PATH"/
+  echo ""
+fi

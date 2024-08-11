@@ -1,0 +1,4 @@
+--colors=path:fg:blue
+--colors=path:style:bold
+--colors=line:fg:green
+--colors=match:fg:0x85,0x99,0x00

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+protocol=$3
+
+if [[ -n "$protocol" ]]; then
+  #TODO determine protocol from code
+  protocol=sha1
+fi
+result=$(openssl sha1 $2 | awk '{ print $2}')
+if [[ "$result" == "$1" ]]; then
+  echo "matches:"
+  echo "$result"
+  echo "$1"
+  exit 0
+else
+  echo "Does not match:"
+  echo "$result"
+  echo "$1"
+  exit 1
+fi

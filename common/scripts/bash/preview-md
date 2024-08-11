@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+TMP_DIR="$(mktemp -d)"
+OUTPUT="$TMP_DIR/out"
+touch "$OUTPUT"
+
+grip "$@" 0 2>&1 | tee "$OUTPUT" &
+PID="$!"
+
+cleanup() {
+  kill "$PID"
+}
+
+trap cleanup EXIT
+
+URL=
+while [[ -z "$URL" ]]; do
+  URL=$(cat "$OUTPUT" | grep -o 'http.*[0-9]\+')
+done
+
+
+open -a "/Applications/Google Chrome.app" "$URL" 
+
+while true; do
+  read
+done
+

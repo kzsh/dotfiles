@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+URL="$1"
+EXPIRATION="${2:-86400}"
+
+if [[ -z "$URL" ]]; then
+echo "usage presign <url> <expiration time = 86400>"
+echo "underlying command: aws s3 presign <s3://url> --expires-in <seconds>"
+exit 0
+fi
+
+aws s3 presign "$URL" --expires-in "$EXPIRATION"

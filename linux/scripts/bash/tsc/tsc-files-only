@@ -1,0 +1,2 @@
+#!/bin/bash
+tsc | grep '\.tsx\?' | cut -d '(' -f1 | sort -u

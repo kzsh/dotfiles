@@ -1,0 +1,211 @@
+#!/usr/bin/env bash
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+. "$SCRIPT_DIR/utils/logging.sh"
+. "$SCRIPT_DIR/utils/subcommands.sh"
+. "$SCRIPT_DIR/utils/help.sh"
+. "$SCRIPT_DIR/utils/dependencies.sh"
+
+# provides $CONFIG, $DEFAULT_CONFIG, get_config_value
+. "$SCRIPT_DIR/utils/config.sh"
+
+## Gather Arguments
+PARAMS=""
+# ARG_COUNT="$#"
+unset _setup_display_configuration _setup_peripheral _setup_no_peripheral unset _setup_map_keys
+
+# Defaults
+_setup_peripheral=1
+
+while (( "$#" )); do
+  [[ $1 == --*=* ]] && set -- "${1%%=*}" "${1#*=}" "${@:2}"
+
+  case "$1" in
+    -d|--display-configuration)
+      # meta-parse-summary [default: 'default'] attempt to connect and relate displays according to the give configuration name
+      _setup_display_configuration="$2"
+      shift 2
+      _setup_peripheral=1
+      ;;
+    -p|--peripheral)
+      # meta-parse-summary [default: true] disable touchpad and adjust mouse sensitivity
+      shift
+      _setup_peripheral=1
+      ;;
+    -k|--map-keys)
+      # meta-parse-summary re-source Xmodmap (sometimes this needs to happen when plugging in peripheral keyboards)
+      shift
+      _setup_map_keys=1
+      ;;
+    -P|--no-peripheral)
+      # meta-parse-summary [default: false] adjust touchpad sensitivity to reduce accidental cursor movement
+      shift
+      unset _setup_peripheral
+      _setup_no_peripheral=1
+      ;;
+    -c|--config)
+      # meta-parse-summary specify alternate config (defaults to $DEFAULT_CONFIG)
+      CONFIG="$2"
+      shift 2
+      ;;
+    -v|--verbose)
+      # meta-parse-summary run with extra logging
+      export VERBOSE=1
+      shift
+      ;;
+    --dry-run)
+      # meta-parse-summary print the command to be run instead of running it
+      export DRY_RUN=1
+      shift
+      ;;
+    --edit-config)
+      # meta-parse-summary open the config in \$EDITOR
+      edit_config
+      exit 0
+      ;;
+    -h|--help)
+      # meta-parse-summary show this help page
+      export SHOW_HELP=1
+      shift
+      ;;
+    --) # end argument parsing
+      shift
+      PARAMS="$PARAMS $*"
+      break
+      ;;
+    --*)
+      # Add full-name args we don't recognize to PARAMS for
+      # subcommands to parse
+      PARAMS="$PARAMS $1"
+      shift
+      ;;
+    -*)
+      # split any batched single character arguments into individual arguments
+      # to be fed back into this loop. This is what allows multiple flags to
+      # be passed as `setup -asdf` instead of `setup -a -s -d -f`
+      grouped_args="$1"
+      shift
+
+      if [[ ${#grouped_args} -gt 2 ]]; then
+        additional_args=""
+        for (( i=1; i<${#grouped_args}; i++ )); do
+          additional_args="$additional_args -${grouped_args:$i:1}"
+        done
+
+        eval set -- "$additional_args" "${*:1}"
+      else
+        # Otherwise we didn't care about the single char
+        # param and we will pass it on to another layer of the script
+        PARAMS="$PARAMS $grouped_args"
+      fi
+      ;;
+    *) # preserve positional arguments
+      PARAMS="$PARAMS $1"
+      shift
+      ;;
+  esac
+done
+
+## set positional arguments in their proper place
+eval set -- "$PARAMS"
+
+COMMAND="setup"
+
+# Special case to avoid recursively calling setup if it's invoked alone
+
+# While there is a possible next command and that command
+# doesn't correspond to a sub-command
+if [[ -n "$1" ]]; then
+  while [[ -n "$1" ]] && [[ "$1" != '--'* ]] ; do
+    COMMAND="$COMMAND-$1"
+    shift
+    vlog "Looking for command $COMMAND"
+    if [[ -f "$SCRIPT_DIR/$COMMAND" ]]; then
+      vlog "command found: $COMMAND"
+      break
+    fi
+  done
+fi
+
+vlog "ended command search on: $SCRIPT_DIR/$COMMAND"
+
+if [[ -n $SHOW_HELP ]]; then
+  vlog "showing help"
+  # prefix general help
+  usage "$COMMAND" >&2
+
+  # append optional command-specific help
+  if [ -f "$SCRIPT_DIR/${COMMAND}_usage" ]; then
+    vlog "showing script-specific help"
+    "$SCRIPT_DIR/${COMMAND}_usage" "$@" >&2
+  fi
+  exit 1
+fi
+
+if [[ "$COMMAND" != "setup" ]]; then
+  vlog "Running: $SCRIPT_DIR/$COMMAND $*"
+  "$SCRIPT_DIR/$COMMAND" "$@"
+fi
+vlog "environment variables: VERBOSE=$VERBOSE DRY_RUN=$DRY_RUN SHOW_HELP=$SHOW_HELP"
+
+# help() {
+#   cat <<-EOM
+# setup [-p | --peripheral] [-P | --no-peripheral]
+#
+# Customize input setup
+#
+# EOM
+# }
+
+# display_configuration_multi() {
+#   xrandr --output eDP-1-1 --auto
+#   xrandr --output DP-2 --auto --above eDP-1-1 --primary
+#   xrandr --output DP-0 --auto --left-of DP-2
+#   xrandr --output HDMI-0 --auto --above DP-0
+# }
+#
+# display_configuration_default() {
+#   xrandr --output DP-0 --off
+#   xrandr --output DP-2 --off
+#   xrandr --output HDMI-0 --off
+#   xrandr --output eDP-1-1 --auto --primary
+# }
+#
+# display_configuration_mono() {
+#   xrandr --output eDP-1-1 --off
+#   xrandr --output DP-0 --off
+#   xrandr --output HDMI-0 --off
+#   xrandr --output DP-2 --auto --primary
+# }
+#
+main() {
+  if [[ -n "$_setup_no_peripheral" ]]; then
+    touchpad enable
+  elif [[ -n "$_setup_peripheral" ]]; then
+    touchpad disable
+  fi
+
+  # TODO: move touchpad to setup-touchpad sub-command
+  vlog "adjusting touchpad sensitivity"
+  touchpad sensitivity
+
+  # TODO: move mouse to setup-mouse sub-command
+  vlog "adjusting mouse sensitivity"
+  mouse sensitivity
+
+  vlog "Starting sxhkd"
+  systemctl start --user sxhkd
+
+  if [[ -n "$_setup_display_configuration" ]]; then
+    vlog "applying display configuration: $_setup_display_configuration"
+    "$SCRIPT_DIR/assets/display/$_setup_display_configuration"
+  fi
+
+  # re-source keyboard layout in case an external keyboard has been attached.
+  if [[ -n "$_setup_map_keys" ]]; then
+    vlog "mapping keys"
+    xmodmap ~/.Xmodmap
+  fi
+}
+
+main "$@"
