@@ -20,7 +20,7 @@ virtual_env_exists() {
 }
 
 is_python_version_installed() {
-  pyenv versions --bare | grep -q "^$PYTHON_VERSION\$"
+  pyenv versions --bare | grep -q '^'"$PYTHON_VERSION"'$'
 }
 
 install_missing_python_version() {
