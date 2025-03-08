@@ -10,7 +10,10 @@ else
   SOURCING=
 fi
 
-NVM_DIR="$HOME/.nvm"
+if ! command -v volta; then
+  echo "volta not found. Please install volta."
+  exit 1
+fi
 
 EXPECTED_NODE_VERSION="$(echo "$1" | grep '^v\?[0-9.]\+$')"
 
@@ -18,36 +21,15 @@ if [[ -z "$EXPECTED_NODE_VERSION" ]]; then
   EXPECTED_NODE_VERSION="$(cat "$SOURCED_IN_DIR/.nvmrc")"
 fi
 
-EXPECTED_NODE_VERSION="v$(echo $EXPECTED_NODE_VERSION | grep -o '[0-9.]\+$')"
-
-for v in "$NVM_DIR"/versions/node/*; do
-
-  CANDIDATE_VERSION="$(echo $(basename $v) | grep "$EXPECTED_NODE_VERSION")"
-  if [[ -n "$CANDIDATE_VERSION" ]]; then
-    CHOSEN_VERSION="$CANDIDATE_VERSION"
-  fi
-done
-
-NODE_BIN_PATH="$NVM_DIR/versions/node/$CHOSEN_VERSION/bin"
+EXPECTED_NODE_VERSION="$(echo $EXPECTED_NODE_VERSION | grep -o '[0-9.]\+$')"
 
 
-if [[ $(command -v "$NODE_BIN_PATH/node") ]]; then
-  echo "Using node: $CHOSEN_VERSION ($(command -v "$NODE_BIN_PATH/node"))"
-  export PATH="$NODE_BIN_PATH:$PATH"
-else
-  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-  [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+version="$(volta list --format plain | grep runtime | grep -o 'node@[0-9.]\+' | cut -d '@' -f2)"
+echo "$version" | grep -q "^$EXPECTED_NODE_VERSION.*"
 
-  nvm install "$EXPECTED_NODE_VERSION"
-
-  if ! command -v node || [[ "$(node --version)" != "$EXPECTED_NODE_VERSION" ]]; then
-    nvm install "$EXPECTED_NODE_VERSION"
-  fi
-
-  if [[ -z "$SOURCING" ]]; then
-    echo "$SCRIPT_DIR"
-    "$SCRIPT_DIR/init.sh" "node" "$"
-  else
-    nvm use
-  fi
+if [ $? != 0 ]; then
+  volta install "node@$EXPECTED_NODE_VERSION"
 fi
+
+echo
+volta list --format plain
