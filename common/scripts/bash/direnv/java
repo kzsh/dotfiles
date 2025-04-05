@@ -1,3 +1,18 @@
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
-PATH="$JAVA_HOME:$PATH"
+#!/bin/bash
 
+EXPECTED_JAVA_VERSION="$1"
+
+ALL_VERSIONS=$(update-alternatives --list java)
+FOUND_VERSION=$(update-alternatives --list java | grep "$EXPECTED_JAVA_VERSION")
+
+if [[ -n $FOUND_VERSION ]]; then
+  echo "using $FOUND_VERSION"
+  update-alternatives --config java "$(update-alternatives --list java | grep "java-$EXPECTED_JAVA_VERSION")"
+else
+  echo >&2 "No suitable Java version found for $EXPECTED_JAVA_VERSION"
+  echo "available versions:"
+  for x in ${ALL_VERSIONS[@]}; do
+    echo $x
+  done
+  echo
+fi
