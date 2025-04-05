@@ -14,6 +14,14 @@ let mapleader = " "
 
 nmap <leader>re :source ~/.config/ideavim/ideavimrc<CR>
 
+" Better 'back' behvior in ideavim
+nmap <C-o> :action Back<CR>
+
+nmap <C-j> <Down>
+nmap <C-k> <Up>
+
+nmap <Leader>m  <Menu>
+
 nmap L :action NextTab<CR>
 nmap H :action PreviousTab<CR>
 
@@ -26,6 +34,10 @@ nmap <Leader>;;  :action Switcher<CR>
 nmap <Leader>gi  :action GotoImplementation<CR>
 nmap <Leader>gd  :action GotoDeclaration<CR>
 nmap <Leader>gr  :action FindUsages<CR>
+
+command! Build action BuildProject
+command! Run action Run
+" BuildArtifact
 
 nmap <Leader><Leader>b :action ToggleLineBreakpoint<CR>
 nmap <Leader><Leader>l :action StepInto<CR>
