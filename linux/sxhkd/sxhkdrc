@@ -20,13 +20,13 @@ mod3 + k;
 	i3-msg mode "switch_space_set"
 
 ctrl + shift + h
-	~/bin/key-handler "$(get-window-name)" "ctrl + shift + h"
+	~/bin/key-handler "$(~/bin/get-window-class)" "ctrl + shift + h"
 
 ctrl + shift + l
-	~/bin/key-handler "$(get-window-name)" "ctrl + shift + l"
+	~/bin/key-handler "$(~/bin/get-window-class)" "ctrl + shift + l"
 
 ctrl + shift + r
-	~/bin/key-handler "$(get-window-name)" "ctrl + shift + r"
+	~/bin/key-handler "$(~/bin/get-window-class)" "ctrl + shift + r"
 
 #
 # wm independent hotkeys
