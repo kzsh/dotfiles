@@ -12,7 +12,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ## Gather Arguments
 PARAMS=""
 # ARG_COUNT="$#"
-unset _setup_display_configuration _setup_peripheral _setup_no_peripheral unset _setup_map_keys
+unset _setup_display_configuration _setup_peripheral _setup_no_peripheral _setup_map_keys
 
 # Defaults
 _setup_peripheral=1
@@ -109,6 +109,9 @@ done
 ## set positional arguments in their proper place
 eval set -- "$PARAMS"
 
+
+ASSETS_DIR="$CONFIG_DIR/assets"
+
 COMMAND="setup"
 
 # Special case to avoid recursively calling setup if it's invoked alone
@@ -157,27 +160,6 @@ vlog "environment variables: VERBOSE=$VERBOSE DRY_RUN=$DRY_RUN SHOW_HELP=$SHOW_H
 # EOM
 # }
 
-# display_configuration_multi() {
-#   xrandr --output eDP-1-1 --auto
-#   xrandr --output DP-2 --auto --above eDP-1-1 --primary
-#   xrandr --output DP-0 --auto --left-of DP-2
-#   xrandr --output HDMI-0 --auto --above DP-0
-# }
-#
-# display_configuration_default() {
-#   xrandr --output DP-0 --off
-#   xrandr --output DP-2 --off
-#   xrandr --output HDMI-0 --off
-#   xrandr --output eDP-1-1 --auto --primary
-# }
-#
-# display_configuration_mono() {
-#   xrandr --output eDP-1-1 --off
-#   xrandr --output DP-0 --off
-#   xrandr --output HDMI-0 --off
-#   xrandr --output DP-2 --auto --primary
-# }
-#
 main() {
   if [[ -n "$_setup_no_peripheral" ]]; then
     touchpad enable
@@ -198,7 +180,12 @@ main() {
 
   if [[ -n "$_setup_display_configuration" ]]; then
     vlog "applying display configuration: $_setup_display_configuration"
-    "$SCRIPT_DIR/assets/display/$_setup_display_configuration"
+    config_path="$ASSETS_DIR/display/$_setup_display_configuration"
+    if [[ -f "$config_path" ]]; then
+      "$config_path"
+    else
+      xrandr "$_setup_display_configuration"
+    fi
   fi
 
   # re-source keyboard layout in case an external keyboard has been attached.
