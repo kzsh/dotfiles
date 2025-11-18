@@ -61,14 +61,11 @@ build_ps1() {
     PS1+="${style_important}[SSH] " # [SSH]
   fi
 
-  # If not an ssh tty
-  if [[ -z "$SSH_TTY" ]]; then
-    # PS1+="\$(prompt_git)\$(prompt_kubernetes)\$(prompt_virtualenv)\$(prompt_nvm_env)\n"
-    PS1+="\$(print_envs)\n"
-    PS1+="\$(has_jobs)"
-    PS1+="${style_path}\w"
-    PS1+=" ${style_timestamp}[\$(date -u "+%Y-%m-%dT%H:%M:%S")]"
-  fi
+  # PS1+="\$(prompt_git)\$(prompt_kubernetes)\$(prompt_virtualenv)\$(prompt_nodejs_version)\n"
+  PS1+="\$(print_envs)\n"
+  PS1+="\$(has_jobs)"
+  PS1+="${style_path}\w"
+  PS1+=" ${style_timestamp}[\$(date -u "+%Y-%m-%dT%H:%M:%S")]"
 
   if [[ "$__KZSH__LAST_EXIT_CODE" != "0" ]]; then
     PS1+=" ${style_last_exit_code_base}(\$(last_exit)${style_last_exit_code_base})"
@@ -161,23 +158,30 @@ prompt_kubernetes() {
 }
 
 # Show the name of the current nvm version
-prompt_nvm_env() {
+prompt_nodejs_version() {
   local env_name
-  env_name="$(nvm version)"
+  if command -v node > /dev/null 2>&1; then
+    env_name="$(node --version)"
 
-  if [[ -n "$env_name" ]]; then
-    echo -ne "${style_group}nvm[${style_virtualenv}${env_name}${style_group}]"
+    if [[ -n "$env_name" ]]; then
+      echo -ne "${style_group}node[${style_virtualenv}${env_name}${style_group}]"
+    fi
   fi
 }
+
 # Show the name of the current virtualenv
 prompt_virtualenv() {
   local env_name
-  env_name=$(basename "$VIRTUAL_ENV")
-
-  PIPENV_ACTIVE=1
-
-  if [[ -n "$env_name" ]]; then
-    echo -ne "${style_group}venv[${style_virtualenv}${env_name}${style_group}]"
+  if command -v python >/dev/null 2>&1; then
+    if [[ -n "$VIRTUAL_ENV" ]]; then
+      if [[ -d $PWD/.venv ]]; then
+        echo -ne "${style_group}uv[${style_virtualenv}$(python --version | cut -d ' ' -f2-)${style_group}]"
+      else
+        echo -ne "${style_group}venv[${style_virtualenv}${VIRTUALENV}${style_group}]"
+      fi
+    else
+      echo -ne "${style_group}python[${style_virtualenv}$(python --version)${style_group}"
+    fi
   fi
 }
 
@@ -187,7 +191,7 @@ print_envs() {
     prompt_git
     prompt_kubernetes
     prompt_virtualenv
-    # prompt_nvm_env # too slow
+    prompt_nodejs_version # too slow
     )
 
     for c in "${env_commands[@]}"; do
