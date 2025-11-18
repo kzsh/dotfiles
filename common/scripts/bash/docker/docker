@@ -1,38 +1,117 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-case "$1" in
-  edit)
-    shift
-    "$HOME/bin/docker-edit" "$@"
-    ;;
-  restart)
-    shift
-    "$HOME/bin/docker-restart" "$@"
-    ;;
+docker_bin='/usr/bin/docker'
 
-  k8s|kubernetes)
-    shift
-    "$HOME/bin/docker-toggle-kube" "$@"
-    ;;
-  start)
-    if [[ $# == 1 ]]; then
-      "$HOME/bin/docker-start"
+vlog() {
+  [ -n $VERBOSE ] && echo $*
+}
+
+COMMAND="$1"
+
+case "$COMMAND" in
+
+a|attach)
+  shift
+  "$docker_bin" attach "$@"
+  ;;
+b|build)
+  shift
+  "$docker_bin" build "$@"
+  ;;
+c|container)
+  shift
+  vlog container
+  if [[ "$1" == "rm" || "$1" == "stop" ]]  && [[ "$2" == '*' ]]; then
+    # vlog choosing "$1" all
+    "$docker_bin" container "$1" $("$docker_bin" container ls --all --format '{{.ID}}')
+  else
+    # vlog "choosing regular container operation"
+    "$docker_bin" container "$@"
+  fi
+  ;;
+d|diff)
+  shift
+  "$docker_bin" diff "$@"
+  ;;
+e|exec)
+  shift
+  "$docker_bin" exec "$@"
+  ;;
+h|history)
+  shift
+  "$docker_bin" history "$@"
+  ;;
+i|image)
+  shift
+  "$docker_bin" image "$@"
+  ;;
+\?|inspect)
+  shift
+
+  if [[ "$1" == '*' ]]; then
+    "$docker_bin" container ls --format '{{.ID}}' | xargs -n 1 inspect
+  else
+    "$docker_bin" inspect "$@"
+  fi
+  ;;
+k|kill)
+  shift
+  "$docker_bin" kill "$@"
+  ;;
+l|logs)
+  shift
+  "$docker_bin" logs "$@"
+  ;;
+m|manifest)
+  shift
+  "$docker_bin" manifest "$@"
+  ;;
+n|network)
+  shift
+  "$docker_bin" network "$@"
+  ;;
+p|port)
+  shift
+  "$docker_bin" port "$@"
+  ;;
+r|restart)
+  shift
+  if [[ "$1" == '*' ]]; then
+    "$docker_bin" restart $("$docker_bin" container ls --format '{{.ID}}')
+  else
+    "$docker_bin" restart "$@"
+  fi
+  ;;
+s|stop|start)
+  shift
+  if [[ "$1" == '*' ]]; then
+    "$docker_bin" stop $("$docker_bin" ps -q)
+  else
+    if [[ $(docker inspect -f '{{.State.Status}}' "$1") == 'running' ]]; then
+      "$docker_bin" stop "$@"
     else
-      /usr/local/bin/docker "$@"
+      "$docker_bin" start "$@"
     fi
-    ;;
-  stop)
-    if [[ $# == 1 ]]; then
-      "$HOME/bin/docker-stop"
-    else
-      /usr/local/bin/docker "$@"
-    fi
-    ;;
-  login)
-      "$HOME/bin/docker-login" "$@"
-    ;;
-  *)
-    /usr/local/bin/docker "$@"
-    ;;
+  fi
+  ;;
+sys|system)
+  shift
+  "$docker_bin" system "$@"
+  ;;
+u|update)
+  shift
+  "$docker_bin" update "$@"
+  ;;
+v|volume)
+  shift
+  "$docker_bin" volume "$@"
+  ;;
+w|wait)
+  shift
+  "$docker_bin" wait "$@"
+  ;;
+*)
+  "$docker_bin" "$@"
+  ;;
+
 esac
-
