@@ -1,2 +1,3 @@
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+BUN_HOME="$HOME/.bun"
+export BUN_HOME
+export PATH="$BUN_HOME/bin:$PATH"
