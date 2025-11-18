@@ -1,0 +1,16 @@
+#!/bin/bash
+
+SEPARATOR='ก'
+
+IFS= read -r -d '' JQ<<-EOF
+    .[]
+    | "\(.author.login)
+    $SEPARATOR Reviews: \(.latestReviews | map(.author.login))
+    $SEPARATOR \(.title)
+    $SEPARATOR requests: \(.reviewRequests | map(.login))"
+EOF
+
+JQ=${JQ//[[:space:]]/ }
+
+gh pr list --json reviewRequests,author,title,latestReviews \
+  | jq -r "$JQ" | column -s "$SEPARATOR" -t

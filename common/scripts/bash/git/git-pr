@@ -1,0 +1,41 @@
+#!/bin/bash
+
+
+usage() {
+  echo
+  echo "git pr <subcommand>"
+  echo
+}
+
+create_pr() {
+  gh pr create "$@"
+}
+
+run_pre_pr_hook() {
+  if command -v pre-pr-hook &> /dev/null; then
+      pre-pr-hook
+    else
+      echo "Skipping pre-pr-hook as it is undefined in the current context"
+  fi
+}
+
+COMMAND="$1"
+shift
+
+case "$COMMAND" in
+  create)
+    ARGUMENT="$1"
+    shift
+    if [[ "$ARGUMENT" == '-C' || "$ARGUMENT" == '--no-check' ]]; then
+      create_pr "$@"
+    else
+      run_pre_pr_hook && create_pr "$@"
+    fi
+    ;;
+  check)
+    run_pre_pr_hook "$@"
+    ;;
+  *)
+    gh pr "$COMMAND" "$@"
+    ;;
+esac
