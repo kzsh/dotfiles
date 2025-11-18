@@ -12,6 +12,8 @@ __git_complete gcp _git_cherry_pick
 # cd to top level of the current git repo
 alias cdg='cd $(git_root)'
 
+alias aider='aider --no-auto-commits --vim'
+
 # color output
 alias ls='ls -G'
 
