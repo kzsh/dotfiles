@@ -46,14 +46,6 @@ alias vi="nvim"
 alias vim="nvim"
 
 
-# if [ -f "$HOME/bin/aws" ]; then
-#   alias aws="$HOME/bin/aws"
-# fi
-
-# if [ -f "$HOME/bin/aws_completer" ]; then
-#   alias aws_completer="$HOME/bin/aws_completer"
-# fi
-
 if [ -f "$HOME/bin/yq" ]; then
   alias yq="$HOME/bin/yq"
 fi
