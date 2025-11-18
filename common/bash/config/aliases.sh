@@ -21,8 +21,6 @@ alias l='ls -l'
 
 # open current dir in Finder
 alias aa='open -a'
-alias chrome='open -a Google\ Chrome'
-alias firefox='open -a Firefox\ Developer\ Edition.app'
 alias dcc='docker-compose'
 
 complete -F _docker_compose dcc
