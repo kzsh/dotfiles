@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if [ $# -lt 1 ]; then
+  nvim -c "Octo pr list"
+else
+  nvim -c "Octo $*"
+fi

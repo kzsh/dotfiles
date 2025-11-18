@@ -1,0 +1,34 @@
+#!/bin/bash
+
+OOLAMA_BIN=/usr/local/bin/ollama
+
+
+case "$1" in
+  remote)
+    shift
+    case "$1" in
+      tags)
+          shift
+          curl -s https://ollama.com/library/$1/tags | grep -o "$1:[^\" ]*q[^\" ]*" | grep -E -v 'text|base|fp|q[45]_[01]'
+        ;;
+        *)
+          curl -s https://ollama.com/library | grep -oP 'href="/library/\K[^"]+'
+    esac
+    ;;
+  *)
+    "$OOLAMA_BIN" "$@"
+    ;;
+esac
+
+
+
+# default:
+#   just --list
+#
+# #list Ollama models
+# @models:
+#     curl -s https://ollama.com/library | grep -oP 'href="/library/\K[^"]+'
+#
+# #list model tags
+# @tags model:
+#     curl -s https://ollama.com/library/$1/tags | grep -o "$1:[^\" ]*q[^\" ]*" | grep -E -v 'text|base|fp|q[45]_[01]'

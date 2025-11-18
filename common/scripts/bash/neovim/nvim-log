@@ -1,0 +1,5 @@
+#!/bin/sh
+
+/usr/local/bin/nvim \
+  -V9"$HOME/.config/nvim/runtime.log" \
+  "$@"

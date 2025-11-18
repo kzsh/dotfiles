@@ -1,0 +1,5 @@
+#!/bin/bash
+
+for interface in $(ip link show | grep '^[0-9]' | cut -d ' ' -f2- | cut -d ':' -f '1' | sort -u); do
+  netstat --interface "$interface"
+done

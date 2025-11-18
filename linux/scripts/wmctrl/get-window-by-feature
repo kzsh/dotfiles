@@ -1,0 +1,3 @@
+#!/bin/bash
+FEATURE="$1"
+wmctrl -l | grep -v get-window-by-feature | grep "$FEATURE" | cut -d' ' -f1

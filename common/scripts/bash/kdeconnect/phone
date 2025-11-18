@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+set -o noglob
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+EXECUTABLE="kdeconnect-cli"
+
+## Gather Arguments
+PARAMS=""
+# ARG_COUNT="$#"
+while (( "$#" )); do
+  [[ $1 == --*=* ]] && set -- "${1%%=*}" "${1#*=}" "${@:2}"
+
+  case "$1" in
+    -v|--verbose)
+      # meta-parse-summary run with extra logging
+      export VERBOSE=1
+      shift
+      ;;
+    --dry-run)
+      # meta-parse-summary print the command to be run instead of running it
+      export DRY_RUN=1
+      shift
+      ;;
+    -h|--help)
+      # meta-parse-summary show this help page
+      export SHOW_HELP=1
+      shift
+      ;;
+    --) # end argument parsing
+      shift
+      PARAMS="$PARAMS $*"
+      break
+      ;;
+    --*)
+      # Add full-name args we don't recognize to PARAMS for
+      # subcommands to parse
+      PARAMS="$PARAMS $1"
+      shift
+      ;;
+    -*)
+      # split any batched single character arguments into individual arguments
+      # to be fed back into this loop. This is what allows multiple flags to
+      # be passed as `cl -asdf` instead of `cl -a -s -d -f`
+      grouped_args="$1"
+      shift
+
+      if [[ ${#grouped_args} -gt 2 ]]; then
+        additional_args=""
+        for (( i=1; i<${#grouped_args}; i++ )); do
+          additional_args="$additional_args -${grouped_args:$i:1}"
+        done
+
+        eval set -- "$additional_args" "${*:1}"
+      else
+        # Otherwise we didn't care about the single char
+        # param and we will pass it on to another layer of the script
+        PARAMS="$PARAMS $grouped_args"
+      fi
+      ;;
+    *) # preserve positional arguments
+      PARAMS="$PARAMS $1"
+      shift
+      ;;
+  esac
+done
+
+## set positional arguments in their proper place
+eval set -- "$PARAMS"
+
+"$EXECUTABLE" "$@"

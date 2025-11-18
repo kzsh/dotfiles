@@ -1,0 +1,7 @@
+#!/bin/bash
+
+NUMBER_OF_DESIRED_PORTS="${1:=1}"
+comm -23 \
+<(seq "$FROM" "$TO" | sort) \
+<(ss -Htan | awk '{print $4}' | cut -d':' -f2 | sort -u) \
+| shuf | head -n "$NUMBER_OF_DESIRED_PORTS"
