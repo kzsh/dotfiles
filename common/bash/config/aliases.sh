@@ -35,8 +35,6 @@ alias pcl='playerctl'
 
 alias rg="rg --colors path:fg:red --colors line:style:bold"
 
-alias f="ag --files -g"
-
 # Keep convenient command but use rg
 alias ag="rg --colors path:fg:red --colors line:style:bold"
 
