@@ -6,15 +6,15 @@ else
   SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 fi
 
-FILTER_DIR="$SCRIPT_DIR/jq_filters"
 
 CONFIG_DIR="$HOME/.config/jira-cli"
+FILTER_DIR="$CONFIG_DIR/jq_filters"
 DEFAULT_CONFIG="$CONFIG_DIR/config"
 mkdir -p "$CONFIG_DIR"
 
 usage() {
   cat <<EOM
-usage: jira [arguments]
+usage: jira-cli [arguments]
 
     --edit|--edit-config)
       open the config in \$EDITOR
@@ -142,17 +142,21 @@ while (( "$#" )); do
     -*)
       # split any batched single character arguments into individual arguments
       # to be fed back into this loop. This is what allows multiple flags to
-      # be passed as `jira-cli -asdf` instead of `jira-cli -a -s -d -f`
+      # be passed as `jira-cli -asdfg` instead of `jira-cli -a -s -d -f -g`
       grouped_args="$1"
       shift
 
       if [[ ${#grouped_args} -gt 2 ]]; then
         additional_args=""
         for (( i=1; i<${#grouped_args}; i++ )); do
-         additional_args="$additional_args -${grouped_args:$i:1}"
+          additional_args="$additional_args -${grouped_args:$i:1}"
         done
 
         eval set -- "$additional_args" "${*:1}"
+      else
+        # Otherwise we didn't care about the single char
+        # param and we will pass it on to another layer of the script
+        PARAMS="$PARAMS $grouped_args"
       fi
       ;;
     *) # preserve positional arguments
@@ -250,7 +254,7 @@ if [[ -n "$JQL" ]]; then
     MAYBE_QUERY_STRING="$MAYBE_QUERY_STRING&$(url_encode "$QUERY")"
   fi
 elif [[ -n "$QUERY" ]]; then
-  MAYBE_QUERY_STRING="$(url_encode"$QUERY")"
+  MAYBE_QUERY_STRING="$(url_encode "$QUERY")"
 else
   MAYBE_QUERY_STRING=""
 fi
@@ -269,7 +273,7 @@ declare -A URL_MAPPING=(
    ["sprint"]="agile/1.0/board/$BOARD_ID/issue?$MAYBE_QUERY_STRING"
    ["backlog"]="agile/1.0/board/$BOARD_ID/backlog?$MAYBE_QUERY_STRING"
    ["squad"]="agile/1.0/board/$BOARD_ID/issue?$MAYBE_QUERY_STRING"
-   ["search"]="api/latest/search?$MAYBE_QUERY_STRING"
+   ["search"]="api/3/search/jql?$MAYBE_QUERY_STRING"
    ["issue"]="api/latest/issue/${ENTITY_ID}"
 )
 
@@ -293,17 +297,30 @@ if [ -n "$FILTER" ] && ! command -v "$FILTER" > /dev/null 2>&1; then
 fi
 
 make_request() {
-  curl -s "$BASE_URL/rest/$URL" \
-    --compressed \
-    --header 'Accept: application/json' \
-    --header 'Cache-Control: max-age=0' \
-    --header 'Connection: keep-alive' \
-    --silent \
-    --user "$JIRA_USER_NAME:$TOKEN"
+  CURL_COMMAND=(
+    curl -s "$BASE_URL/rest/$URL" \
+      --compressed \
+      --header 'Accept: application/json' \
+      --header 'Cache-Control: max-age=0' \
+      --header 'Connection: keep-alive' \
+      --silent \
+      --user "$JIRA_USER_NAME:$TOKEN"
+  )
+
+  if [[ -n "$DRY_RUN" ]]; then
+    printf '%s ' "${CURL_COMMAND[@]}"
+    echo
+  else
+    "${CURL_COMMAND[@]}"
+  fi
 }
 
-URL=${URL_MAPPING[$COMMAND]}
-vlog "$URL"
+CANDIDATE_URL=${URL_MAPPING[$COMMAND]}
+if [[ -n $CANDIDATE_URL ]]; then
+  URL="$CANDIDATE_URL"
+else
+  URL="$COMMAND"
+fi
 
 if [[ -n "$USE_JQ_FILTER" && -n "$FILTER" && -z $NO_JQ ]]; then
   make_request | $FILTER
