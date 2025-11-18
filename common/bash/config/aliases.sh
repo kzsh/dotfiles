@@ -20,7 +20,6 @@ alias l='ls -l'
 
 # open current dir in Finder
 alias aa='open -a'
-alias dcc='docker-compose'
 
 complete -F _docker_compose dcc
 alias kcl='kubectl'
