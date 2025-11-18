@@ -1,1 +1,2 @@
-eval "$(zoxide init bash)"
+eval "$(zoxide init --cmd j bash)"
+export  _ZO_ECHO=1
