@@ -6,7 +6,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 export CONFIG_DIR="$SCRIPT_DIR"
 export REPO_ROOT="$SCRIPT_DIR/../../.."
 export COMMON_SCRIPTS="$REPO_ROOT/common/scripts"
-export MAC_SCRIPTS="$REPO_ROOT/macos/scripts"
+export MACOS_SCRIPTS="$REPO_ROOT/macos/scripts"
 export LINUX_SCRIPTS="$REPO_ROOT/linux/scripts"
 
 export DEBUG_STARTUP=
