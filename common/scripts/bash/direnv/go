@@ -1,1 +1,1 @@
-export PATH="$PATH:$HOME/vendor/go/go/bin"
+export PATH="$PATH:$HOME/packages/golang/go/bin"

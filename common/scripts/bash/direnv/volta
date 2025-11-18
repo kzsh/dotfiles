@@ -1,2 +1,13 @@
+#!/bin/bash
+
+if [[ -f "$PWD/.node-version" ]]; then
+  NODE_VERSION="$(cat "$PWD/.node-version")"
+fi
+
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
+
+if command -v node --version > /dev/null 2>&1; then
+  echo "No node version set defaulting to 'node@24'"
+  volta install node@24
+fi
