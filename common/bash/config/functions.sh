@@ -23,22 +23,7 @@ function via() {
   fi
 }
 
-REMOVE_MATCH=$(cat <<-'EOS' | paste -sd '%' - | sed 's/%/\\|/g'
-!
-"
-#
-'
--
-:
-;
-=
-\$
-\*
-\/
-\?
-\~
-arn
-at$
+REMOVE_MATCH=$(cat <<-'EOS' | paste -sd '%' - | sed 's/%/|/g'
 bash
 cd
 clear
@@ -55,16 +40,9 @@ ln
 ls
 mv
 nvim
-ocker
-qgit
 rm
-t\s
 tig
 tree
-uarn
-uyarn
-v$
-v\s
 vf
 vfg
 vi
@@ -76,34 +54,20 @@ which
 whoami
 why
 wip
-xe
-xeit
-xirt
-xit
 xo
-y$
-yanr
-yar
-yarb
-yuarn
-yurn
-zs$
 zsh
 zz
-{
-|
-✅
-🎯
-🔍
+\{
 EOS
 )
 
 remove_common_history() {
-  grep -v "^ *\($REMOVE_MATCH\)[^a-zA-Z0-9] *"
+  grep -E -v '^ *('"$REMOVE_MATCH"')[^a-zA-Z0-9]? *'
 }
 
 persist_completions() {
   LANG=C find ~/.logs/* \
+  | sort \
   | xargs cat \
   | awk '{xit=$3;$2=$3=""; print xit "	" $0 }' \
   | cut -d'	' -f2- \
@@ -121,6 +85,7 @@ persist_completions() {
 
 persist_successful_completions() {
   LANG=C find ~/.logs/* \
+  | sort \
   | xargs cat \
   | awk '{xit=$3;$2=$3=""; print xit "	" $0 }' \
   | sed '/^[^0]/d' \
@@ -139,6 +104,7 @@ persist_successful_completions() {
 
 dir_specific_completions() {
   LANG=C find ~/.logs/* \
+  | sort \
   | xargs cat \
   | grep "$(pwd)[^/]" \
   | awk '{xit=$3;$2=$3=""; print xit "	" $0 }' \
