@@ -1,16 +1,9 @@
 #!/bin/bash
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+. "$COMMON_SCRIPTS/bash/git/git-op.sh"
 
-SEPARATOR='ก'
+operation() {
+  gh pr list
+}
 
-IFS= read -r -d '' JQ<<-EOF
-    .[]
-    | "\(.author.login)
-    $SEPARATOR Reviews: \(.latestReviews | map(.author.login))
-    $SEPARATOR \(.title)
-    $SEPARATOR requests: \(.reviewRequests | map(.login))"
-EOF
-
-JQ=${JQ//[[:space:]]/ }
-
-gh pr list --json reviewRequests,author,title,latestReviews \
-  | jq -r "$JQ" | column -s "$SEPARATOR" -t
+forEachGitRepo "operation"

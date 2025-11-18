@@ -37,3 +37,5 @@ forEachGitRepo() {
 
   done
 }
+
+forEachGitRepo "$*"
