@@ -43,6 +43,16 @@ while (( "$#" )); do
       unset _setup_peripheral
       _setup_no_peripheral=1
       ;;
+    -s|--enable-sleep)
+      # meta-parse-summary disable enable dpms and `xset s`.
+      shift
+      _setup_sleep=1
+      ;;
+    -S|--no-sleep)
+      # meta-parse-summary disable `dpms and run `xset s` to avoid graphics card freezing on wake
+      shift
+      _setup_no_sleep=1
+      ;;
     -c|--config)
       # meta-parse-summary specify alternate config (defaults to $DEFAULT_CONFIG)
       CONFIG="$2"
@@ -161,6 +171,15 @@ vlog "environment variables: VERBOSE=$VERBOSE DRY_RUN=$DRY_RUN SHOW_HELP=$SHOW_H
 # }
 
 main() {
+  if [[ -n "$_setup_no_sleep" ]]; then
+    log "disabling sleep/suspend"
+    xset -dpms
+    xset s off
+  elif [[ -n "$_setup_sleep" ]]; then
+    log "enabling sleep/suspend"
+    xset +dpms
+    xset s on
+  fi
   vlog "Starting sxhkd"
   systemctl start --user sxhkd
 
