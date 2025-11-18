@@ -161,20 +161,6 @@ vlog "environment variables: VERBOSE=$VERBOSE DRY_RUN=$DRY_RUN SHOW_HELP=$SHOW_H
 # }
 
 main() {
-  if [[ -n "$_setup_no_peripheral" ]]; then
-    touchpad enable
-  elif [[ -n "$_setup_peripheral" ]]; then
-    touchpad disable
-  fi
-
-  # TODO: move touchpad to setup-touchpad sub-command
-  vlog "adjusting touchpad sensitivity"
-  touchpad sensitivity
-
-  # TODO: move mouse to setup-mouse sub-command
-  vlog "adjusting mouse sensitivity"
-  mouse sensitivity
-
   vlog "Starting sxhkd"
   systemctl start --user sxhkd
 
