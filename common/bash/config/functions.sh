@@ -23,8 +23,6 @@ function via() {
   fi
 }
 
-alias vima="via"
-
 REMOVE_MATCH=$(cat <<-'EOS' | paste -sd '%' - | sed 's/%/\\|/g'
 !
 "

@@ -1,0 +1,2 @@
+#!/bin/bash
+. "$COMMON_SCRIPTS/bash/completions/git/git-completion.sh"

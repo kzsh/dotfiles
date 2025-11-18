@@ -1,0 +1,2 @@
+VIM_DIR="$HOME/.config/nvim"
+export VIM_DIR

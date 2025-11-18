@@ -1,0 +1,6 @@
+AWS_PACKAGE_PATH="$HOME/packages/aws"
+AWS_INSTALLATION_PATH="$AWS_PACKAGE_PATH/install-target/v2/2.31.38"
+AWS_BIN_PATH="$AWS_INSTALLATION_PATH/bin"
+alias aws="$AWS_BIN_PATH/aws"
+export PATH="$PATH:$AWS_BIN_PATH"
+complete -C "$AWS_BIN_PATH/aws_completer" aws
