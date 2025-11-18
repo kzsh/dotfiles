@@ -10,7 +10,6 @@ __git_complete gb _git_branch
 __git_complete gcp _git_cherry_pick
 
 # cd to top level of the current git repo
-alias git_root='git rev-parse --show-toplevel'
 alias cdg='cd $(git_root)'
 
 # color output
