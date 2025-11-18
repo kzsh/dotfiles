@@ -189,13 +189,16 @@ main() {
     if [[ -f "$config_path" ]]; then
       "$config_path"
     else
-      xrandr "$_setup_display_configuration"
+      log >&2 "display configuration file not found: \`$(basename "$config_path")\`"
+      log >&2 "Available configurations: "
+      ls "$(dirname "$config_path")"
     fi
   fi
 
   # re-source keyboard layout in case an external keyboard has been attached.
   if [[ -n "$_setup_map_keys" ]]; then
-    vlog "mapping keys"
+    log "Mapping Keys"
+    vlog "xmodmap ~/.Xmodmap"
     xmodmap ~/.Xmodmap
   fi
 }
