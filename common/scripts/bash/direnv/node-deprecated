@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+. "$COMMON_SCRIPTS/bash/utils/script_dir.sh"
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+SOURCED_IN_DIR="$EXEC_DIR"
+
+if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
+  SOURCING=1
+else
+  SOURCING=
+fi
+
+if ! command -v volta; then
+  echo "volta not found. Please install volta."
+  exit 1
+fi
+
+EXPECTED_NODE_VERSION="$(echo "$1" | grep '^v\?[0-9.]\+$')"
+
+if [[ -z "$EXPECTED_NODE_VERSION" ]]; then
+  EXPECTED_NODE_VERSION="$(cat "$SOURCED_IN_DIR/.nvmrc")"
+fi
+
+EXPECTED_NODE_VERSION="$(echo $EXPECTED_NODE_VERSION | grep -o '[0-9.]\+$')"
+
+
+version="$(volta list --format plain | grep runtime | grep -o 'node@[0-9.]\+' | cut -d '@' -f2)"
+echo "$version" | grep -q "^$EXPECTED_NODE_VERSION.*"
+
+if [ $? != 0 ]; then
+  volta install "node@$EXPECTED_NODE_VERSION"
+fi
+
+echo
+volta list --format plain

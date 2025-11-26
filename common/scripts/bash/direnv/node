@@ -1,5 +1,4 @@
-#!/usr/bin/env bash
-
+#!/bin/bash
 . "$COMMON_SCRIPTS/bash/utils/script_dir.sh"
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 SOURCED_IN_DIR="$EXEC_DIR"
@@ -10,26 +9,27 @@ else
   SOURCING=
 fi
 
-if ! command -v volta; then
-  echo "volta not found. Please install volta."
-  exit 1
-fi
+MISE_STATE_ROOT="$HOME/.local/share/mise/installs/node"
 
 EXPECTED_NODE_VERSION="$(echo "$1" | grep '^v\?[0-9.]\+$')"
 
 if [[ -z "$EXPECTED_NODE_VERSION" ]]; then
-  EXPECTED_NODE_VERSION="$(cat "$SOURCED_IN_DIR/.nvmrc")"
+  EXPECTED_NODE_VERSION="$(cat "$SOURCED_IN_DIR/.nvmrc" | grep -o '[0-9.]\+$'))"
 fi
 
-EXPECTED_NODE_VERSION="$(echo $EXPECTED_NODE_VERSION | grep -o '[0-9.]\+$')"
-
-
-version="$(volta list --format plain | grep runtime | grep -o 'node@[0-9.]\+' | cut -d '@' -f2)"
-echo "$version" | grep -q "^$EXPECTED_NODE_VERSION.*"
-
-if [ $? != 0 ]; then
-  volta install "node@$EXPECTED_NODE_VERSION"
+if ! [[ -d "$MISE_STATE_ROOT" ]]; then
+  echo "mise is used to install node. Please install mise and run 'mise install node@$VERSION' first."
+  exit 1
 fi
 
-echo
-volta list --format plain
+if ! [[ -d "$MISE_STATE_ROOT/$EXPECTED_NODE_VERSION" ]]; then
+  mise install "node@$EXPECTED_NODE_VERSION"
+  if [[ -d "$MISE_STATE_ROOT/$EXPECTED_NODE_VERSION" ]]; then
+    echo "Node $EXPECTED_NODE_VERSION installed successfully."
+  else
+    echo "Failed to install Node $EXPECTED_NODE_VERSION."
+    exit 1
+  fi
+fi
+
+export PATH="$MISE_STATE_ROOT/$EXPECTED_NODE_VERSION/bin:$PATH"
