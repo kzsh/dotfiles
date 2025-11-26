@@ -1,3 +1,4 @@
 GPG_TTY=$(tty)
 export GPG_TTY
 export GPG_HOME="$HOME/.gnupg"
+export GPGHOME="$HOME/.gnupg"
