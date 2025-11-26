@@ -1,0 +1,34 @@
+#!/bin/bash
+. "$COMMON_SCRIPTS/bash/utils/script_dir.sh" SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+SOURCED_IN_DIR="$EXEC_DIR"
+
+if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
+  SOURCING=1
+else
+  SOURCING=
+fi
+
+EXPECTED_VERSION="$(echo "$1" | grep '^v\?[0-9.]\+$')"
+
+# ZVM
+ZVM_INSTALL="$HOME/.zvm"
+ZVM_BIN="$HOME/.zvm/self/zvm"
+
+if ! [[ -d "$ZVM_INSTALL/$EXPECTED_VERSION" ]]; then
+  "$ZVM_BIN" install "$EXPECTED_VERSION"
+  if [[ "$?" != 0 ]]; then
+    "$ZVM_BIN" list --all
+    exit 1
+  fi
+
+  if [[ -d "$ZVM_INSTALL/$EXPECTED_VERSION" ]]; then
+    echo "Zig $EXPECTED_VERSION installed successfully."
+  else
+    echo "Failed to install Zig $EXPECTED_VERSION."
+    exit 1
+  fi
+fi
+
+export PATH="$ZVM_INSTALL/$EXPECTED_VERSION:$PATH"
+
+echo "Using zig: $(zig version)"
