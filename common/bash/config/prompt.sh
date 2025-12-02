@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # Colors
+if [[ -n $TERM ]]; then
 BOLD=$(tput bold)
 RESET=$(tput sgr0)
 RED=$(tput setaf 1)
@@ -12,6 +13,19 @@ CYAN=$(tput setaf 6)
 GREEN=$(tput setaf 2)
 WHITE=$(tput setaf 7)
 GRAY=$(tput setaf 240)
+else
+BOLD=""
+RESET=""
+RED=""
+YELLOW=""
+MAGENTA=""
+ORANGE=""
+BLUE=""
+CYAN=""
+GREEN=""
+WHITE=""
+GRAY=""
+fi
 
 # Prompt styles
 style_user="\[${RESET}${YELLOW}\]"
