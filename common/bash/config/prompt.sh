@@ -72,7 +72,8 @@ build_ps1() {
   PS1+="\n"
 
   if [[ "$SSH_TTY" ]]; then
-    PS1+="${style_important}[SSH] " # [SSH]
+    HOSTNAME="$(hostname)"
+    PS1+="${style_important}SSH[${HOSTNAME}] " # [SSH]
   fi
 
   # PS1+="\$(prompt_git)\$(prompt_kubernetes)\$(prompt_virtualenv)\$(prompt_nodejs_version)\n"
