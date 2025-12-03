@@ -1,5 +1,5 @@
 #!/bin/bash
-. "$COMMON_SCRIPTS/bash/utils/script_dir.sh" SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+. "$COMMON_SCRIPTS/utils/script_dir.sh" SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 SOURCED_IN_DIR="$EXEC_DIR"
 
 if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then

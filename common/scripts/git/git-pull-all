@@ -1,6 +1,6 @@
 #!/bin/bash
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-. "$COMMON_SCRIPTS/bash/git/git-op.sh"
+. "$COMMON_SCRIPTS/git/git-op.sh"
 
 operation() {
   branch_match=$(git branch | grep \* | sed -E -e 's/\* (.+) */\1/')
