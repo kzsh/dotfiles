@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-git clone https://github.com/dexpota/kitty-themes ./kitty-themes
+git clone https://github.com/kzsh/kitty-themes ./kitty-themes
