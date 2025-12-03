@@ -1,5 +1,5 @@
 # export HISTCONTROL=ignoreboth
-export HISTSIZE=100
+export HISTSIZE=500
 export HISTFILESIZE=1000000               # big big history
 # export HISTIGNORE="&:ls:[bf]g:exit:pwd:clear:mount:umount:[ \t]*:rm -rf"
 

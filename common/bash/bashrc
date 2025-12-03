@@ -1,6 +1,0 @@
-#!/bin/bash
-. $HOME/.bash_profile
-case $- in
-  *i*) ;;
-  *) return;;
-esac
