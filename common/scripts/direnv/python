@@ -1,0 +1,40 @@
+#!/bin/bash
+# Provides $EXEC_DIR
+. "$COMMON_SCRIPTS/utils/script_dir.sh"
+
+# used to refer to the mise application e.g. this file is python, so mise install $script_name@$version.
+# probably too clever.
+SCRIPT_NAME=$(basename "${BASH_SOURCE[0]}")
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+SOURCED_IN_DIR="$EXEC_DIR"
+
+if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
+  SOURCING=1
+else
+  SOURCING=
+fi
+
+MISE_STATE_ROOT="$HOME/.local/share/mise/installs/$SCRIPT_NAME"
+
+EXPECTED_VERSION="$(echo "$1" | grep '^v\?[0-9.]\+$')"
+
+if [[ -z "$EXPECTED_VERSION" ]]; then
+  EXPECTED_VERSION="$(cat "$SOURCED_IN_DIR/.python-version" | grep -o '[0-9.]\+$'))"
+fi
+
+if ! [[ -d "$MISE_STATE_ROOT" ]]; then
+  echo "mise is used to install $SCRIPT_NAME. Please install mise and run 'mise install $SCRIPT_NAME@$VERSION' first."
+  exit 1
+fi
+
+if ! [[ -d "$MISE_STATE_ROOT/$EXPECTED_VERSION" ]]; then
+  mise install "$SCRIPT_NAME@$EXPECTED_VERSION"
+  if [[ -d "$MISE_STATE_ROOT/$EXPECTED_VERSION" ]]; then
+    echo "$SCRIPT_NAME $EXPECTED_VERSION installed successfully."
+  else
+    echo "Failed to install $SCRIPT_NAME $EXPECTED_VERSION."
+    exit 1
+  fi
+fi
+
+export PATH="$MISE_STATE_ROOT/$EXPECTED_VERSION/bin:$PATH"
