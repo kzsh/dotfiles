@@ -195,7 +195,7 @@ prompt_virtualenv() {
         echo -ne "${style_group}venv[${style_virtualenv}${VIRTUALENV}${style_group}]"
       fi
     else
-      echo -ne "${style_group}python[${style_virtualenv}$(python --version)${style_group}"
+      echo -ne "${style_group}python[${style_virtualenv}$(python --version)${style_group}]"
     fi
   fi
 }
