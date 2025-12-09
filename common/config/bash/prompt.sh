@@ -72,7 +72,11 @@ build_ps1() {
   PS1+="\n"
 
   if [[ "$SSH_TTY" ]]; then
-    HOSTNAME="$(hostname)"
+    if command -v avahi-resolve-address >/dev/null 2>&1; then
+      HOSTNAME="$(avahi-resolve-address 127.0.0.1 | cut -d '	' -f2-)"
+    else
+      HOSTNAME="$(hostname)"
+    fi
     PS1+="${style_important}SSH[${HOSTNAME}] " # [SSH]
   fi
 
