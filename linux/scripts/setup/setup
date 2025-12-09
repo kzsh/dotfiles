@@ -119,7 +119,7 @@ done
 ## set positional arguments in their proper place
 eval set -- "$PARAMS"
 
-
+CONFIG_DIR="$XDG_CONFIG_DIR/setup"
 ASSETS_DIR="$CONFIG_DIR/assets"
 
 COMMAND="setup"
@@ -186,7 +186,7 @@ main() {
   if [[ -n "$_setup_display_configuration" ]]; then
     vlog "applying display configuration: $_setup_display_configuration"
     config_path="$ASSETS_DIR/display/$_setup_display_configuration"
-    if [[ -f "$config_path" ]]; then
+    if [[ -x "$config_path" ]]; then
       "$config_path"
     else
       log >&2 "display configuration file not found: \`$(basename "$config_path")\`"
