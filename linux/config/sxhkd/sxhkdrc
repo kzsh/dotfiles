@@ -7,6 +7,9 @@ ctrl + alt + shift + 4
 ctrl + alt + Escape
 	/usr/local/bin/hibernate
 
+ctrl + shift + alt + k
+	/usr/local/bin/setup -k
+
 ctrl + alt + shift + q
 	/usr/local/bin/lock
 
