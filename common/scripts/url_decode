@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Read from standard input
+while IFS= read -r line; do
+  # Replace '+' with ' '
+  url_encoded="${line//+/ }"
+  # Decode %xx sequences
+  printf '%b\n' "${url_encoded//%/\\x}"
+done
