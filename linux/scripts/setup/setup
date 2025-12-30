@@ -119,7 +119,7 @@ done
 ## set positional arguments in their proper place
 eval set -- "$PARAMS"
 
-CONFIG_DIR="$XDG_CONFIG_DIR/setup"
+CONFIG_DIR="$XDG_CONFIG_HOME/setup-cli"
 ASSETS_DIR="$CONFIG_DIR/assets"
 
 COMMAND="setup"
