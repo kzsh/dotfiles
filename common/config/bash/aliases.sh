@@ -10,7 +10,7 @@ __git_complete gb _git_branch
 __git_complete gcp _git_cherry_pick
 
 # cd to top level of the current git repo
-alias cdg='cd $(git_root)'
+alias cdg='cd $(git root)'
 
 alias aider='aider --no-auto-commits --vim'
 
