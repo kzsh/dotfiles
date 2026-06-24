@@ -1,0 +1,84 @@
+icons_format = "{icon}"
+
+[icons]
+# icons = "awesome4"
+# [icons.overrides]
+# bat = ["|E|", "|_|", "|=|", "|F|"]
+# bat_charging = "|^| "
+
+# BLOCK REFERENCE
+# https://docs.rs/i3status-rs/latest/i3status_rs/blocks/index.html
+
+# [[block]]
+# block = "weather"
+# autolocate = true
+# autolocate_interval = 600
+# [block.service]
+# name = "nws"
+
+[theme]
+[theme.overrides]
+idle_bg = "#222222"
+separator_bg = "#222222"
+
+[[block]]
+block = "sound"
+device = "auto"
+format ="♫ $volume"
+# format ="$volume $output_description"
+
+# [[block]]
+# block = "docker"
+# interval = 2
+# format = "󰡨$running"
+
+
+[[block]]
+block = "load"
+# '<sup> </sup>' is faking out pango formatting into getting the other 'sup's right.
+format = "<sup> </sup><sup><span size='8pt'>1</span></sup>$1m.eng(w:0) <sup><span size='8pt'>5</span></sup>$5m.eng(w:0) <sup><span size='8pt'>15</span></sup>$15m.eng(w:0)"
+
+[[block]]
+block = "net"
+interval = 30
+format ="$ip {$signal_strength|$speed_down↓ $speed_up↑}"
+format_alt = "$device {$signal_strength $ssid $frequency|Wired}"
+
+[[block]]
+block = "custom"
+command ="ifconfig | grep -q '^tun' && echo '󰖂' || echo ''"
+
+[[block]]
+block = "cpu"
+# format = "$frequency [$barchart]"
+format = "$barchart"
+format_alt = "cpu$utilization"
+interval = 10
+
+# [[block]]
+# block = "nvidia_gpu"
+
+[[block]]
+block = "temperature"
+
+format = "<span background='#222222' ><sub>$min</sub><span foreground='#cfc9c0' size='8pt'>$average</span><sup>$max</sup></span>"
+interval = 20
+
+[[block]]
+block = "memory"
+format = "<sup>U</sup>$mem_used.eng(width:0, unit:B,hide_unit:true) <sup>B</sup>$buffers.eng(width:0, unit:B,hide_unit:true) <sup>C</sup>$cached.eng(width:0, unit:B,hide_unit:true) <sup>S</sup>$swap_used.eng(width:0, hide_unit:true)/$swap_free.eng(width:0, unit:B,hide_unit:true) ($mem_total.eng(hide_unit:true))"
+format_alt = "$mem_total_used.eng(width:2,unit:B,pad_with:' ',prefix:Ki,hide_prefix:true,hide_unit:true)/$mem_total.eng(p:Ki)"
+
+[[block]]
+block = "battery"
+format = "$percentage($power.eng(w:0))"
+full_format  = "$percentage($power.eng(w:0))"
+charging_format  = "$percentage($power.eng(w:0))"
+empty_format  = "$percentage($power.eng(w:0))"
+not_charging_format = "$percentage"
+missing_format  = "!BAT"
+
+[[block]]
+block = "time"
+interval = 1
+format = " $timestamp.datetime(f:'%Y-%m-%d')<span foreground='#777'>T</span>$timestamp.datetime(f:'%T')"
