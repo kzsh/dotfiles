@@ -71,10 +71,10 @@ format_alt = "$mem_total_used.eng(width:2,unit:B,pad_with:' ',prefix:Ki,hide_pre
 
 [[block]]
 block = "battery"
-format = "$percentage($power.eng(w:0))"
-full_format  = "$percentage($power.eng(w:0))"
-charging_format  = "$percentage($power.eng(w:0))"
-empty_format  = "$percentage($power.eng(w:0))"
+format = "$percentage $power"
+full_format  = "$percentage"
+charging_format  = "$percentage↑ $power"
+empty_format  = "$percentage $power"
 not_charging_format = "$percentage"
 missing_format  = "!BAT"
 
