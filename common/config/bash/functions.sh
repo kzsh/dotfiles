@@ -116,63 +116,6 @@ dir_specific_completions() {
   __cli_history_select --succeeded --cwd .
 }
 
-# persist_completions() {
-#   LANG=C find ~/.logs/* \
-#   | sort \
-#   | xargs cat \
-#   | awk '{xit=$3;$2=$3=""; print xit "\t" $0 }' \
-#   | cut -d'\t' -f2- \
-#   | sort -k2,1000 -u \
-#   | sort \
-#   | cut -d' ' -f2- \
-#   | sed 's/^ *//' \
-#   | remove_common_history \
-#   | fzf +m --tac \
-#   | while read -r item; do
-#     printf '%s ' "$item"
-#   done
-#   echo
-# }
-#
-# persist_successful_completions() {
-#   LANG=C find ~/.logs/* \
-#   | sort \
-#   | xargs cat \
-#   | awk '{xit=$3;$2=$3=""; print xit "\t" $0 }' \
-#   | sed '/^[^0]/d' \
-#   | cut -d'\t' -f2- \
-#   | sort -k2,1000 -u \
-#   | sort \
-#   | cut -d' ' -f2- \
-#   | sed 's/^ *//' \
-#   | remove_common_history \
-#   | fzf +m --tac \
-#   | while read -r item; do
-#     printf '%s ' "$item"
-#   done
-#   echo
-# }
-#
-# dir_specific_completions() {
-#   LANG=C find ~/.logs/* \
-#   | sort \
-#   | xargs cat \
-#   | grep "$(pwd)[^/]" \
-#   | awk '{xit=$3;$2=$3=""; print xit "\t" $0 }' \
-#   | sed '/^[^0]/d' \
-#   | cut -d'\t' -f2- \
-#   | sort -k2,1000 -u \
-#   | sort \
-#   | cut -d' ' -f2- \
-#   | sed 's/^ *//' \
-#   | remove_common_history \
-#   | fzf +m --tac \
-#   | while read -r item; do
-#     printf '%s ' "$item"
-#   done
-#   echo
-# }
-
 hist() {
   cmd="cat $HOME/.custom-history-completions/completions 2> /dev/null"
     eval "$cmd" \
