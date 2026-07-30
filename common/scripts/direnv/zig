@@ -1,34 +1,29 @@
 #!/bin/bash
-. "$COMMON_SCRIPTS/utils/script_dir.sh" SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-SOURCED_IN_DIR="$EXEC_DIR"
-
 if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
   SOURCING=1
 else
   SOURCING=
 fi
 
-EXPECTED_VERSION="$(echo "$1" | grep '^v\?[0-9.]\+$')"
+_zig_fail() {
+  echo "$1" >&2
+  [[ -n "$SOURCING" ]] && return 1 || exit 1
+}
 
-# ZVM
-ZVM_INSTALL="$HOME/.zvm"
-ZVM_BIN="$HOME/.zvm/self/zvm"
+EXPECTED_VERSION="$(echo "$1" | grep -E '^v?[0-9][0-9a-zA-Z.+-]*$')"
 
-if ! [[ -d "$ZVM_INSTALL/$EXPECTED_VERSION" ]]; then
-  "$ZVM_BIN" install "$EXPECTED_VERSION"
-  if [[ "$?" != 0 ]]; then
-    "$ZVM_BIN" list --all
-    exit 1
-  fi
-
-  if [[ -d "$ZVM_INSTALL/$EXPECTED_VERSION" ]]; then
-    echo "Zig $EXPECTED_VERSION installed successfully."
-  else
-    echo "Failed to install Zig $EXPECTED_VERSION."
-    exit 1
-  fi
+if [[ -z "$EXPECTED_VERSION" ]]; then
+  _zig_fail "Usage: source zig <version>  (e.g. 0.15.2 or 0.16.0-dev.1366+4ea472808)"
 fi
 
-export PATH="$ZVM_INSTALL/$EXPECTED_VERSION:$PATH"
+ZIG_BASE="$HOME/packages/zig"
 
-echo "Using zig: $(zig version)"
+# Dirs are named zig-x86_64-linux-VERSION or zig-linux-x86_64-VERSION
+ZIG_DIR="$(find "$ZIG_BASE" -maxdepth 1 -type d -name "*${EXPECTED_VERSION}" 2>/dev/null | head -1)"
+
+if [[ -z "$ZIG_DIR" ]]; then
+  _zig_fail "Zig $EXPECTED_VERSION not found in $ZIG_BASE"
+fi
+
+export PATH="$ZIG_DIR:$PATH"
+echo "Using zig $EXPECTED_VERSION from $ZIG_DIR"
