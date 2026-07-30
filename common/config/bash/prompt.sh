@@ -52,12 +52,27 @@ style_git_deleted="${RESET}${RED}"
 
 GIT_DIFF_CHAR="•"
 
+# The cli-history binary lives next to this file. Falls back to PATH so a copy
+# installed elsewhere still works, and so does a shell sourcing these scripts
+# from outside the repo.
+if [[ -z "$CLI_HISTORY_BIN" ]]; then
+  __kzsh_config_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  if [[ -x "$__kzsh_config_dir/cli-history" ]]; then
+    CLI_HISTORY_BIN="$__kzsh_config_dir/cli-history"
+  else
+    CLI_HISTORY_BIN="cli-history"
+  fi
+  export CLI_HISTORY_BIN
+  unset __kzsh_config_dir
+fi
+
 # ensure directories
 mkdir -p /tmp/i3
 
 # Main methods
 __set_prompt() {
   export __KZSH__LAST_EXIT_CODE=$?
+  capture_duration
   build_ps1
   history -a
   history -c
@@ -95,8 +110,33 @@ build_ps1() {
 }
 
 __initialization() {
-  if [[ ! -f $HOME/.logs ]]; then
+  if [[ ! -d $HOME/.logs ]]; then
     mkdir -p "$HOME/.logs"
+  fi
+
+  # Scopes cli-history duplicate suppression to this shell.
+  if [[ -z "$CLI_HISTORY_SESSION" ]]; then
+    export CLI_HISTORY_SESSION="$(date -u "+%Y%m%dT%H%M%SZ")-$$"
+  fi
+
+  # Stamps a start time for every command line without forking. PS0 is expanded
+  # after the line is read and before it runs; taking a zero length substring of
+  # a set variable evaluates the arithmetic (which performs the assignment) while
+  # printing nothing. The variable must be non-empty or bash skips the offset.
+  # Requires bash 5 for EPOCHREALTIME.
+  if ((BASH_VERSINFO[0] >= 5)); then
+    __KZSH__PS0_PAD=x
+    PS0='${__KZSH__PS0_PAD:$(( ${__KZSH__CMD_START:=${EPOCHREALTIME//[!0-9]/}} * 0 )):0}'
+  fi
+}
+
+# Turns the PS0 stamp into a millisecond runtime. Empty when no command ran,
+# which is the case for an empty prompt line.
+capture_duration() {
+  __KZSH__LAST_DURATION_MS=""
+  if [[ -n "$__KZSH__CMD_START" ]]; then
+    __KZSH__LAST_DURATION_MS=$(( (${EPOCHREALTIME//[!0-9]/} - __KZSH__CMD_START) / 1000 ))
+    unset __KZSH__CMD_START
   fi
 }
 
@@ -165,14 +205,13 @@ prompt_git() {
 prompt_kubernetes() {
   local context
   context=$(kubectl config current-context 2>/dev/null)
-  namespace="$(kcl config view --minify --output 'jsonpath={..namespace}' 2>/dev/null)"
+  namespace="$(kubectl config view --minify --output 'jsonpath={..namespace}' 2>/dev/null)"
 
   if [[ -z "$namespace" ]]; then
     return
   fi
   : "${namespace:=default}"
 
-  [[ "$?" != 0 ]] && return;
   echo -ne "${style_group}k8s[${style_kubernetes}${context}:${namespace}${style_group}]"
 }
 
@@ -220,17 +259,54 @@ print_envs() {
 }
 
 log_history() {
-  if [[ "$(id -u)" -ne 0 ]]; then
-    CWD="$(pwd)"
-    echo $CWD > /tmp/i3/cwd
-    cmd=$(history 1 | awk '{ $1=""; print $0}' | sed 's/^ *//g')
-    logfile="$HOME/.logs/bash-history-$(date "+%Y-%m-%d").log"
-    data="$(date "+%Y-%m-%d.%H:%M:%S")	$CWD	$__KZSH__LAST_EXIT_CODE	$cmd"
+  [[ "$(id -u)" -eq 0 ]] && return
 
-    # Add entry if it isn't a duplicate of the last entry
-    if [[ "$(tail -1 "$logfile" | awk '{ $1=""; print $0 }')" != "$(echo "$data" | awk '{ $1=""; print $0 }')" ]]; then
-      echo "$data" >> "$logfile"
-    fi
+  CWD="$(pwd)"
+  echo "$CWD" > /tmp/i3/cwd
+
+  local cmd
+  cmd=$(current_history_entry)
+  [[ -z "$cmd" ]] && return
+
+  log_history_plaintext "$cmd"
+
+  if command -v "$CLI_HISTORY_BIN" >/dev/null 2>&1; then
+    # Omitted flags are recorded as unknown rather than as a zero exit or a zero
+    # runtime, so only pass what was actually measured.
+    local -a optional=()
+    [[ -n "$__KZSH__LAST_EXIT_CODE" ]] && optional+=(--exit-code "$__KZSH__LAST_EXIT_CODE")
+    [[ -n "$__KZSH__LAST_DURATION_MS" ]] && optional+=(--duration-ms "$__KZSH__LAST_DURATION_MS")
+
+    printf '%s' "$cmd" |
+      "$CLI_HISTORY_BIN" log --cwd "$CWD" "${optional[@]}"
+  fi
+}
+
+# The last history entry with its leading number removed, and nothing else
+# touched. A multi-line entry keeps every line: awk '{ $1=""; print }' used to
+# strip the first field of *each* line, so `shutdown \<newline>-r now` was
+# recorded as `shutdown \<newline>now`. HISTTIMEFORMAT is cleared so a configured
+# timestamp cannot end up inside the command text.
+current_history_entry() {
+  local raw
+  raw=$(HISTTIMEFORMAT= history 1)
+
+  # `.` matches newlines here, so the capture spans continuation lines.
+  if [[ $raw =~ ^[[:space:]]*[0-9]+[[:space:]]+(.*)$ ]]; then
+    printf '%s' "${BASH_REMATCH[1]}"
+  fi
+}
+
+# Legacy tab delimited daily logs, kept in parallel with cli-history for now.
+log_history_plaintext() {
+  local cmd="$1" logfile data
+  logfile="$HOME/.logs/bash-history-$(date "+%Y-%m-%d").log"
+  [[ -f "$logfile" ]] || touch "$logfile"
+  data="$(date "+%Y-%m-%d.%H:%M:%S")	$CWD	$__KZSH__LAST_EXIT_CODE	$cmd"
+
+  # Add entry if it isn't a duplicate of the last entry
+  if [[ "$(tail -1 "$logfile" | awk '{ $1=""; print $0 }')" != "$(echo "$data" | awk '{ $1=""; print $0 }')" ]]; then
+    echo "$data" >> "$logfile"
   fi
 }
 

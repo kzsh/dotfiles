@@ -65,62 +65,113 @@ remove_common_history() {
   grep -E -v '^ *('"$REMOVE_MATCH"')[^a-zA-Z0-9]? *'
 }
 
-persist_completions() {
-  LANG=C find ~/.logs/* \
-  | sort \
-  | xargs cat \
-  | awk '{xit=$3;$2=$3=""; print xit "	" $0 }' \
-  | cut -d'	' -f2- \
-  | sort -k2,1000 -u \
-  | sort \
-  | cut -d' ' -f2- \
-  | sed 's/^ *//' \
-  | remove_common_history \
-  | fzf +m --tac \
-  | while read -r item; do
-    printf '%s ' "$item"
-  done
+# NUL delimited variant, for the cli-history pipelines.
+remove_common_history_z() {
+  grep -zEv '^ *('"$REMOVE_MATCH"')[^a-zA-Z0-9]? *'
+}
+
+# Multi-line commands are stored verbatim, but fzf cannot render them and pasting
+# a raw newline into the readline buffer would submit part of the line. Backslash
+# continuations collapse to a space, any remaining newline becomes '; ', which is
+# how bash itself flattens compound commands into a single history entry.
+flatten_multiline_z() {
+  sed -z -e 's/[[:space:]]*\\\n[[:space:]]*/ /g' -e 's/\n[[:space:]]*/; /g'
+}
+
+# cli-history handles the ordering, deduplication and exit code filtering that
+# the commented out plaintext pipelines did with awk/cut/sort. Records are NUL
+# separated so command lines containing newlines survive the round trip.
+#
+# Order is chronological, newest first out of cli-history. fzf's default layout
+# puts the first record next to the prompt and works upwards into the past, so no
+# --tac. Once a query is typed fzf reorders matches by its own score, which is
+# what we want; the chronological order is the resting state.
+__cli_history_select() {
+  # prompt.sh resolves this to the copy sitting beside these scripts; the default
+  # keeps the pickers working if only functions.sh is sourced.
+  local bin="${CLI_HISTORY_BIN:-cli-history}"
+  command -v "$bin" >/dev/null 2>&1 || return
+
+  local selected
+  selected=$(
+    "$bin" search --format command --unique --null --all "$@" \
+      | flatten_multiline_z \
+      | remove_common_history_z \
+      | fzf --read0 +m
+  )
+
+  [[ -n "$selected" ]] && printf '%s ' "$selected"
   echo
+}
+
+persist_completions() {
+  __cli_history_select
 }
 
 persist_successful_completions() {
-  LANG=C find ~/.logs/* \
-  | sort \
-  | xargs cat \
-  | awk '{xit=$3;$2=$3=""; print xit "	" $0 }' \
-  | sed '/^[^0]/d' \
-  | cut -d'	' -f2- \
-  | sort -k2,1000 -u \
-  | sort \
-  | cut -d' ' -f2- \
-  | sed 's/^ *//' \
-  | remove_common_history \
-  | fzf +m --tac \
-  | while read -r item; do
-    printf '%s ' "$item"
-  done
-  echo
+  __cli_history_select --succeeded
 }
 
 dir_specific_completions() {
-  LANG=C find ~/.logs/* \
-  | sort \
-  | xargs cat \
-  | grep "$(pwd)[^/]" \
-  | awk '{xit=$3;$2=$3=""; print xit "	" $0 }' \
-  | sed '/^[^0]/d' \
-  | cut -d'	' -f2- \
-  | sort -k2,1000 -u \
-  | sort \
-  | cut -d' ' -f2- \
-  | sed 's/^ *//' \
-  | remove_common_history \
-  | fzf +m --tac \
-  | while read -r item; do
-    printf '%s ' "$item"
-  done
-  echo
+  __cli_history_select --succeeded --cwd .
 }
+
+# persist_completions() {
+#   LANG=C find ~/.logs/* \
+#   | sort \
+#   | xargs cat \
+#   | awk '{xit=$3;$2=$3=""; print xit "\t" $0 }' \
+#   | cut -d'\t' -f2- \
+#   | sort -k2,1000 -u \
+#   | sort \
+#   | cut -d' ' -f2- \
+#   | sed 's/^ *//' \
+#   | remove_common_history \
+#   | fzf +m --tac \
+#   | while read -r item; do
+#     printf '%s ' "$item"
+#   done
+#   echo
+# }
+#
+# persist_successful_completions() {
+#   LANG=C find ~/.logs/* \
+#   | sort \
+#   | xargs cat \
+#   | awk '{xit=$3;$2=$3=""; print xit "\t" $0 }' \
+#   | sed '/^[^0]/d' \
+#   | cut -d'\t' -f2- \
+#   | sort -k2,1000 -u \
+#   | sort \
+#   | cut -d' ' -f2- \
+#   | sed 's/^ *//' \
+#   | remove_common_history \
+#   | fzf +m --tac \
+#   | while read -r item; do
+#     printf '%s ' "$item"
+#   done
+#   echo
+# }
+#
+# dir_specific_completions() {
+#   LANG=C find ~/.logs/* \
+#   | sort \
+#   | xargs cat \
+#   | grep "$(pwd)[^/]" \
+#   | awk '{xit=$3;$2=$3=""; print xit "\t" $0 }' \
+#   | sed '/^[^0]/d' \
+#   | cut -d'\t' -f2- \
+#   | sort -k2,1000 -u \
+#   | sort \
+#   | cut -d' ' -f2- \
+#   | sed 's/^ *//' \
+#   | remove_common_history \
+#   | fzf +m --tac \
+#   | while read -r item; do
+#     printf '%s ' "$item"
+#   done
+#   echo
+# }
 
 hist() {
   cmd="cat $HOME/.custom-history-completions/completions 2> /dev/null"
@@ -140,7 +191,9 @@ hist-widget() {
   READLINE_POINT=$(( READLINE_POINT + ${#selected} ))
 }
 
-non-zero-hist-widget() {
+# Named for what it shows: commands that exited 0. It was called
+# non-zero-hist-widget while filtering on `sed '/^[^0]/d'`, which kept zero exits.
+succeeded-hist-widget() {
   local selected
   selected="$(persist_successful_completions)"
   READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}$selected${READLINE_LINE:$READLINE_POINT}"
@@ -155,7 +208,7 @@ dir-specific-hist-widget() {
 }
 
 is_interactive && bind -x '"\C-g": "dir-specific-hist-widget"'
-is_interactive && bind -x '"\C-f": "non-zero-hist-widget"'
+is_interactive && bind -x '"\C-f": "succeeded-hist-widget"'
 is_interactive && bind -x '"\C-e": "hist-widget"'
 
 find-directory() {
