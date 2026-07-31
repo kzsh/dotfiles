@@ -144,10 +144,10 @@ last_exit() {
     echo -ne "${style_last_exit_code_bad}${__KZSH__LAST_EXIT_CODE}"
 }
 
-# Local methods
 has_jobs() {
-  job_count=$(jobs -l | awk '{ print $3 }' | grep -vc "Done")
-  if [ $job_count -gt 0 ]; then
+  local -a job_pids=( $(jobs -rp) $(jobs -sp) )
+  local job_count=${#job_pids[@]}
+  if [ "$job_count" -gt 0 ]; then
     prompt_jobs="[${style_job_count}$job_count${style_has_jobs}]"
     echo -ne "${style_has_jobs}${prompt_jobs} "
   else
