@@ -22,6 +22,7 @@ fi
 # shopt -s globstar
 # shopt -s extglob
 shopt -s direxpand
+shopt -s huponexit
 
 if [ -f "$BREW_PATH/etc/bash_completion" ]; then
   . "$BREW_PATH/etc/bash_completion"
