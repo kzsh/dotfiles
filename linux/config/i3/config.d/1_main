@@ -242,6 +242,16 @@ mode "switch_output_set" {
   bindsym Escape mode "default"
 }
 
+mode "arrow_navigation" {
+  # bindsym h exec "xdotool sleep 0.100 key Left"
+  # bindsym j exec "xdotool sleep 0.100 key Down"
+  # bindsym k exec "xdotool sleep 0.100 key Up"
+  # bindsym l exec "xdotool sleep 0.100 key Right"
+  bindsym $mod3+j mode "default"; exec ~/packages/keymap/main.sh
+  bindsym Escape mode "default"; exec ~/packages/keymap/main.sh
+}
+
 bindsym $mod3+comma exec --no-startup-id ~/bin/i3-shell --title "floating_terminal"
 bindsym $mod3+k mode "switch_space_set"
+bindsym $mod3+j mode "arrow_navigation"; exec ~/packages/keymap/alt.sh
 bindsym $mod3+period exec --no-startup-id ~/bin/i3-shell --title "pinned_terminal"
