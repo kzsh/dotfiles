@@ -19,12 +19,7 @@ alias aider='aider --no-auto-commits --vim'
 alias ls='ls -G'
 
 alias ll='ls -al'
-alias l='ls -l'
 
-# open current dir in Finder
-alias aa='open -a'
-
-complete -F _docker_compose dcc
 alias kcl='kubectl'
 alias kcx='kubectx'
 alias kns='kubens'
@@ -35,24 +30,14 @@ complete -F __start_kubens kns
 
 alias pcl='playerctl'
 
-alias rg="rg --colors path:fg:red --colors line:style:bold"
-
 # Keep convenient command but use rg
-alias ag="rg --colors path:fg:red --colors line:style:bold"
+alias ag="rg"
 
 
 # use neovim
 alias vi="nvim"
 alias vim="nvim"
 
-
-if [ -f "$HOME/bin/yq" ]; then
-  alias yq="$HOME/bin/yq"
-fi
-
-if [ -f "$HOME/bin/xq" ]; then
-  alias yq="$HOME/bin/xq"
-fi
 
 # Allow vi-mode bindings for node repl, mongo
 if command -v rlwrap > /dev/null 2>&1; then
