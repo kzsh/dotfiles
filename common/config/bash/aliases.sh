@@ -4,6 +4,7 @@ alias gcm='git checkout master'
 alias gco='git checkout'
 alias gb='git branch'
 alias gcp='git cherry-pick'
+alias da='direnv allow'
 
 __git_complete gco _git_checkout
 __git_complete gb _git_branch
