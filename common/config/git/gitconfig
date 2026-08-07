@@ -9,13 +9,10 @@
 	cd = checkout develop
 	cp = cherry-pick
 	edit = !"$COMMON_SCRIPTS"/git/git-edit.sh
-	browse-pulls = !hub browse -- pulls
-	pulls = !hub browse -- pulls
 	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
 	ln = log --graph --pretty=format:'%Cgreen%h%Creset%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 	lc = log-compact
 	wip = !"$COMMON_SCRIPTS"/git/wip.sh
-	prs = !"$COMMON_SCRIPTS"/git/git-prs 
 [branch]
 	autosetuprebase = always
 [core]
