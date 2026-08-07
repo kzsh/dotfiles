@@ -113,6 +113,11 @@ bindsym $mod1+Shift+k split v
 bindsym $mod1+Shift+h split h
 bindsym $mod1+Shift+l split h
 
+bindsym $mod+Ctrl+j split v
+bindsym $mod+Ctrl+k split v
+bindsym $mod+Ctrl+h split h
+bindsym $mod+Ctrl+l split h
+
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
 
