@@ -95,6 +95,14 @@ build_ps1() {
     PS1+="${style_important}SSH[${HOSTNAME}] " # [SSH]
   fi
 
+  if [[ -n $SHPOOL_SESSION_NAME ]]; then
+    PS1+="${style_important}session[${SHPOOL_SESSION_NAME}] " # [SSH]
+  fi
+
+  if [[ -n "$SSH_TTY" ]] || [[ -n $SHPOOL_SESSION_NAME ]]; then
+    PS1+="\n"
+  fi
+
   # PS1+="\$(prompt_git)\$(prompt_kubernetes)\$(prompt_virtualenv)\$(prompt_nodejs_version)\n"
   PS1+="\$(print_envs)\n"
   PS1+="\$(has_jobs)"
