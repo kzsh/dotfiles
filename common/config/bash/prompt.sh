@@ -235,6 +235,33 @@ prompt_nodejs_version() {
   fi
 }
 
+# Show the version of the go toolchain on PATH
+prompt_golang_version() {
+  local env_name
+  if command -v go > /dev/null 2>&1; then
+    env_name="$(go version 2>/dev/null | cut -d ' ' -f3)"
+    # Redundant inside go[], but a devel build reports "devel" here instead.
+    env_name="${env_name#go}"
+
+    if [[ -n "$env_name" ]]; then
+      echo -ne "${style_group}go[${style_virtualenv}${env_name}${style_group}]"
+    fi
+  fi
+}
+
+# Show the active rustup toolchain, with the host triple trimmed off
+prompt_rustup_version() {
+  local env_name
+  if command -v rustup > /dev/null 2>&1; then
+    env_name="$(rustup show active-toolchain 2>/dev/null | head -n1 | cut -d ' ' -f1 |
+      sed -E 's/-(x86_64|aarch64|i686|armv7|riscv64gc|powerpc64le|s390x)-.*$//')"
+
+    if [[ -n "$env_name" ]]; then
+      echo -ne "${style_group}rust[${style_virtualenv}${env_name}${style_group}]"
+    fi
+  fi
+}
+
 # Show the name of the current virtualenv
 prompt_virtualenv() {
   local env_name
@@ -258,6 +285,8 @@ print_envs() {
     prompt_kubernetes
     prompt_virtualenv
     prompt_nodejs_version # too slow
+    prompt_golang_version
+    prompt_rustup_version
     )
 
     for c in "${env_commands[@]}"; do
