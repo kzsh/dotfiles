@@ -170,6 +170,15 @@ vlog "environment variables: VERBOSE=$VERBOSE DRY_RUN=$DRY_RUN SHOW_HELP=$SHOW_H
 # EOM
 # }
 
+run_configuration() {
+  if [[ ! -f "$HOME/.Xmodmap" ]]; then
+    /bin/echo "No $HOME/.Xmodmap file found, skipping..."
+    return 1
+  fi
+
+  /bin/xmodmap "$HOME/.Xmodmap"
+}
+
 main() {
   if [[ -n "$_setup_no_sleep" ]]; then
     log "disabling sleep/suspend"
@@ -200,39 +209,6 @@ main() {
     log "Mapping Keys"
     vlog "xmodmap ~/.Xmodmap"
     xmodmap ~/.Xmodmap
-
-    run_configuration() {
-
-      /bin/xmodmap "$HOME/.Xmodmap" || /bin/echo "No .Xmodmap file found, skipping..."
-
-      MODIFIER="mod1"
-      KEYSYM="Alt_R"
-      if /bin/xmodmap -pm | grep "$MODIFIER" | grep -q "$KEYSYM"; then
-        /bin/echo "Removing $KEYSYM from $MODIFIER map..."
-        /bin/xmodmap -e "remove $MODIFIER = $KEYSYM"
-      else
-        /bin/echo "$KEYSYM not found in $MODIFIER map, no action needed."
-      fi
-      MODIFIER="mod1"
-      KEYSYM="Hyper_R"
-      if /bin/xmodmap -pm | grep "$MODIFIER" | grep -q "$KEYSYM"; then
-        /bin/echo "Removing $KEYSYM from $MODIFIER map..."
-        /bin/xmodmap -e "remove $MODIFIER = $KEYSYM"
-      else
-        /bin/echo "$KEYSYM not found in $MODIFIER map, no action needed."
-      fi
-
-      MODIFIER="mod3"
-      KEYSYM="Hyper_R"
-
-      if /bin/xmodmap -pm | grep -v "$MODIFIER" | grep -v -q "$KEYSYM"; then
-        /bin/echo "Adding $KEYSYM from $MODIFIER map..."
-        /bin/xmodmap -e "add $MODIFIER = $KEYSYM"
-      else
-        /bin/echo "$KEYSYM found in $MODIFIER map, no action needed."
-      fi
-
-    }
 
     run_configuration
   fi
