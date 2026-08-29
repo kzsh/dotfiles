@@ -253,9 +253,10 @@ keycode 253 =
 keycode 254 = XF86WWAN NoSymbol XF86WWAN
 keycode 255 = XF86RFKill NoSymbol XF86RFKill
 
-! Hyper_R is tied to the Alt_R key
-remove mod1 = Alt_R
-! remove mod1 = Hyper_R
-! add mod1 = Hyper_R
+! Rebuild modifier maps from scratch; `remove` by keysym fails once the
+! keycode 108 line above ahas deleted Alt_R.
+clear mod1
+add mod1 Alt_L Meta_L
 
+clear mod3
 add mod3 = Hyper_R
