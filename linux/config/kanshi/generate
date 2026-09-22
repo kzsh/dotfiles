@@ -20,11 +20,11 @@
 # applies the first one that matches. `...output * disable` lets a variant
 # match while other monitors are attached, and turns those off.
 #
-#   profiles/dual: u34 ; ancor left-of u34 bottom
+#   profiles/dual: u34 ; bnq left-of u34 bottom
 #
-#   profile dual { u34, ancor }   both connected
-#   profile dual { u34 }          ancor missing
-#   profile dual { ancor }        u34 missing
+#   profile dual { u34, bnq }     both connected
+#   profile dual { u34 }          bnq missing
+#   profile dual { bnq }          u34 missing
 #   profile dual { fallback }     neither
 #
 # Generation fails, keeping the previous output, if any combination leaves a
