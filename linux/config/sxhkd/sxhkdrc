@@ -8,7 +8,7 @@ ctrl + alt + Escape
 	/usr/local/bin/hibernate
 
 ctrl + shift + alt + k
-	/usr/local/bin/setup -k && /usr/bin/notify-send "Keyboard remapped"
+	/usr/local/bin/xsetup -k && /usr/bin/notify-send "Keyboard remapped"
 
 ctrl + alt + shift + q
 	/usr/local/bin/lock

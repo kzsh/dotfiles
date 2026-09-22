@@ -6,7 +6,7 @@ __UTIL_SUBCOMMAND_SH_PROJECT_DIR="$__UTIL_DIR/.."
 list_subcommands() {
   local project
   project="$__UTIL_SUBCOMMAND_SH_PROJECT_DIR"
-  find "$project" -iname "$1*" -print0 | xargs -I{} -0 basename "{}" | sed "s/$1-//g; s/-.*$//g" | grep -v '^setup$' | grep -v '_usage$' | grep -v '.*\..*' | sort -u
+  find "$project" -iname "$1*" -print0 | xargs -I{} -0 basename "{}" | sed "s/$1-//g; s/-.*$//g" | grep -vx "$1" | grep -v '_usage$' | grep -v '.*\..*' | sort -u
 }
 
 subcommand_or_usage() {

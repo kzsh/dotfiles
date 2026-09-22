@@ -31,6 +31,10 @@ exec swayidle -w \
 output * bg #000000 solid_color
 # output * scale 1
 
+# Display profiles (~/.config/kanshi). Regenerate and restart on reload so
+# sway's output defaults don't clobber the active profile.
+exec_always "~/.config/kanshi/generate; pkill -x kanshi; exec kanshi"
+
 # Keyboard: CapsLock → Escape, Alt_R → Hyper (Mod3)
 input type:keyboard {
     xkb_file ~/.config/sway/xkb/keymap.xkb

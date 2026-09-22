@@ -1,0 +1,320 @@
+#!/usr/bin/env bash
+# Generates profiles.generated (included by `config`) from `monitors` and
+# `profiles/*`.
+#
+# Each file in profiles/ is a layout named after the file. One line per
+# monitor it enables:
+#
+#   <name> [<relation> <anchor> [<align>]] [| <relation> <anchor> [<align>]]...
+#
+#   relation  left-of | right-of   align  top | center | bottom
+#             above   | below      align  left | center | right
+#   align defaults to center.
+#
+# Alternatives after `|` are used, in order, when the earlier anchor is not
+# connected. A monitor with no connected anchor is the root, placed first.
+#
+# kanshi picks a profile only when its outputs match what is connected, so for
+# every subset of a layout's monitors this emits one variant, largest subset
+# first. All variants share the layout's name; `kanshictl switch <name>`
+# applies the first one that matches. `...output * disable` lets a variant
+# match while other monitors are attached, and turns those off.
+#
+#   profiles/dual: u34 ; ancor left-of u34 bottom
+#
+#   profile dual { u34, ancor }   both connected
+#   profile dual { u34 }          ancor missing
+#   profile dual { ancor }        u34 missing
+#   profile dual { fallback }     neither
+#
+# Generation fails, keeping the previous output, if any combination leaves a
+# monitor unreachable (more than one root), has a cycle, or overlaps.
+
+set -euo pipefail
+
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+OUT="$DIR/profiles.generated"
+
+declare -a MONITORS=()
+declare -A WIDTH=() HEIGHT=() DESC=() EXTRA=()
+FALLBACK=""
+HOTPLUG=""
+
+# Per-profile state, reset by parse_profile.
+PROFILE=""
+declare -a MEMBERS=()
+declare -A RULES=()
+
+# Per-variant positions, reset by place_variant.
+declare -A X=() Y=()
+
+die() {
+  echo "kanshi/generate: $*" >&2
+  exit 1
+}
+
+parse_monitors() {
+  local file="$DIR/monitors" line lineno=0 name
+  local monitor_re='^monitor[[:space:]]+([A-Za-z0-9_]+)[[:space:]]+([0-9]+)x([0-9]+)[[:space:]]+"([^"]+)"[[:space:]]*(.*)$'
+  local setting_re='^(fallback|hotplug)[[:space:]]+([A-Za-z0-9_-]+)$'
+
+  [[ -f $file ]] || die "missing $file"
+  while IFS= read -r line || [[ -n $line ]]; do
+    lineno=$((lineno + 1))
+    line="${line%%#*}"
+    line="$(trim "$line")"
+    [[ -z $line ]] && continue
+
+    if [[ $line =~ $monitor_re ]]; then
+      name="${BASH_REMATCH[1]}"
+      [[ -v "WIDTH[$name]" ]] && die "monitors:$lineno: duplicate monitor '$name'"
+      MONITORS+=("$name")
+      WIDTH[$name]="${BASH_REMATCH[2]}"
+      HEIGHT[$name]="${BASH_REMATCH[3]}"
+      DESC[$name]="${BASH_REMATCH[4]}"
+      EXTRA[$name]="$(trim "${BASH_REMATCH[5]}")"
+    elif [[ $line =~ $setting_re ]]; then
+      if [[ ${BASH_REMATCH[1]} == fallback ]]; then
+        FALLBACK="${BASH_REMATCH[2]}"
+      else
+        HOTPLUG="${BASH_REMATCH[2]}"
+      fi
+    else
+      die "monitors:$lineno: cannot parse '$line'"
+    fi
+  done <"$file"
+
+  [[ -n $FALLBACK ]] || die "monitors: no 'fallback' set"
+  [[ -v "WIDTH[$FALLBACK]" ]] || die "monitors: fallback '$FALLBACK' is not a monitor"
+  [[ -n $HOTPLUG ]] || die "monitors: no 'hotplug' set"
+  [[ -f "$DIR/profiles/$HOTPLUG" ]] || die "monitors: hotplug profile '$HOTPLUG' has no file in profiles/"
+}
+
+trim() {
+  local s="$1"
+  s="${s#"${s%%[![:space:]]*}"}"
+  s="${s%"${s##*[![:space:]]}"}"
+  printf '%s' "$s"
+}
+
+parse_profile() {
+  local file="$1" line lineno=0 name rest alt relation anchor align extra rules
+  local -a alts
+
+  PROFILE="$(basename "$file")"
+  MEMBERS=()
+  RULES=()
+  [[ $PROFILE =~ ^[A-Za-z0-9_-]+$ ]] || die "profiles/$PROFILE: name must be [A-Za-z0-9_-]"
+
+  while IFS= read -r line || [[ -n $line ]]; do
+    lineno=$((lineno + 1))
+    line="${line%%#*}"
+    line="$(trim "$line")"
+    [[ -z $line ]] && continue
+
+    read -r name rest <<<"$line"
+    [[ -v "WIDTH[$name]" ]] || die "profiles/$PROFILE:$lineno: unknown monitor '$name'"
+    [[ -v "RULES[$name]" ]] && die "profiles/$PROFILE:$lineno: '$name' listed twice"
+
+    rules=""
+    if [[ -n $rest ]]; then
+      IFS='|' read -ra alts <<<"$rest"
+      for alt in "${alts[@]}"; do
+        relation="" anchor="" align="" extra=""
+        read -r relation anchor align extra <<<"$alt"
+        [[ -n $relation && -n $anchor && -z $extra ]] ||
+          die "profiles/$PROFILE:$lineno: expected '<relation> <anchor> [<align>]', got '$(trim "$alt")'"
+        align="${align:-center}"
+        case "$relation:$align" in
+          left-of:top | left-of:center | left-of:bottom) ;;
+          right-of:top | right-of:center | right-of:bottom) ;;
+          above:left | above:center | above:right) ;;
+          below:left | below:center | below:right) ;;
+          *) die "profiles/$PROFILE:$lineno: bad relation/alignment '$relation $align'" ;;
+        esac
+        [[ $anchor != "$name" ]] || die "profiles/$PROFILE:$lineno: '$name' anchored to itself"
+        rules+="$relation:$anchor:$align "
+      done
+    fi
+
+    MEMBERS+=("$name")
+    RULES[$name]="$rules"
+  done <"$file"
+
+  ((${#MEMBERS[@]} > 0)) || die "profiles/$PROFILE: no monitors"
+  for name in "${MEMBERS[@]}"; do
+    for alt in ${RULES[$name]}; do
+      IFS=: read -r relation anchor align <<<"$alt"
+      [[ -v "RULES[$anchor]" ]] || die "profiles/$PROFILE: '$name' anchored to '$anchor', which is not in this profile"
+    done
+  done
+}
+
+# Place monitor $1 against its already-placed anchor.
+place_one() {
+  local m="$1" relation="$2" a="$3" align="$4"
+  local ax="${X[$a]}" ay="${Y[$a]}" aw="${WIDTH[$a]}" ah="${HEIGHT[$a]}"
+  local w="${WIDTH[$m]}" h="${HEIGHT[$m]}"
+
+  case "$relation" in
+    left-of) X[$m]=$((ax - w)) ;;
+    right-of) X[$m]=$((ax + aw)) ;;
+    above) Y[$m]=$((ay - h)) ;;
+    below) Y[$m]=$((ay + ah)) ;;
+  esac
+
+  case "$relation:$align" in
+    *:top) Y[$m]=$ay ;;
+    *:bottom) Y[$m]=$((ay + ah - h)) ;;
+    left-of:center | right-of:center) Y[$m]=$((ay + (ah - h) / 2)) ;;
+    *:left) X[$m]=$ax ;;
+    *:right) X[$m]=$((ax + aw - w)) ;;
+    above:center | below:center) X[$m]=$((ax + (aw - w) / 2)) ;;
+  esac
+}
+
+# Compute X/Y for the connected monitors given as arguments, normalized so the
+# layout starts at 0,0.
+place_variant() {
+  local -a present=("$@") roots=()
+  local -A connected=() chosen=()
+  local m n rule relation anchor align progress min_x min_y
+  local label="profiles/$PROFILE with {${present[*]}} connected"
+
+  X=()
+  Y=()
+  for m in "${present[@]}"; do connected[$m]=1; done
+
+  for m in "${present[@]}"; do
+    for rule in ${RULES[$m]:-}; do
+      IFS=: read -r relation anchor align <<<"$rule"
+      if [[ -v "connected[$anchor]" ]]; then
+        chosen[$m]="$rule"
+        break
+      fi
+    done
+    [[ -v "chosen[$m]" ]] || roots+=("$m")
+  done
+
+  ((${#roots[@]} > 0)) || die "$label: anchors form a cycle"
+  ((${#roots[@]} == 1)) ||
+    die "$label: ${roots[*]} have no connected anchor, so they cannot all be reached; add a '|' alternative"
+
+  X[${roots[0]}]=0
+  Y[${roots[0]}]=0
+  progress=1
+  while ((progress)); do
+    progress=0
+    for m in "${present[@]}"; do
+      [[ -v "X[$m]" ]] && continue
+      IFS=: read -r relation anchor align <<<"${chosen[$m]}"
+      [[ -v "X[$anchor]" ]] || continue
+      place_one "$m" "$relation" "$anchor" "$align"
+      progress=1
+    done
+  done
+  for m in "${present[@]}"; do
+    [[ -v "X[$m]" ]] || die "$label: anchors form a cycle"
+  done
+
+  min_x="${X[${present[0]}]}"
+  min_y="${Y[${present[0]}]}"
+  for m in "${present[@]}"; do
+    ((X[$m] < min_x)) && min_x="${X[$m]}"
+    ((Y[$m] < min_y)) && min_y="${Y[$m]}"
+  done
+  for m in "${present[@]}"; do
+    X[$m]=$((X[$m] - min_x))
+    Y[$m]=$((Y[$m] - min_y))
+  done
+
+  for m in "${present[@]}"; do
+    for n in "${present[@]}"; do
+      [[ $m < $n ]] || continue
+      if ((X[$m] < X[$n] + WIDTH[$n] && X[$n] < X[$m] + WIDTH[$m] &&
+        Y[$m] < Y[$n] + HEIGHT[$n] && Y[$n] < Y[$m] + HEIGHT[$m])); then
+        die "$label: $m and $n overlap"
+      fi
+    done
+  done
+}
+
+emit_variant() {
+  local m
+  place_variant "$@"
+  printf '\n# connected: %s\nprofile %s {\n' "$*" "$PROFILE"
+  for m in "$@"; do
+    printf '  output $%s enable position %d,%d\n' "$m" "${X[$m]}" "${Y[$m]}"
+  done
+  printf '  ...output * disable\n}\n'
+}
+
+popcount() {
+  local v="$1" c=0
+  while ((v)); do
+    c=$((c + (v & 1)))
+    v=$((v >> 1))
+  done
+  echo "$c"
+}
+
+emit_profile() {
+  local n="${#MEMBERS[@]}" size mask i has_fallback=0 m
+  local -a present
+
+  for m in "${MEMBERS[@]}"; do
+    [[ $m == "$FALLBACK" ]] && has_fallback=1
+  done
+
+  printf '\n# --- %s ---\n' "$PROFILE"
+  for ((size = n; size > 0; size--)); do
+    for ((mask = (1 << n) - 1; mask > 0; mask--)); do
+      (($(popcount "$mask") == size)) || continue
+      present=()
+      for ((i = 0; i < n; i++)); do
+        ((mask & (1 << i))) && present+=("${MEMBERS[$i]}")
+      done
+      # The fallback is always connected, so variants without it never match.
+      if ((has_fallback)) && [[ " ${present[*]} " != *" $FALLBACK "* ]]; then
+        continue
+      fi
+      emit_variant "${present[@]}"
+    done
+  done
+  if ((!has_fallback)); then
+    emit_variant "$FALLBACK"
+  fi
+}
+
+generate() {
+  local m file
+
+  printf '# Generated by generate from monitors and profiles/*. Do not edit.\n\n'
+  for m in "${MONITORS[@]}"; do
+    printf 'output "%s" alias $%s' "${DESC[$m]}" "$m"
+    [[ -n ${EXTRA[$m]} ]] && printf ' %s' "${EXTRA[$m]}"
+    printf '\n'
+  done
+
+  # kanshi applies the first matching profile on hotplug, and every layout
+  # matches every combination, so the hotplug layout goes first.
+  parse_profile "$DIR/profiles/$HOTPLUG"
+  emit_profile
+  for file in "$DIR"/profiles/*; do
+    [[ $(basename "$file") == "$HOTPLUG" ]] && continue
+    parse_profile "$file"
+    emit_profile
+  done
+}
+
+main() {
+  local tmp
+  parse_monitors
+  tmp="$(mktemp "$OUT.XXXXXX")"
+  trap 'rm -f "$tmp"' EXIT
+  generate >"$tmp"
+  mv "$tmp" "$OUT"
+  trap - EXIT
+}
+
+main "$@"
