@@ -28,8 +28,8 @@ exec swayidle -w \
   before-sleep 'swaylock -f'
 
 # Output
-output * bg #222222 solid_color
-# output * scale 1.4
+output * bg #000000 solid_color
+# output * scale 1
 
 # Keyboard: CapsLock → Escape, Alt_R → Hyper (Mod3)
 input type:keyboard {
@@ -230,7 +230,7 @@ bindsym Ctrl+Shift+$mod1+k exec /usr/local/bin/setup -k && notify-send "Keyboard
 
 # Bar
 bar {
-  font pango:DejaVu Sans Mono, FontAwesome 10
+  font pango:DejaVu Sans Mono, FontAwesome 12
   status_command $HOME/src/remote/i3status-rust/target/release/i3status-rs $HOME/.config/i3status-rust/config.toml
 
   bindsym button1 nop
