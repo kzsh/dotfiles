@@ -1,0 +1,256 @@
+# sway config
+
+# Mod keys
+set $mod Mod4
+set $mod3 Mod3
+set $mod1 Mod1
+
+font pango:Fira Code Regular 11
+
+focus_wrapping no
+client.focused #FFA500 #FFA500 #FFA500 #FFA500
+
+# Start on workspace A(main)
+exec swaymsg workspace 'A(main)'
+
+for_window [app_id="^.*"] border pixel 1
+for_window [title="floating_terminal"] border pixel 3, sticky enable
+for_window [title="floating_terminal"] move scratchpad, scratchpad show, resize set width 800 height 200, move position center
+
+for_window [title="pinned_terminal"] border pixel 3, sticky enable
+for_window [title="pinned_terminal"] move scratchpad, scratchpad show, resize set width 1000 height 1000, move position center
+
+# Idle and lock
+exec swayidle -w \
+  timeout 900 'swaylock -f' \
+  timeout 1800 'swaymsg "output * power off"' \
+  resume 'swaymsg "output * power on"' \
+  before-sleep 'swaylock -f'
+
+# Output
+output * bg #222222 solid_color
+# output * scale 1.4
+
+# Keyboard: CapsLock → Escape, Alt_R → Hyper (Mod3)
+input type:keyboard {
+    xkb_file ~/.config/sway/xkb/keymap.xkb
+    repeat_delay 250
+    repeat_rate 50
+}
+
+# Touchpad (replaces xorg synaptics/mtrack config)
+input type:touchpad {
+    tap enabled
+    natural_scroll enabled
+    dwt enabled
+}
+
+# Volume
+set $refresh_i3status killall -SIGUSR1 i3status-rs
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+floating_modifier $mod
+
+# Terminal
+bindsym $mod+Return exec ~/bin/i3-shell
+
+# Kill
+bindsym $mod+Shift+q kill
+
+# Mouse toggle
+bindsym $mod3+m exec ~/bin/mouse toggle
+
+# Launcher
+bindsym $mod1+space exec wofi --show run
+
+# Tab switching via wtype (replaces xdotool)
+bindsym $mod3+l exec wtype -M ctrl -k Tab -m ctrl
+bindsym $mod3+h exec wtype -M ctrl -M shift -k Tab -m shift -m ctrl
+
+# Focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+bindsym $mod3+apostrophe focus mode_toggle
+
+# Float toggle
+bindsym $mod+Shift+space floating toggle
+
+# Move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# Split
+bindsym $mod1+Shift+j split v
+bindsym $mod1+Shift+k split v
+bindsym $mod1+Shift+h split h
+bindsym $mod1+Shift+l split h
+
+bindsym $mod+Ctrl+j split v
+bindsym $mod+Ctrl+k split v
+bindsym $mod+Ctrl+h split h
+bindsym $mod+Ctrl+l split h
+
+# Fullscreen
+bindsym $mod+f fullscreen toggle
+
+# Layout
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# Reload
+bindsym $mod+Shift+r reload
+
+# Exit confirmation
+bindsym $mod+Shift+e mode "exit? y/n"
+mode "exit? y/n" {
+  bindsym Return exec swaymsg exit
+  bindsym y exec swaymsg exit
+  bindsym Shift+y exec swaymsg exit
+  bindsym Escape mode "default"
+  bindsym n mode "default"
+  bindsym Shift+n mode "default"
+}
+
+# Resize
+mode "resize" {
+  bindsym h resize shrink width 10 px
+  bindsym j resize grow height 10 px
+  bindsym k resize shrink height 10 px
+  bindsym l resize grow width 10 px
+  bindsym Shift+h resize shrink width 50 px
+  bindsym Shift+j resize grow height 50 px
+  bindsym Shift+k resize shrink height 50 px
+  bindsym Shift+l resize grow width 50 px
+
+  bindsym $mod+h move left
+  bindsym $mod+j move down
+  bindsym $mod+k move up
+  bindsym $mod+l move right
+
+  bindsym $mod+Shift+h move left 50 px
+  bindsym $mod+Shift+j move down 50 px
+  bindsym $mod+Shift+k move up 50 px
+  bindsym $mod+Shift+l move right 50 px
+
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+  bindsym $mod+r mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+# Deliver mode: after selecting target set, press key to deliver window
+mode "deliver" {
+  bindsym q exec $space deliver Q
+  bindsym w exec $space deliver W
+  bindsym e exec $space deliver E
+  bindsym r exec $space deliver R
+  bindsym t exec $space deliver T
+  bindsym a exec $space deliver A
+  bindsym s exec $space deliver S
+  bindsym d exec $space deliver D
+  bindsym f exec $space deliver F
+  bindsym g exec $space deliver G
+  bindsym z exec $space deliver Z
+  bindsym x exec $space deliver X
+  bindsym c exec $space deliver C
+  bindsym v exec $space deliver V
+  bindsym b exec $space deliver B
+  bindsym Escape mode "default"
+}
+
+# Workspaces — switched via space binary (or script fallback)
+# Build: cd ~/.config/sway/space-daemon && cargo build --release
+# Install: cp target/release/space ~/.local/bin/
+set $space space
+
+bindsym $mod3+q exec $space switch Q
+bindsym $mod3+w exec $space switch W
+bindsym $mod3+e exec $space switch E
+bindsym $mod3+r exec $space switch R
+bindsym $mod3+t exec $space switch T
+
+bindsym $mod3+a exec $space switch A
+bindsym $mod3+s exec $space switch S
+bindsym $mod3+d exec $space switch D
+bindsym $mod3+f exec $space switch F
+bindsym $mod3+g exec $space switch G
+
+bindsym $mod3+z exec $space switch Z
+bindsym $mod3+x exec $space switch X
+bindsym $mod3+c exec $space switch C
+bindsym $mod3+v exec $space switch V
+bindsym $mod3+b exec $space switch B
+
+bindsym $mod3+Shift+q exec $space move Q
+bindsym $mod3+Shift+w exec $space move W
+bindsym $mod3+Shift+e exec $space move E
+bindsym $mod3+Shift+r exec $space move R
+bindsym $mod3+Shift+t exec $space move T
+
+bindsym $mod3+Shift+a exec $space move A
+bindsym $mod3+Shift+s exec $space move S
+bindsym $mod3+Shift+d exec $space move D
+bindsym $mod3+Shift+f exec $space move F
+bindsym $mod3+Shift+g exec $space move G
+
+bindsym $mod3+Shift+z exec $space move Z
+bindsym $mod3+Shift+x exec $space move X
+bindsym $mod3+Shift+c exec $space move C
+bindsym $mod3+Shift+v exec $space move V
+bindsym $mod3+Shift+b exec $space move B
+
+# Switch space set (wofi picker)
+bindsym $mod3+k exec $space set-menu
+
+# Ice/thaw space sets
+bindsym $mod3+i exec $space ice
+bindsym $mod3+Shift+i exec $space ice-menu
+
+# Cross-set move: pick target set, then press Q-B to deliver window
+bindsym $mod3+n exec $space move-to-set
+
+# Scratchpad terminals
+bindsym $mod3+comma exec ~/bin/i3-shell --title "floating_terminal"
+bindsym $mod3+period exec ~/bin/i3-shell --title "pinned_terminal"
+
+# Screenshots (from sxhkd)
+bindsym $mod1+Shift+4 exec /usr/local/bin/screencap
+bindsym Ctrl+$mod1+Shift+4 exec /usr/bin/flameshot gui
+bindsym Ctrl+$mod1+Shift+q exec swaylock -f
+bindsym Ctrl+Shift+$mod1+k exec /usr/local/bin/setup -k && notify-send "Keyboard remapped"
+
+# Bar
+bar {
+  font pango:DejaVu Sans Mono, FontAwesome 10
+  status_command $HOME/src/remote/i3status-rust/target/release/i3status-rs $HOME/.config/i3status-rust/config.toml
+
+  bindsym button1 nop
+  bindsym button2 nop
+  bindsym button3 nop
+  bindsym button4 nop
+  bindsym button5 nop
+  bindsym button6 nop
+  bindsym button7 nop
+
+  strip_workspace_numbers yes
+
+  tray_output none
+  colors {
+    separator #444444
+    background #222222
+    statusline #B1B1B1
+    focused_workspace #CECECE #CECECE #000000
+    active_workspace #333333 #333333 #888888
+    inactive_workspace #CECECE #333333 #f1f1f1
+    urgent_workspace #eb709b #eb709b #ffffff
+  }
+}

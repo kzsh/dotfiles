@@ -1,0 +1,81 @@
+/* Waybar style - adapted from sway bar colors */
+
+* {
+    font-family: "DejaVu Sans Mono", "FontAwesome", monospace;
+    font-size: 10pt;
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+}
+
+window#waybar {
+    background-color: #222222;
+    color: #B1B1B1;
+}
+
+#workspaces button {
+    padding: 0 5px;
+    background-color: #333333;
+    color: #f1f1f1;
+    border-bottom: 2px solid transparent;
+}
+
+#workspaces button:hover {
+    background-color: #444444;
+}
+
+#workspaces button.focused {
+    background-color: #CECECE;
+    color: #000000;
+}
+
+#workspaces button.active {
+    background-color: #333333;
+    color: #888888;
+}
+
+#workspaces button.urgent {
+    background-color: #eb709b;
+    color: #ffffff;
+}
+
+#mode {
+    background-color: #900000;
+    color: #ffffff;
+    padding: 0 5px;
+}
+
+#custom-space-set {
+    color: #FFA500;
+    padding: 0 8px;
+}
+
+#pulseaudio,
+#network,
+#cpu,
+#load,
+#temperature,
+#memory,
+#battery,
+#clock,
+#custom-vpn {
+    padding: 0 8px;
+}
+
+#battery.charging {
+    color: #26A65B;
+}
+
+#battery.warning:not(.charging) {
+    color: #f39c12;
+}
+
+#battery.critical:not(.charging) {
+    color: #e74c3c;
+}
+
+#custom-vpn {
+    color: #26A65B;
+}

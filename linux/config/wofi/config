@@ -1,0 +1,12 @@
+# wofi config - adapted from rofi
+
+show=run
+width=600
+height=400
+location=center
+allow_markup=true
+allow_images=false
+
+# vim-like navigation
+key_up=Control_L-k
+key_down=Control_L-j

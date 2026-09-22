@@ -1,0 +1,18 @@
+{
+    "layer": "top",
+    "position": "top",
+    "output": "*",
+    "height": 30,
+    "width": 1920,
+    "margin-top": 0,
+    "margin-left": 0,
+    "margin-right": 0,
+    "exclusive": true,
+    "passthrough": false,
+    "gtk-layer-shell": true,
+    "modules-left": ["sway/workspaces"],
+    "modules-right": ["clock"],
+    "clock": {
+        "format": "TEST %H:%M"
+    }
+}

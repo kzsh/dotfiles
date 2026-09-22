@@ -1,0 +1,18 @@
+xkb_keymap {
+    xkb_keycodes { include "evdev+aliases(qwerty)" };
+    xkb_types    { include "complete" };
+    xkb_compat   { include "complete" };
+    xkb_symbols  {
+        include "pc+us+inet(evdev)"
+        // CapsLock as Escape
+        key <CAPS> { [ Escape ] };
+        // Right Alt as Hyper (Mod3) - clear from Mod1 first
+        key <RALT> {
+            type[Group1] = "ONE_LEVEL",
+            symbols[Group1] = [ Hyper_R ]
+        };
+        modifier_map Mod1 { <LALT>, <META> };
+        modifier_map Mod3 { <RALT>, <HYPR> };
+    };
+    xkb_geometry { include "pc(pc105)" };
+};
