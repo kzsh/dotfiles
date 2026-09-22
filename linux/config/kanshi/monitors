@@ -1,0 +1,16 @@
+# Monitors known to kanshi/generate.
+#
+#   monitor <name> <width>x<height> "<make model serial>" [kanshi output directives...]
+#   fallback <name>   screen used when none of a profile's monitors are connected
+#   hotplug <profile> profile applied automatically when monitors change
+#
+# Size is the logical size: mode divided by scale. Descriptions come from
+#   swaymsg -t get_outputs | jq -r '.[] | "\(.make) \(.model) \(.serial)"'
+
+monitor u34   3440x1440 "Dell Inc. DELL U3415W PXF798BL0E4L"
+monitor ancor 1920x1080 "Ancor Communications Inc ASUS VH242H B2LMTF085523"
+monitor bnq   1920x1080 "BNQ BenQ GL2780 ETXAK01950SL0"
+monitor lq156 1920x1080 "Sharp Corporation LQ156M1JW03 Unknown"
+
+fallback lq156
+hotplug all

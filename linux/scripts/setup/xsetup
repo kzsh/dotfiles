@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# sway/wayland counterpart of xsetup.
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 . "$SCRIPT_DIR/utils/logging.sh"
@@ -7,26 +6,52 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 . "$SCRIPT_DIR/utils/help.sh"
 . "$SCRIPT_DIR/utils/dependencies.sh"
 
-# provides $CONFIG, $DEFAULT_CONFIG, $CONFIGS_DIR, get_config_value
+# provides $CONFIG, $DEFAULT_CONFIG, get_config_value
 . "$SCRIPT_DIR/utils/config.sh"
 
 ## Gather Arguments
 PARAMS=""
-unset _setup_display_configuration _setup_map_keys
+# ARG_COUNT="$#"
+unset _setup_display_configuration _setup_peripheral _setup_no_peripheral _setup_map_keys
+
+# Defaults
+_setup_peripheral=1
 
 while (( "$#" )); do
   [[ $1 == --*=* ]] && set -- "${1%%=*}" "${1#*=}" "${@:2}"
 
   case "$1" in
     -d|--display-configuration)
-      # meta-parse-summary switch to the named kanshi display profile (one of ~/.config/kanshi/profiles/*)
+      # meta-parse-summary [default: 'default'] attempt to connect and relate displays according to the give configuration name
       _setup_display_configuration="$2"
       shift 2
+      _setup_peripheral=1
+      ;;
+    -p|--peripheral)
+      # meta-parse-summary [default: true] disable touchpad and adjust mouse sensitivity
+      shift
+      _setup_peripheral=1
       ;;
     -k|--map-keys)
-      # meta-parse-summary re-apply the sway keymap to all keyboards
+      # meta-parse-summary re-source Xmodmap (sometimes this needs to happen when plugging in peripheral keyboards)
       shift
       _setup_map_keys=1
+      ;;
+    -P|--no-peripheral)
+      # meta-parse-summary [default: false] adjust touchpad sensitivity to reduce accidental cursor movement
+      shift
+      unset _setup_peripheral
+      _setup_no_peripheral=1
+      ;;
+    -s|--enable-sleep)
+      # meta-parse-summary disable enable dpms and `xset s`.
+      shift
+      _setup_sleep=1
+      ;;
+    -S|--no-sleep)
+      # meta-parse-summary disable `dpms and run `xset s` to avoid graphics card freezing on wake
+      shift
+      _setup_no_sleep=1
       ;;
     -c|--config)
       # meta-parse-summary specify alternate config (defaults to $DEFAULT_CONFIG)
@@ -36,6 +61,11 @@ while (( "$#" )); do
     -v|--verbose)
       # meta-parse-summary run with extra logging
       export VERBOSE=1
+      shift
+      ;;
+    --dry-run)
+      # meta-parse-summary print the command to be run instead of running it
+      export DRY_RUN=1
       shift
       ;;
     --edit-config)
@@ -62,7 +92,7 @@ while (( "$#" )); do
     -*)
       # split any batched single character arguments into individual arguments
       # to be fed back into this loop. This is what allows multiple flags to
-      # be passed as `setup -asdf` instead of `setup -a -s -d -f`
+      # be passed as `xsetup -asdf` instead of `xsetup -a -s -d -f`
       grouped_args="$1"
       shift
 
@@ -89,8 +119,12 @@ done
 ## set positional arguments in their proper place
 eval set -- "$PARAMS"
 
-COMMAND="setup"
-SWAY_KEYMAP="$CONFIGS_DIR/sway/xkb/keymap.xkb"
+CONFIG_DIR="$XDG_CONFIG_HOME/setup-cli"
+ASSETS_DIR="$CONFIG_DIR/assets"
+
+COMMAND="xsetup"
+
+# Special case to avoid recursively calling xsetup if it's invoked alone
 
 # While there is a possible next command and that command
 # doesn't correspond to a sub-command
@@ -121,30 +155,62 @@ if [[ -n $SHOW_HELP ]]; then
   exit 1
 fi
 
-if [[ "$COMMAND" != "setup" ]]; then
+if [[ "$COMMAND" != "xsetup" ]]; then
   vlog "Running: $SCRIPT_DIR/$COMMAND $*"
   "$SCRIPT_DIR/$COMMAND" "$@"
 fi
-vlog "environment variables: VERBOSE=$VERBOSE SHOW_HELP=$SHOW_HELP"
+vlog "environment variables: VERBOSE=$VERBOSE DRY_RUN=$DRY_RUN SHOW_HELP=$SHOW_HELP"
+
+# help() {
+#   cat <<-EOM
+# xsetup [-p | --peripheral] [-P | --no-peripheral]
+#
+# Customize input setup
+#
+# EOM
+# }
+
+run_configuration() {
+  if [[ ! -f "$HOME/.Xmodmap" ]]; then
+    /bin/echo "No $HOME/.Xmodmap file found, skipping..."
+    return 1
+  fi
+
+  /bin/xmodmap "$HOME/.Xmodmap"
+}
 
 main() {
+  if [[ -n "$_setup_no_sleep" ]]; then
+    log "disabling sleep/suspend"
+    xset -dpms
+    xset s off
+  elif [[ -n "$_setup_sleep" ]]; then
+    log "enabling sleep/suspend"
+    xset +dpms
+    xset s on
+  fi
+  vlog "Starting sxhkd"
+  systemctl start --user sxhkd
+
   if [[ -n "$_setup_display_configuration" ]]; then
-    assert_command kanshictl "see ~/.config/kanshi/INSTALL.md"
-    vlog "kanshictl switch $_setup_display_configuration"
-    if ! kanshictl switch "$_setup_display_configuration"; then
-      log >&2 "could not apply display configuration: \`$_setup_display_configuration\`"
+    vlog "applying display configuration: $_setup_display_configuration"
+    config_path="$ASSETS_DIR/display/$_setup_display_configuration"
+    if [[ -x "$config_path" ]]; then
+      "$config_path"
+    else
+      log >&2 "display configuration file not found: \`$(basename "$config_path")\`"
       log >&2 "Available configurations: "
-      ls "$CONFIGS_DIR/kanshi/profiles"
+      ls "$(dirname "$config_path")"
     fi
   fi
 
-  # sway applies its keymap to keyboards as they are attached; this re-applies
-  # it if a keyboard slipped through. Not `swaymsg reload`, which restarts
-  # kanshi and would drop the active display profile.
+  # re-source keyboard layout in case an external keyboard has been attached.
   if [[ -n "$_setup_map_keys" ]]; then
     log "Mapping Keys"
-    vlog "swaymsg input type:keyboard xkb_file $SWAY_KEYMAP"
-    swaymsg input type:keyboard xkb_file "$SWAY_KEYMAP"
+    vlog "xmodmap ~/.Xmodmap"
+    xmodmap ~/.Xmodmap
+
+    run_configuration
   fi
 }
 

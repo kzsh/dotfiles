@@ -19,17 +19,19 @@ print_params() {
 }
 
 list_parameters() {
-  local cmd project
+  local cmd project root
   cmd="$1"
   project="$__UTIL_HELP_SH_PROJECT_DIR"
+  # setup or xsetup, whichever is running
+  root="$(basename "$0")"
 
   vlog "Listing params for \`$cmd\`"
-  if [[ -f "$project/$cmd" ]] && [[ "$cmd" != "setup" ]]; then
+  if [[ -f "$project/$cmd" ]] && [[ "$cmd" != "$root" ]]; then
     print_params "$cmd"
     echo
-    print_params "setup"
+    print_params "$root"
   else
-    print_params "setup"
+    print_params "$root"
   fi
 }
 

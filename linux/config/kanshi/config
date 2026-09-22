@@ -1,0 +1,3 @@
+# kanshi config. Profiles are generated from `monitors` and `profiles/*` by
+# `generate`; see INSTALL.md. Reloading sway regenerates and restarts kanshi.
+include ~/.config/kanshi/profiles.generated
