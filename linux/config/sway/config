@@ -171,9 +171,9 @@ mode "deliver" {
   bindsym Escape mode "default"
 }
 
-# Workspaces — switched via space binary (or script fallback)
-# Build: cd ~/.config/sway/space-daemon && cargo build --release
-# Install: cp target/release/space ~/.local/bin/
+# Workspaces — each monitor shows its own set, via space
+# (~/src/local/projects/space-daemon). Install from there with:
+#   cargo build --release && install -D target/release/space ~/.local/bin/space
 set $space space
 
 bindsym $mod3+q exec $space switch Q
