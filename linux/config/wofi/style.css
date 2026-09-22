@@ -1,0 +1,60 @@
+/* Gruvbox dark theme for wofi - adapted from rofi config */
+
+* {
+    font-family: "Fira Code", monospace;
+    font-size: 14px;
+}
+
+window {
+    background-color: #282828;
+    border: 2px solid #a89984;
+    border-radius: 0;
+}
+
+#input {
+    background-color: #282828;
+    color: #ebdbb2;
+    border: none;
+    border-bottom: 2px solid #665c54;
+    padding: 8px 12px;
+    margin: 4px;
+}
+
+#input:focus {
+    border-bottom: 2px solid #a89984;
+}
+
+#outer-box {
+    margin: 4px;
+}
+
+#scroll {
+    margin: 4px 0;
+}
+
+#entry {
+    padding: 8px 12px;
+    color: #ebdbb2;
+    background-color: #282828;
+}
+
+#entry:nth-child(odd) {
+    background-color: #32302f;
+}
+
+#entry:selected {
+    background-color: #665c54;
+    color: #fbf1c7;
+}
+
+#entry:selected #text {
+    font-weight: bold;
+}
+
+#text {
+    color: #ebdbb2;
+}
+
+#text:selected {
+    color: #fbf1c7;
+}
