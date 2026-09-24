@@ -1,12 +1,31 @@
 #!/bin/bash
-LAST_DIR=$(cat /tmp/i3/cwd)
-echo "$LAST_DIR"
+# Opens kitty in the cwd of the shell running in the focused window.
+# Falls back to the last prompt's cwd recorded by prompt.sh, then to
+# kitty's default.
 
-if [[ -n "$LAST_DIR" ]]; then
-  # i3-sensible-terminal --working-directory="$LAST_DIR"
-  kitty --directory="$LAST_DIR" "$@"
+focused_window_pid() {
+  if [[ -n "$SWAYSOCK" ]]; then
+    swaymsg -t get_tree | jq -r '[.. | select(.focused? == true).pid] | first // empty'
+  elif [[ -n "$DISPLAY" ]]; then
+    xdotool getwindowfocus getwindowpid
+  fi
+}
+
+WIN_PID=$(focused_window_pid 2>/dev/null)
+
+SHELL_PID=""
+if [[ -n "$WIN_PID" ]]; then
+  SHELL_PID=$(pstree -p "$WIN_PID" | rg -m 1 -o '\-bash\((\d+)\)' -r '$1')
+fi
+
+DIR=""
+if [[ -n "$SHELL_PID" ]]; then
+  DIR=$(readlink "/proc/$SHELL_PID/cwd")
+fi
+[[ -d "$DIR" ]] || DIR=$(cat /tmp/i3/cwd 2>/dev/null)
+
+if [[ -d "$DIR" ]]; then
+  exec kitty --directory="$DIR" "$@"
 else
-
-  # i3-sensible-terminal
-  kitty "$@"
+  exec kitty "$@"
 fi
