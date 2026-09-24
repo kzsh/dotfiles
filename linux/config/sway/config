@@ -212,7 +212,9 @@ bindsym $mod3+Shift+c exec $space move C
 bindsym $mod3+Shift+v exec $space move V
 bindsym $mod3+Shift+b exec $space move B
 
-# Switch space set (wofi picker)
+# Switch space set (wofi picker). Sets are listed most-recently-used first
+# with the current one omitted, and wofi selects the top entry on open, so
+# $mod3+k Return toggles back to the set you just left.
 bindsym $mod3+k exec $space set-menu
 
 # Ice/thaw space sets
