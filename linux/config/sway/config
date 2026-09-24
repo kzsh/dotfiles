@@ -25,6 +25,8 @@ for_window [title="pinned_terminal"] move scratchpad, scratchpad show, resize se
 # activation until it times out.
 exec_always "pkill -x dunst; exec dunst"
 
+exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE XDG_RUNTIME_DIR
+
 # Idle and lock
 exec swayidle -w \
   timeout 900 'swaylock -f' \
