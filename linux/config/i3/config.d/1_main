@@ -57,7 +57,7 @@ floating_modifier $mod
 # bindsym $mod+Return exec ~/.local/kitty.app/bin/kitty sh -c 'bash -login -c "nvim +term"'
 # bindsym $mod+Return exec /usr/bin/gnome-terminal
 # bindsym $mod+Return exec /usr/bin/gnome-terminal -x nvim +term
-bindsym $mod+Return exec ~/bin/i3-shell
+bindsym $mod+Return exec ~/bin/kitty-shell
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -256,7 +256,7 @@ mode "arrow_navigation" {
   bindsym Escape mode "default"; exec ~/packages/keymap/main.sh
 }
 
-bindsym $mod3+comma exec --no-startup-id ~/bin/i3-shell --title "floating_terminal"
+bindsym $mod3+comma exec --no-startup-id ~/bin/kitty-shell --title "floating_terminal"
 bindsym $mod3+k mode "switch_space_set"
 bindsym $mod3+j mode "arrow_navigation"; exec ~/packages/keymap/alt.sh
-bindsym $mod3+period exec --no-startup-id ~/bin/i3-shell --title "pinned_terminal"
+bindsym $mod3+period exec --no-startup-id ~/bin/kitty-shell --title "pinned_terminal"
