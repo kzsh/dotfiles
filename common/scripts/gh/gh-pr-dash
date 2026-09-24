@@ -1,0 +1,115 @@
+#!/usr/bin/env bash
+# gh-pr-dash - all your open PRs across every repo, review decision correlated with CI status.
+#
+#   gh-pr-dash                        # every open PR you authored, anywhere
+#   gh-pr-dash --blocked              # only the ones blocked on you
+#   gh-pr-dash org:foo-org            # extra search qualifiers are passed through
+#   gh-pr-dash --closed 'merged:>=2024-01-01'
+#
+# Does NOT need to be run inside a git repo. One GraphQL call per 50 PRs.
+# Requires: gh (authenticated), jq.
+set -euo pipefail
+
+BLOCKED=0
+SEARCH_STATE="is:open"
+EXTRA=()
+for arg in "$@"; do
+  case "$arg" in
+    --blocked) BLOCKED=1 ;;
+    --closed)  SEARCH_STATE="" ;;
+    -h|--help) sed -n '2,9p' "$0" | sed 's/^# \?//'; exit 0 ;;
+    -*) echo "unknown flag: $arg" >&2; exit 2 ;;
+    *)  EXTRA+=("$arg") ;;
+  esac
+done
+
+command -v jq >/dev/null || { echo "jq is required" >&2; exit 1; }
+gh auth status >/dev/null 2>&1 || { echo "run 'gh auth login' (or set GH_TOKEN) first" >&2; exit 1; }
+
+# GraphQL search does not understand @me, so resolve the login explicitly.
+ME=$(gh api user --jq .login)
+QUERY="type:pr author:${ME} ${SEARCH_STATE} ${EXTRA[*]:-}"
+
+read -r -d '' GQL <<'GRAPHQL' || true
+query($q: String!, $endCursor: String) {
+  search(query: $q, type: ISSUE, first: 50, after: $endCursor) {
+    pageInfo { hasNextPage endCursor }
+    nodes {
+      ... on PullRequest {
+        number title url isDraft reviewDecision state
+        repository { nameWithOwner }
+        reviewRequests(first: 1) { totalCount }
+        latestReviews(first: 20) { nodes { state } }
+        commits(last: 1) { nodes { commit { statusCheckRollup {
+          state
+          contexts(first: 100) { nodes {
+            ... on CheckRun { name status conclusion }
+            ... on StatusContext { context state }
+          } }
+        } } } }
+      }
+    }
+  }
+}
+GRAPHQL
+
+read -r -d '' JQ_PROG <<'JQ' || true
+def check_state:
+  (if has("state") then .state                 # StatusContext: external/legacy commit status
+   elif .status != "COMPLETED" then "PENDING"  # CheckRun: queued or in progress
+   else (.conclusion // "PENDING") end) as $s
+  | if   ["SUCCESS","NEUTRAL","SKIPPED"] | index($s) then "PASS"
+    elif ["FAILURE","TIMED_OUT","CANCELLED","ACTION_REQUIRED","ERROR","STARTUP_FAILURE","STALE"] | index($s) then "FAIL"
+    else "PENDING" end;
+
+def rollup: .commits.nodes[0].commit.statusCheckRollup;
+def contexts: [rollup.contexts.nodes[]? | select(length > 0)];
+
+def ci:
+  contexts as $ctx
+  | [$ctx[] | check_state] as $c
+  | if   ($c | length) == 0       then "none"
+    elif $c | any(. == "FAIL")    then
+      ([ $ctx[] | select(check_state == "FAIL") | (.name // .context) ]
+       | "fail(" + (.[0:2] | join(","))
+         + (if length > 2 then "+" + (length - 2 | tostring) else "" end) + ")")
+    elif $c | any(. == "PENDING") then "pending"
+    else "pass" end;
+
+# reviewDecision is only populated when branch protection requires reviews.
+# When it is null we fall back to the raw reviews; those verdicts are marked
+# with a trailing * to show they are inferred, not enforced by the repo.
+def review:
+  [.latestReviews.nodes[]?.state] as $r
+  | (.reviewRequests.totalCount // 0) as $asked
+  | { "APPROVED":"approved", "CHANGES_REQUESTED":"changes-req",
+      "REVIEW_REQUIRED":"needs-review" }[.reviewDecision // ""]
+    // (if   $r | any(. == "CHANGES_REQUESTED") then "changes-req*"
+        elif $r | any(. == "APPROVED")          then "approved*"
+        elif $asked > 0                         then "awaiting*"
+        elif ($r | length) > 0                  then "commented*"
+        else "unreviewed*" end);
+
+# --blocked is a filter, not a column: red CI, requested changes, or no approval yet.
+def needs_action($ci; $rv):
+  ($ci | startswith("fail"))
+  or ($rv | startswith("changes-req"))
+  or (["needs-review","awaiting*","commented*","unreviewed*"] | index($rv) | not | not);
+
+[ .[].data.search.nodes[] | select(.number) ]
+| sort_by(.repository.nameWithOwner, .number)
+| .[]
+| ci as $ci | review as $rv
+| select($blocked == "0"
+         or (.state == "OPEN" and (.isDraft | not) and needs_action($ci; $rv)))
+| [ (if .isDraft then "DRAFT" else .state end), $ci, $rv,
+    (.repository.nameWithOwner + "#" + (.number|tostring)),
+    (.title | if length > 50 then .[:47] + "..." else . end) ]
+| @tsv
+JQ
+
+{
+  printf 'PR-STATE\tCI\tREVIEW\tPR\tTITLE\n'
+  gh api graphql --paginate -f query="$GQL" -f q="$QUERY" \
+    | jq -s -r --arg blocked "$BLOCKED" "$JQ_PROG"
+} | column -t -s $'\t'
