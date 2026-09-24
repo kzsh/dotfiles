@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#!/bin/bash
+case "${1:-i3}" in
+  i3)   startx /etc/X11/Xsession i3 ;;
+  sway) XDG_CURRENT_DESKTOP=sway WLR_RENDERER=vulkan exec sway --unsupported-gpu ;;
+esac
+
