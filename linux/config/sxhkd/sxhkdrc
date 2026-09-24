@@ -37,7 +37,7 @@ ctrl + shift + r
 
 # terminal emulator
 super + Return
-	~/bin/i3-shell
+	~/bin/kitty-shell
 
 ctrl + shift + alt + r
 	systemctl --user reload sxhkd &&  notify-send 'sxhkd restarted'

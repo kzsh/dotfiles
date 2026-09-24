@@ -66,7 +66,7 @@ bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle && $
 floating_modifier $mod
 
 # Terminal
-bindsym $mod+Return exec ~/bin/i3-shell
+bindsym $mod+Return exec ~/bin/kitty-shell
 
 # Kill
 bindsym $mod+Shift+q kill
@@ -256,8 +256,8 @@ bindsym $mod3+Shift+i exec $space ice-menu
 bindsym $mod3+n exec $space move-to-set
 
 # Scratchpad terminals
-bindsym $mod3+comma exec ~/bin/i3-shell --title "floating_terminal"
-bindsym $mod3+period exec ~/bin/i3-shell --title "pinned_terminal"
+bindsym $mod3+comma exec ~/bin/kitty-shell --title "floating_terminal"
+bindsym $mod3+period exec ~/bin/kitty-shell --title "pinned_terminal"
 
 # Screenshots (from sxhkd)
 bindsym $mod1+Shift+4 exec /usr/local/bin/screencap
