@@ -7,6 +7,7 @@ location=center
 allow_markup=true
 allow_images=false
 
-# vim-like navigation
-key_up=Control_L-k
-key_down=Control_L-j
+# vim-like navigation. Modifier names are Shift/Ctrl/Alt (wofi-keys(7));
+# Control_L is a key name and binds nothing.
+key_up=Ctrl-k,Up
+key_down=Ctrl-j,Down
