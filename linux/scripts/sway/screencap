@@ -1,0 +1,12 @@
+#!/bin/sh
+set -eu
+
+dir="$HOME/screen-captures"
+mkdir -p "$dir"
+
+# ISO 8601 UTC, colons replaced so the name is safe on FAT/exfat mounts
+file="$dir/$(date -u +%Y-%m-%dT%H_%M_%SZ).png"
+
+# Dim unselected area so the crosshair stands out on light backgrounds
+grim -g "$(slurp -b 000000a6 -c ffa500ff -w 1)" "$file"
+printf '%s\n' "$file"

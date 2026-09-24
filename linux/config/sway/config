@@ -25,7 +25,7 @@ for_window [title="pinned_terminal"] move scratchpad, scratchpad show, resize se
 # activation until it times out.
 exec_always "pkill -x dunst; exec dunst"
 
-exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE XDG_RUNTIME_DIR
+exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE XDG_RUNTIME_DIR SWAYSOCK
 
 # Idle and lock
 exec swayidle -w \
@@ -259,11 +259,9 @@ bindsym $mod3+n exec $space move-to-set
 bindsym $mod3+comma exec ~/bin/kitty-shell --title "floating_terminal"
 bindsym $mod3+period exec ~/bin/kitty-shell --title "pinned_terminal"
 
-# Screenshots (from sxhkd)
-bindsym $mod1+Shift+4 exec /usr/local/bin/screencap
-bindsym Ctrl+$mod1+Shift+4 exec /usr/bin/flameshot gui
-bindsym Ctrl+$mod1+Shift+q exec swaylock -f
-bindsym Ctrl+Shift+$mod1+k exec /usr/local/bin/setup -k && notify-send "Keyboard remapped"
+# Screen capture
+bindsym --to-code Ctrl+$mod1+Shift+4 exec screen-rec-toggle
+bindsym --to-code Ctrl+$mod1+4 exec screencap
 
 # Bar
 bar {

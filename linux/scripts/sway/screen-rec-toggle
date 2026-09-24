@@ -1,0 +1,32 @@
+#!/bin/sh
+set -eu
+
+dir=$HOME/screen-captures
+
+if pkill -SIGINT wl-screenrec; then
+  notify-send "Recording stopped"
+  exit 0
+fi
+
+mkdir -p "$dir"
+file=$dir/wl-rec-$(date -u +%Y-%m-%dT%H_%M_%S).mp4
+# Encoding is VAAPI; nvidia render nodes have no VAAPI encoder. Render node
+# numbering follows probe order, so select by driver instead.
+for n in /sys/class/drm/renderD*; do
+  [ -e "$n/device/driver" ] || continue
+  case $(basename "$(readlink -f "$n/device/driver")") in
+    nvidia | nouveau) ;;
+    *)
+      dri=/dev/dri/$(basename "$n")
+      break
+      ;;
+  esac
+done
+
+if [ -z "${dri:-}" ]; then
+  notify-send -u critical "Recording failed" "No VAAPI-capable render node"
+  exit 1
+fi
+
+notify-send "Recording started" "$file"
+exec wl-screenrec --dri-device "$dri" --low-power=off -g "$(slurp -b 000000a6 -c ffa500ff -w 1)" -f "$file"
