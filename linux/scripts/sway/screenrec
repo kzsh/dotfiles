@@ -1,0 +1,189 @@
+#!/bin/sh
+# Screen recording jobs, keyed by a 1-based index so several can run at once.
+# Needs intel-media-va-driver-non-free on Debian: the dfsg repack strips the
+# shader-kernel blobs that implement VAAPI VPP and VME encode, and scale_vaapi
+# then fails with "VAProfile is not supported".
+set -eu
+
+dir=$HOME/screen-captures
+state_dir=${XDG_STATE_HOME:-$HOME/.local/state}/screenrec
+state=$state_dir/state
+lock=$state_dir/lock
+
+# Tab-separated: index, pid, file.
+tab=$(printf '\t')
+
+usage() {
+  cat >&2 <<EOF
+usage: screenrec start [index]
+       screenrec stop [index]
+       screenrec list
+EOF
+  exit 2
+}
+
+fail() {
+  notify-send -u critical "Recording failed" "$1"
+  printf 'screenrec: %s\n' "$1" >&2
+  exit 1
+}
+
+# mkdir is atomic on every filesystem worth recording from; the lock is only
+# held across state rewrites, never across slurp or the recording itself.
+lock_acquire() {
+  lock_wait=0
+  until mkdir "$lock" 2>/dev/null; do
+    lock_wait=$((lock_wait + 1))
+    [ "$lock_wait" -lt 100 ] || fail "state locked by another screenrec"
+    sleep 0.05
+  done
+  trap 'rmdir "$lock" 2>/dev/null || true' EXIT INT TERM
+}
+
+lock_release() {
+  trap - EXIT INT TERM
+  rmdir "$lock" 2>/dev/null || true
+}
+
+# Drop entries whose recorder died on its own (crash, manual kill).
+prune() {
+  [ -f "$state" ] || return 0
+  tmp=$state.$$
+  : >"$tmp"
+  # Prefixed names: a bare `file` here would clobber the caller's.
+  while IFS="$tab" read -r p_idx p_pid p_file; do
+    [ -n "${p_pid:-}" ] || continue
+    kill -0 "$p_pid" 2>/dev/null || continue
+    printf '%s\t%s\t%s\n' "$p_idx" "$p_pid" "$p_file" >>"$tmp"
+  done <"$state"
+  mv "$tmp" "$state"
+}
+
+entry() {
+  grep -m1 "^$1$tab" "$state"
+}
+
+next_index() {
+  n=1
+  while entry "$n" >/dev/null; do n=$((n + 1)); done
+  printf '%s\n' "$n"
+}
+
+# Encoding is VAAPI; nvidia render nodes have no VAAPI encoder. Render node
+# numbering follows probe order, so select by driver instead.
+render_node() {
+  for n in /sys/class/drm/renderD*; do
+    [ -e "$n/device/driver" ] || continue
+    case $(basename "$(readlink -f "$n/device/driver")") in
+      nvidia | nouveau) ;;
+      *)
+        printf '/dev/dri/%s\n' "$(basename "$n")"
+        return 0
+        ;;
+    esac
+  done
+  return 1
+}
+
+cmd_start() {
+  idx=${1:-}
+  mkdir -p "$dir"
+
+  lock_acquire
+  prune
+  if [ -n "$idx" ] && entry "$idx" >/dev/null; then
+    lock_release
+    fail "job $idx is already recording"
+  fi
+  lock_release
+
+  dri=$(render_node) || fail "No VAAPI-capable render node"
+  geometry=$(slurp -b 000000a6 -c ffa500ff -w 1)
+  file=$dir/wl-rec-$(date -u +%Y-%m-%dT%H_%M_%S).mp4
+
+  # Index is only claimed after slurp returns, so a selection left hanging
+  # never blocks another job from taking the number.
+  lock_acquire
+  prune
+  if [ -z "$idx" ]; then
+    idx=$(next_index)
+  elif entry "$idx" >/dev/null; then
+    lock_release
+    fail "job $idx is already recording"
+  fi
+  # A background job of a non-interactive shell inherits SIGINT ignored, and an
+  # ignored disposition survives exec, so `stop` could never flush the file.
+  # env(1) resets it to default; `set -m` cannot, there being no tty here.
+  env --default-signal=INT \
+    wl-screenrec --dri-device "$dri" --low-power=off -g "$geometry" -f "$file" &
+  printf '%s\t%s\t%s\n' "$idx" "$!" "$file" >>"$state"
+  lock_release
+
+  notify-send "Recording $idx started" "$file"
+}
+
+cmd_stop() {
+  idx=${1:-}
+
+  lock_acquire
+  prune
+  if [ -z "$idx" ]; then
+    count=$(wc -l <"$state")
+    if [ "$count" -eq 0 ]; then
+      lock_release
+      notify-send "No recording running"
+      exit 0
+    elif [ "$count" -gt 1 ]; then
+      running=$(cut -f1 "$state" | tr '\n' ' ')
+      lock_release
+      fail "several recordings running ($running); pass an index"
+    fi
+    idx=$(cut -f1 "$state")
+  fi
+  line=$(entry "$idx") || {
+    lock_release
+    fail "no recording with index $idx"
+  }
+  lock_release
+
+  pid=$(printf '%s\n' "$line" | cut -f2)
+  file=$(printf '%s\n' "$line" | cut -f3)
+
+  # SIGINT is wl-screenrec's documented stop signal: it flushes and closes the
+  # container before exiting, so wait for the process to actually go away.
+  kill -INT "$pid" 2>/dev/null || true
+  waited=0
+  while kill -0 "$pid" 2>/dev/null; do
+    waited=$((waited + 1))
+    [ "$waited" -lt 200 ] || fail "job $idx (pid $pid) did not exit"
+    sleep 0.05
+  done
+
+  lock_acquire
+  prune
+  lock_release
+
+  notify-send "Recording $idx stopped" "$file"
+}
+
+cmd_list() {
+  lock_acquire
+  prune
+  lock_release
+  [ ! -f "$state" ] || cat "$state"
+}
+
+[ $# -ge 1 ] || usage
+mkdir -p "$state_dir"
+# Append-create: every later read assumes the file exists.
+: >>"$state"
+action=$1
+shift
+[ $# -le 1 ] || usage
+
+case $action in
+  start) cmd_start "$@" ;;
+  stop) cmd_stop "$@" ;;
+  list) cmd_list ;;
+  *) usage ;;
+esac
