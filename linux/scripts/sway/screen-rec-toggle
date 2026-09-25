@@ -1,4 +1,7 @@
 #!/bin/sh
+# Needs intel-media-va-driver-non-free on Debian: the dfsg repack strips the
+# shader-kernel blobs that implement VAAPI VPP and VME encode, and scale_vaapi
+# then fails with "VAProfile is not supported".
 set -eu
 
 dir=$HOME/screen-captures
