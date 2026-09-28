@@ -111,14 +111,22 @@ cmd_start() {
     lock_release
     fail "job $idx is already recording"
   fi
-  # A background job of a non-interactive shell inherits SIGINT ignored, and an
+  log=$state_dir/job-$idx.log
+  # setsid: a background job of a shell without job control stays in that
+  # shell's process group, so a Ctrl-C in the invoking terminal would stop the
+  # recording. Not a pgroup leader here, so setsid execs without forking and $!
+  # is the recorder itself.
+  # env --default-signal: such a job also inherits SIGINT ignored, and an
   # ignored disposition survives exec, so `stop` could never flush the file.
-  # env(1) resets it to default; `set -m` cannot, there being no tty here.
-  env --default-signal=INT \
-    wl-screenrec --dri-device "$dri" --low-power=off -g "$geometry" -f "$file" &
-  printf '%s\t%s\t%s\n' "$idx" "$!" "$file" >>"$state"
+  setsid env --default-signal=INT \
+    wl-screenrec --dri-device "$dri" --low-power=off -g "$geometry" -f "$file" \
+    >"$log" 2>&1 </dev/null &
+  pid=$!
+  printf '%s\t%s\t%s\n' "$idx" "$pid" "$file" >>"$state"
   lock_release
 
+  sleep 0.3
+  kill -0 "$pid" 2>/dev/null || fail "recorder exited at once, see $log"
   notify-send "Recording $idx started" "$file"
 }
 
